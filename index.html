@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!--PHANTOM STUDIOS-->
+  <meta charset="utf-8">
+  <title>PHANTOM STUDIOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="icon" type="image/jpg" href="assets/web/CircleLogo.png">
+  <link rel="stylesheet" href="src/style.css"> <!-- Esto cargaria un archivo de estilo, pero no es necesario en Fiddle porque lo hace automáticamente -->
+  <script src="src/game.js"></script> <!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
+</head>
+
+<body>
+    <nav class="navBar" style="background-color: rgb(24, 24, 24);">
+        <img src = "assets/web/CircleLogo.png" height="120" style="padding-left: 10px;">
+        <img src = "assets/web/TextLogo.png" height = "150">
+    </nav>
+
+    <nav class="buttonSection" style="background-color: rgb(33, 33, 33);">
+        <div class="buttonClass">
+        <ul id="menu">
+            <li id="Descripcion">
+                <a href="#descripcion" class="link">DESCRIPCIÓN</a>
+            </li>
+            <li id="Autores">
+                <a href="#autores" class="link">QUIÉNES SOMOS</a>
+            </li>
+            <li id="RedesSociales">
+                <a href="#redesSociales" class="link">REDES</a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+
+    
+    <div id="Descripcion">
+        <h1 style="text-align: center;">DESCRIPCIÓN</h1>
+        <p style="text-align: center;">El juego consistirá en un rpg estilo clásico en el que el grupo de Phantom Studios se quedará encerrado dentro del mundo de los videojuegos y deberán luchar contra sus profesores, que han materializado ideas en forma de mundos que el equipo debe recorrer, y vencerlos para escapar de su encierro.</p>
+        <p style="text-align: center;">El grupo se las verá cara a cara con profesores como Pascal o Victor Lavín en sus propios mundos abstractos.</p>
+    </div>
+    
+    <div class="gameSection">
+        <canvas width="1920" height="1080" style="image-rendering: pixelated; width: 800px; height: 540px"></canvas>
+    </div>
+
+    <div id="autores">
+        <h1 style="text-align: center;">QUIÉNES SOMOS</h1>
+    </div>
+
+    <nav id="redesSociales" style="background-color: rgb(96, 96, 96);">
+        <div class="bottomSection">
+            <h1 style="text-align: center;">REDES</h1>
+            <a href="https://x.com/Phantom_Stud1os">
+                <img src="assets/web/TwitterLogo.png" height="100"  style="margin-left: auto;">
+            </a>
+            <a href="https://github.com/RubiaLuque/PhantomStudios">
+                <img src="assets/web/GitHubLogo.png" height="100" style="padding-left: 20px;">
+            </a>
+        </div>
+    </nav>
+
+</body>
+<!--2024-2025-->
+</html>

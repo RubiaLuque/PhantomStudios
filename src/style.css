@@ -1,0 +1,71 @@
+body{
+    background-color: rgb(48, 48, 48);
+    cursor:url(media/pointer2.png),auto;
+  }
+
+  .navBar{
+    text-align: center;
+}
+
+.buttonSection{
+    font-size: large;
+    color: rgb(115, 84, 255);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+
+  .buttonClass{
+    text-align: center;
+    
+  }
+
+.link {
+    flex: 30;
+    text-decoration:rgb(189, 0, 0);
+    outline-color: transparent;
+    text-align: center;
+    line-height: 3;
+    color: black;
+  }
+  
+  .link:link,
+  .link:visited,
+  .link:focus {
+    background: rgb(100, 139, 255);
+    color: black;
+  }
+  
+  .link:hover {
+    background: rgb(38, 0, 255);
+    color:rgb(189, 0, 0);
+    text-decoration: underline;
+  }
+
+  ul{
+    list-style-type: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  ul li{
+    display: inline;
+    padding-left: 10px;
+  }
+
+  h1 {
+    color: rgb(189, 0, 0);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+  }
+
+  p{
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: large;
+  }
+
+.bottomSection{
+    text-align: center;
+    padding-bottom: 20px;
+  }
+
+
+  
