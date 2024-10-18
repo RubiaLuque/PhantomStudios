@@ -8,14 +8,14 @@ const Type = {
     physical: {name:'physical', str: 'depression'}
 }
 
-let AttackButton, MagicButton;
+let AttackButton, MagicButton, resultText;
 let selectedCharacter;
 
 let currentCharacter = 0;
 
 let team1, team2;
 let arrow;
-let onEndTurn, aliveFoes;
+let onEndTurn;
 let phase = 'select';
 
 /*Escena de Phaser*/
@@ -38,6 +38,8 @@ export default class CombatScene extends Phaser.Scene {
     }
 
     create(){
+        self = this;
+
         AttackButton = this.add.sprite(400, 500, "Button").setInteractive();
         AttackButton.setScale(1, 0.5);
         AttackButton.text = this.add.text(350, 485, 'Attack', { fontSize: '32px', fill: '#000'});
@@ -94,10 +96,12 @@ export default class CombatScene extends Phaser.Scene {
 
         team1.onTeam.on('death', function(){
             console.log('You lose');
+            resultText = self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
         });
 
         team2.onTeam.on('death', function(){
             console.log('You win');
+            resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
         });
 
         selectedCharacter = team1.GetCharacter(0)
