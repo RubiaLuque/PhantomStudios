@@ -1,6 +1,14 @@
-import Kebab from "./Kebab.js";
-import Patatas from "./Patatas.js";
-import Player from "./Navigation/Player.js";
+import Entity from "./Entity.js";
+
+const Type = {
+    horny : {name:'horny', str: 'depression'},
+    anxiety: {name:'anxiety', str: 'horny'},
+    wrath: {name:'wrath', str: 'anxiety'},
+    depression: {name:'depression', str: 'wrath'},
+    physical: {name:'physical', str: 'depression'}
+}
+
+let Javi, Fueyo, Mika, Muxu, Fork;
 
 /*Escena de Phaser*/
 export default class MenuScene extends Phaser.Scene {
@@ -9,33 +17,42 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     init(){
-
     }
 
     preload(){
-        this.load.image("kebab", "./assets/kebab.png")
-        this.load.image("patatas", "./assets/patatas.jpg")
-        this.load.image("player", "./assets/web/CircleLogo.png")
+        this.load.image("Javi", "assets/images/Javi.png");
+        this.load.image("Fueyo", "assets/images/Fueyo.png");
+        this.load.image("Mika", "assets/images/Mika.png");
+        this.load.image("Muxu", "assets/images/Muxu.png");
+        this.load.image("Fork", "assets/images/Fork.png");
     }
 
     create(){
-        //this.add.image(100, 50, "kebab").setOrigin(0, 0).setScale(0.5, 0.5)
-        /** Lo mismo que la línea anterior con clases */
-        let kebab = new Kebab(this, 100, 50);
-        kebab.setOrigin(0,0);
-        kebab.setScale(0.5,0.5);
-        console.log("He pedido un kebab con", kebab.carne, ",", kebab.verduras,"y", kebab.salsa)
-        /** */
+        Javi = new Phaser.GameObjects.Sprite(this, 100, 100, "Javi");
+        Fueyo = new Phaser.GameObjects.Sprite(this, 100, 220, "Fueyo");
+        Mika = new Phaser.GameObjects.Sprite(this, 100, 340, "Mika");
+        Muxu = new Phaser.GameObjects.Sprite(this, 100, 460, "Muxu");
 
-        //this.add.image(400, 450, "patatas").setOrigin(0.5, 0.5).setScale(0.1, 0.1)
-        /** Lo mismo que la línea anterior con clases */
-        let patatas = new Patatas(this, 400, 450);
-        patatas.setOrigin(0.5, 0.5);
-        patatas.setScale(0.1, 0.1);
-        console.log("He pedido unas patatas con salsa", patatas.salsa)
+        Fork = new Phaser.GameObjects.Sprite(this, 700, 300, "Fork");
+        
+        this.add.existing(Javi);
+        this.add.existing(Fueyo);
+        this.add.existing(Mika);
+        this.add.existing(Muxu);
 
-        let player = new Player(this, 0, 0);
-        player.setScale(0.5, 0.5)
+        this.add.existing(Fork);
+
+        Javi.scale = 0.2;
+        Fueyo.scale = 0.2;
+        Mika.scale = 0.2;
+        Muxu.scale = 0.2;
+
+        Fork.scale = 0.4;
+
+        Javi.entity = new Entity('Javi', 10, 15, Type.horny);
+        Fueyo.entity = new Entity('Fueyo', 10, 15, Type.wrath);
+        Mika.entity = new Entity('Mika', 10, 15, Type.depression);
+        Muxu.entity = new Entity('Muxu', 10, 15, Type.anxiety);
     }
 
     update(){
