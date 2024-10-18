@@ -45,6 +45,7 @@ export default class CombatScene extends Phaser.Scene {
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.Attack;
                 phase = 'combat';
+                team2.entities.forEach(element => { element.sprite.setInteractive(); });
             }
         );
 
@@ -52,6 +53,7 @@ export default class CombatScene extends Phaser.Scene {
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
                 phase = 'combat';
+                team2.entities.forEach(element => { element.sprite.setInteractive(); });
             }
         );
 
@@ -59,7 +61,6 @@ export default class CombatScene extends Phaser.Scene {
         team2.Create(this, 600, 100);
 
         team2.entities.forEach(element => {
-            element.sprite.setInteractive()
             element.sprite.on('pointerdown', function(){
                 if(element.alive && phase == 'combat')
                 {
@@ -75,6 +76,10 @@ export default class CombatScene extends Phaser.Scene {
                     selectedCharacter = team1.GetCharacter(currentCharacter);
                     phase = 'select';
                 }
+            });
+
+            element.sprite.on('pointerout', function(){
+                if(phase == 'select')team2.entities.forEach(element => { element.sprite.disableInteractive(); });
             });
         });
 

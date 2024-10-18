@@ -11,6 +11,24 @@ export default class Entity
         this.on = new Phaser.Events.EventEmitter()
     }
 
+    Setup()
+    {
+        let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
+
+        this.sprite.on('pointerover', function(){
+            this.setScale(originalScale.x * 1.1, originalScale.y * 1.1);
+        });
+        this.sprite.on('pointerdown', function(){
+            this.tint = 0xcccccc;
+        });
+        this.sprite.on('pointerup', function(){
+            this.tint = 0xffffff;
+        });
+        this.sprite.on('pointerout', function(){
+            this.setScale(originalScale.x, originalScale.y);
+        });
+    }
+
     GetDamage(damage, type)
     {
         if(type.str == this.type.name) damage *= 2

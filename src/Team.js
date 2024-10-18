@@ -34,6 +34,8 @@ export default class Team
             entity.sprite.scale = 0.2
             scene.add.existing(entity.sprite)
             y += 100
+
+            entity.Setup();
         })
     }
 
