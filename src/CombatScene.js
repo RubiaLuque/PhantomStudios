@@ -1,4 +1,5 @@
 import Entity from "./Entity.js";
+import CustomButton from "./CustomButton.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -40,13 +41,19 @@ export default class CombatScene extends Phaser.Scene {
     create(){
         self = this;
 
-        AttackButton = this.add.sprite(400, 500, "Button").setInteractive();
-        AttackButton.setScale(1, 0.5);
-        AttackButton.text = this.add.text(350, 485, 'Attack', { fontSize: '32px', fill: '#000'});
+        AttackButton = new CustomButton(this, 400, 500, "Button", "Attack", 
+            function(){
+                selectedCharacter.selectedAttack = selectedCharacter.Attack;
+                phase = 'combat';
+            }
+        );
 
-        MagicButton = this.add.sprite(400, 550, "Button").setInteractive();
-        MagicButton.setScale(1, 0.5);
-        MagicButton.text = this.add.text(350, 535, 'Magic', { fontSize: '32px', fill: '#000'});
+        MagicButton = new CustomButton(this, 400, 600, "Button", "Magic",
+            function(){
+                selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
+                phase = 'combat';
+            }
+        );
 
         team1.Create(this, 100, 100);
         team2.Create(this, 600, 100);
@@ -76,23 +83,6 @@ export default class CombatScene extends Phaser.Scene {
         this.add.existing(arrow)
 
         onEndTurn = new Phaser.Events.EventEmitter();
-
-        AttackButton.on('pointerdown', function(){
-            selectedCharacter.selectedAttack = selectedCharacter.Attack;
-            phase = 'combat';
-        });
-
-        MagicButton.on('pointerdown', function(){
-            selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
-            phase = 'combat';
-        });
-
-        onEndTurn.on('endTurn', function(){
-            team2.entities.forEach(element => {
-                let enemy = team1.GetRandomCharacter();
-                element.Attack(enemy);
-            });
-        });
 
         team1.onTeam.on('death', function(){
             console.log('You lose');
