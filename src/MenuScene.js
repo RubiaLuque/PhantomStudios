@@ -1,5 +1,6 @@
 import Kebab from "./Kebab.js";
 import Patatas from "./Patatas.js";
+import Player from "./Navigation/Player.js";
 
 /*Escena de Phaser*/
 export default class MenuScene extends Phaser.Scene {
@@ -14,6 +15,7 @@ export default class MenuScene extends Phaser.Scene {
     preload(){
         this.load.image("kebab", "./assets/kebab.png")
         this.load.image("patatas", "./assets/patatas.jpg")
+        this.load.image("player", "./assets/web/CircleLogo.png")
     }
 
     create(){
@@ -31,6 +33,9 @@ export default class MenuScene extends Phaser.Scene {
         patatas.setOrigin(0.5, 0.5);
         patatas.setScale(0.1, 0.1);
         console.log("He pedido unas patatas con salsa", patatas.salsa)
+
+        let player = new Player(this, 0, 0);
+        player.setScale(0.5, 0.5)
     }
 
     update(){
