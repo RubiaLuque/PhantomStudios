@@ -1,5 +1,5 @@
-import MenuScene from './CombatScene.js';
-import CombatScene from './CombatScene.js';
+import CombatScene from "./CombatScene.js";
+import World1 from "./World1.js";
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
  * la clase Game de Phaser, encargada de crear e iniciar el juego.
