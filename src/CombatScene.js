@@ -41,14 +41,14 @@ export default class CombatScene extends Phaser.Scene {
     create(){
         self = this;
 
-        AttackButton = new CustomButton(this, 400, 500, "Button", "Attack", 
+        AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.Attack;
                 phase = 'combat';
             }
         );
 
-        MagicButton = new CustomButton(this, 400, 600, "Button", "Magic",
+        MagicButton = new CustomButton(this, 400, 500, "Button", "Magic",
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
                 phase = 'combat';

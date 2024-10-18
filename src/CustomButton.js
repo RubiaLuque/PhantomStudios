@@ -4,7 +4,6 @@ export default class CustomButton extends Phaser.GameObjects.Sprite
     {
         super(scene, x, y, texture);
         this.setScale(1, 0.5);
-        this.text = scene.add.text(x - 50, y - 15, text, { fontSize: '32px', fill: '#000'});
         this.setInteractive();
 
         this.on('pointerover', function(){
@@ -20,5 +19,8 @@ export default class CustomButton extends Phaser.GameObjects.Sprite
         this.on('pointerout', function(){
             this.setScale(1, 0.5);
         });
+
+        scene.add.existing(this);
+        this.text = scene.add.text(x - 40, y - 10, text, { fontSize: '32px', fill: '#000' });
     }
 }
