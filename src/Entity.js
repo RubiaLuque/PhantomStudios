@@ -1,11 +1,12 @@
 export default class Entity
 {
-    constructor(name, damage, health, type)
+    constructor(name, damage, health, type, imagePath)
     {
         this.name = name
         this.health = health
         this.damage = damage
         this.type = type
+        this.image = imagePath
     }
 
     GetDamage(damage, type)
@@ -15,6 +16,8 @@ export default class Entity
 
         this.health -= damage
         console.log(this.name + ' health:' + this.health)
+
+        if(this.health <= 0) this.Die()
     }
 
     Attack(other)
@@ -25,6 +28,11 @@ export default class Entity
     MagicAttack(other)
     {
         other.GetDamage(this.damage, this.type)
+    }
+
+    Die()
+    {
+        console.log(this.name + ' died')
     }
 }
 

@@ -53,9 +53,18 @@ export default class MenuScene extends Phaser.Scene {
         Fueyo.entity = new Entity('Fueyo', 10, 15, Type.wrath);
         Mika.entity = new Entity('Mika', 10, 15, Type.depression);
         Muxu.entity = new Entity('Muxu', 10, 15, Type.anxiety);
+
+        AttackButton.on('pointerdown', function(){
+            selectedCharacter.entity.Attack(Fork.entity);
+            currentCharacter++;
+            if(currentCharacter > 3) currentCharacter = 0;
+            selectedCharacter = charactersQueue[currentCharacter];
+        });
     }
 
-    update(){
-
+    update()
+    {
+        Arrow.y = selectedCharacter.y - 70;
+        Arrow.x = selectedCharacter.x;
     }
 }

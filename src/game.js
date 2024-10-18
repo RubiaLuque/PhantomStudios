@@ -1,4 +1,5 @@
-import MenuScene from "./MenuScene.js";
+import MenuScene from './CombatScene.js';
+import CombatScene from './CombatScene.js';
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
  * la clase Game de Phaser, encargada de crear e iniciar el juego.
@@ -12,7 +13,7 @@ let config = {
 	scale: {
 		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
-	scene: [MenuScene],	// Decimos a Phaser cual es nuestra escena
+	scene: [World1],	// Decimos a Phaser cual es nuestra escena
 	physics: { 
 		default: 'arcade', 
 		arcade: { 
