@@ -8,14 +8,15 @@ const Type = {
     physical: {name:'physical', str: 'depression'}
 }
 
-let AttackButton, MagicButton, Arrow;
+let AttackButton, MagicButton;
 let selectedCharacter;
-let selectedEnemy;
 
 let currentCharacter = 0;
 
 let team1, team2;
 let arrow;
+let onEndTurn, aliveFoes;
+let phase = 'select';
 
 /*Escena de Phaser*/
 export default class CombatScene extends Phaser.Scene {
@@ -38,6 +39,12 @@ export default class CombatScene extends Phaser.Scene {
 
     create(){
         AttackButton = this.add.sprite(400, 500, "Button").setInteractive();
+        AttackButton.setScale(1, 0.5);
+        AttackButton.text = this.add.text(350, 485, 'Attack', { fontSize: '32px', fill: '#000'});
+
+        MagicButton = this.add.sprite(400, 550, "Button").setInteractive();
+        MagicButton.setScale(1, 0.5);
+        MagicButton.text = this.add.text(350, 535, 'Magic', { fontSize: '32px', fill: '#000'});
 
         team1.Create(this, 100, 100);
         team2.Create(this, 600, 100);
@@ -45,7 +52,20 @@ export default class CombatScene extends Phaser.Scene {
         team2.entities.forEach(element => {
             element.sprite.setInteractive()
             element.sprite.on('pointerdown', function(){
-                selectedEnemy = element
+                if(element.alive && phase == 'combat')
+                {
+                    selectedCharacter.selectedAttack(element);
+                    currentCharacter++;
+
+                    if(currentCharacter >= team1.GetCharacterCount())
+                    {
+                        onEndTurn.emit('endTurn');
+                        currentCharacter = 0;
+                    }
+
+                    selectedCharacter = team1.GetCharacter(currentCharacter);
+                    phase = 'select';
+                }
             });
         });
 
@@ -53,20 +73,42 @@ export default class CombatScene extends Phaser.Scene {
         arrow.scale = 0.2
         this.add.existing(arrow)
 
+        onEndTurn = new Phaser.Events.EventEmitter();
+
         AttackButton.on('pointerdown', function(){
-            selectedCharacter.Attack(selectedEnemy);
-            currentCharacter++;
-            if(currentCharacter > 3) currentCharacter = 0;
-            selectedCharacter = team1.GetCharacter(currentCharacter)
+            selectedCharacter.selectedAttack = selectedCharacter.Attack;
+            phase = 'combat';
+        });
+
+        MagicButton.on('pointerdown', function(){
+            selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
+            phase = 'combat';
+        });
+
+        onEndTurn.on('endTurn', function(){
+            team2.entities.forEach(element => {
+                let enemy = team1.GetRandomCharacter();
+                element.Attack(enemy);
+            });
+        });
+
+        team1.onTeam.on('death', function(){
+            console.log('You lose');
+        });
+
+        team2.onTeam.on('death', function(){
+            console.log('You win');
         });
 
         selectedCharacter = team1.GetCharacter(0)
-        selectedEnemy = team2.GetCharacter(0)
     }
 
     update()
     {
-        arrow.x = selectedCharacter.sprite.x
-        arrow.y = selectedCharacter.sprite.y - 70
+        if(selectedCharacter != null)
+        {
+            arrow.x = selectedCharacter.sprite.x
+            arrow.y = selectedCharacter.sprite.y - 70
+        }
     }
 }

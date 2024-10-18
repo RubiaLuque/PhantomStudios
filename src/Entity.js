@@ -7,6 +7,8 @@ export default class Entity
         this.damage = damage
         this.type = type
         this.image = imagePath
+        this.alive = true;
+        this.on = new Phaser.Events.EventEmitter()
     }
 
     GetDamage(damage, type)
@@ -22,6 +24,7 @@ export default class Entity
 
     Attack(other)
     {
+        console.log(this + ' attacks ' + other.name)
         other.GetDamage(this.damage, 'physical')
     }
 
@@ -33,6 +36,10 @@ export default class Entity
     Die()
     {
         console.log(this.name + ' died')
+        this.sprite.setTexture('Shit')
+        this.sprite.scale = 1;
+        this.alive = false;
+        this.on.emit('die');
     }
 }
 

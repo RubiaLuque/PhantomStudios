@@ -32,7 +32,7 @@ export default class World1 extends Phaser.Scene
 
         let allies = [Javi, Fueyo, Mika, Muxu]
 
-        let Fork = new Entity('Fork', 3, 50, Type.depression, "./assets/images/Fork.png")
+        let Fork = new Entity('Fork', 90, 50, Type.depression, "./assets/images/Fork.png")
         let Fork2 = new Entity('Fork', 3, 50, Type.depression, "./assets/images/Fork.png")
         let enemies = [Fork, Fork2]
         
