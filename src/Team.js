@@ -13,7 +13,8 @@ export default class Team
 
         this.entities.forEach(entity => {
             entity.scene = scene
-            scene.load.image(entity.name, entity.image)
+            scene.load.image(entity.name, "assets/images/" + entity.image + ".png")
+            scene.load.audio(entity.damageSound, "assets/music/" + entity.damageSound + ".wav")
 
             entity.on.on('die', function(){
                 self.entities.forEach((item, index) => {
@@ -27,15 +28,15 @@ export default class Team
         })
     }
 
-    Create(scene, x, y)
+    Create(scene, x, y, game)
     {
         this.entities.forEach(entity => {
             entity.sprite = scene.add.sprite(x, y, entity.name)
             entity.sprite.scale = 0.2
             scene.add.existing(entity.sprite)
-            y += 100
+            y += 140
 
-            entity.Setup();
+            entity.Setup(game);
         })
     }
 

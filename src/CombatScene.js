@@ -1,5 +1,5 @@
-import Entity from "./Entity.js";
 import CustomButton from "./CustomButton.js";
+import DamageText from "./DamageText.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -22,6 +22,10 @@ let arrow;
 let onEndTurn;
 let phase = 'select';
 
+const freqPositions = [50, 60, 70, 80];
+
+let audioElement, audioContext, analyser, dataArray, source, bufferLength;
+
 /*Escena de Phaser*/
 export default class CombatScene extends Phaser.Scene {
     constructor(){
@@ -41,6 +45,7 @@ export default class CombatScene extends Phaser.Scene {
         this.load.image("Arrow", "assets/images/Arrow.png");
 
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
+        this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
     }
 
     create(){
@@ -62,8 +67,8 @@ export default class CombatScene extends Phaser.Scene {
             }
         );
 
-        team1.Create(this, 100, 100);
-        team2.Create(this, 600, 100);
+        team1.Create(this, 100, 100, this);
+        team2.Create(this, 600, 100, this);
 
         team2.entities.forEach(element => {
             element.sprite.on('pointerdown', function(){
@@ -82,7 +87,6 @@ export default class CombatScene extends Phaser.Scene {
                     phase = 'select';
                 }
             });
-
             element.sprite.on('pointerout', function(){
                 if(phase == 'select')team2.entities.forEach(element => { element.sprite.disableInteractive(); });
             });
@@ -118,15 +122,41 @@ export default class CombatScene extends Phaser.Scene {
             resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
         });
 
-        selectedCharacter = team1.GetCharacter(0)
-        this.sound.play('Reach_Out', { loop: true });
+        selectedCharacter = team1.GetCharacter(0);
 
-        damageText = this.add.text(400, 200, '', { fontSize: '32px', fill: '#F00' });
-        damageText.alpha = 0;
+        damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
+
+        // this.sound.play('Reach_Out', { loop: true });
+
+        audioElement = document.getElementById("Going_Down");
+        audioContext = new AudioContext();
+        analyser = audioContext.createAnalyser();
+        source = audioContext.createMediaElementSource(audioElement);
+
+        analyser.fftSize = 256;
+        bufferLength = analyser.frequencyBinCount;
+
+        dataArray = new Uint8Array(bufferLength);
+        source.connect(analyser);
+        source.connect(audioContext.destination);
+
+        analyser.getByteTimeDomainData(dataArray);
+        audioContext.resume();
+        audioElement.play();
+        audioElement.volume = 0.4;
     }
 
     update()
     {
+        analyser.getByteFrequencyData(dataArray);
+
+        let i = 0;
+        team1.entities.forEach(element => {
+
+            element.sprite.scale = 0.15 + (dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000)
+            i++;
+        });
+
         if(selectedCharacter != null)
         {
             arrow.x = selectedCharacter.sprite.x
@@ -135,24 +165,13 @@ export default class CombatScene extends Phaser.Scene {
 
         let range = 5
         
-        if(this.cameras.main.x > range-0.025 || this.cameras.main.x < -range+0.025)
-        {
-            XcamVel *= -1
-        }
+        if(this.cameras.main.x > range-0.025 || this.cameras.main.x < -range+0.025) XcamVel *= -1
         this.cameras.main.x += XcamVel
 
-        if(this.cameras.main.y > range-0.025 || this.cameras.main.y < -range+0.025)
-        {
-            YcamVel *= -1
-        }
+        if(this.cameras.main.y > range-0.025 || this.cameras.main.y < -range+0.025) YcamVel *= -1
         this.cameras.main.y += YcamVel
 
-        if(damageText.alpha > 0)
-        {
-            damageText.alpha -= 0.01
-            damageText.y = this.lerp(damageText.y, damageText.y - 30, 0.05)
-            if(damageText.alpha < 0.1) damageText.alpha = 0
-        }
+        damageText.update()
     }
 
     onDamage(position, damage)

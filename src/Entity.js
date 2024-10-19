@@ -1,6 +1,6 @@
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, imagePath)
+    constructor(name, damage, health, type, luck, image, sound, damageSound)
     {
         this.name = name
         this.health = health
@@ -10,7 +10,9 @@ export default class Entity
         this.luck = luck
         this.on = new Phaser.Events.EventEmitter()
 
-        this.image = imagePath
+        this.image = image
+        this.sound = sound
+        this.damageSound = damageSound
     }
 
     Setup()
@@ -33,6 +35,7 @@ export default class Entity
 
     GetDamage(damage, type)
     {
+        this.sound.play(this.damageSound)
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 
