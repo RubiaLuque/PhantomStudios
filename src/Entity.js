@@ -6,9 +6,10 @@ export default class Entity
         this.health = health
         this.damage = damage
         this.type = type
-        this.image = imagePath
         this.alive = true;
         this.on = new Phaser.Events.EventEmitter()
+
+        this.image = imagePath
     }
 
     Setup()

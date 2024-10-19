@@ -36,6 +36,8 @@ export default class CombatScene extends Phaser.Scene {
 
         this.load.image("Button", "assets/images/Button.png");
         this.load.image("Arrow", "assets/images/Arrow.png");
+
+        this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
     }
 
     create(){
@@ -89,6 +91,10 @@ export default class CombatScene extends Phaser.Scene {
 
         onEndTurn = new Phaser.Events.EventEmitter();
 
+        onEndTurn.on('endTurn', function(){
+            team2.entities.forEach(element => { element.Attack(team1.GetRandomCharacter()); });
+        });
+
         team1.onTeam.on('death', function(){
             console.log('You lose');
             resultText = self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
@@ -100,6 +106,8 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         selectedCharacter = team1.GetCharacter(0)
+        this.sound.play('Reach_Out', { loop: true });
+
     }
 
     update()
