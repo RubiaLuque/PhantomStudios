@@ -1,12 +1,13 @@
 export default class Entity
 {
-    constructor(name, damage, health, type, imagePath)
+    constructor(name, damage, health, type, luck, imagePath)
     {
         this.name = name
         this.health = health
         this.damage = damage
         this.type = type
         this.alive = true;
+        this.luck = luck
         this.on = new Phaser.Events.EventEmitter()
 
         this.image = imagePath
@@ -39,17 +40,30 @@ export default class Entity
         console.log(this.name + ' health:' + this.health)
 
         if(this.health <= 0) this.Die()
+
+        this.on.emit('GetDamage', damage)
     }
 
     Attack(other)
     {
-        console.log(this + ' attacks ' + other.name)
-        other.GetDamage(this.damage, 'physical')
+        let damage = this.damage;
+        if(Math.random() < this.luck/10)
+        {
+            console.log(this.name + ' critical hit')
+            damage *= 2
+        }
+        other.GetDamage(damage, 'physical')
     }
 
     MagicAttack(other)
     {
-        other.GetDamage(this.damage, this.type)
+        let damage = this.damage;
+        if(Math.random() < this.luck/10)
+        {
+            console.log(this.name + ' critical hit')
+            damage *= 1.5
+        }
+        other.GetDamage(damage, this.type)
     }
 
     Die()

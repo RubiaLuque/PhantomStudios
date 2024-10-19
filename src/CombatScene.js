@@ -9,8 +9,11 @@ const Type = {
     physical: {name:'physical', str: 'depression'}
 }
 
-let AttackButton, MagicButton, resultText;
+let AttackButton, MagicButton, resultText, damageText;
 let selectedCharacter;
+
+let XcamVel = 0.05;
+let YcamVel = 0.1;
 
 let currentCharacter = 0;
 
@@ -83,6 +86,16 @@ export default class CombatScene extends Phaser.Scene {
             element.sprite.on('pointerout', function(){
                 if(phase == 'select')team2.entities.forEach(element => { element.sprite.disableInteractive(); });
             });
+
+            element.on.on('GetDamage', function(damage){
+                self.onDamage(element.sprite, damage);
+            });
+        });
+
+        team1.entities.forEach(element => {
+            element.on.on('GetDamage', function(damage){
+                self.onDamage(element.sprite, damage);
+            });
         });
 
         arrow = this.add.sprite(0, 0, 'Arrow')
@@ -108,6 +121,8 @@ export default class CombatScene extends Phaser.Scene {
         selectedCharacter = team1.GetCharacter(0)
         this.sound.play('Reach_Out', { loop: true });
 
+        damageText = this.add.text(400, 200, '', { fontSize: '32px', fill: '#F00' });
+        damageText.alpha = 0;
     }
 
     update()
@@ -117,5 +132,39 @@ export default class CombatScene extends Phaser.Scene {
             arrow.x = selectedCharacter.sprite.x
             arrow.y = selectedCharacter.sprite.y - 70
         }
+
+        let range = 5
+        
+        if(this.cameras.main.x > range-0.025 || this.cameras.main.x < -range+0.025)
+        {
+            XcamVel *= -1
+        }
+        this.cameras.main.x += XcamVel
+
+        if(this.cameras.main.y > range-0.025 || this.cameras.main.y < -range+0.025)
+        {
+            YcamVel *= -1
+        }
+        this.cameras.main.y += YcamVel
+
+        if(damageText.alpha > 0)
+        {
+            damageText.alpha -= 0.01
+            damageText.y = this.lerp(damageText.y, damageText.y - 30, 0.05)
+            if(damageText.alpha < 0.1) damageText.alpha = 0
+        }
+    }
+
+    onDamage(position, damage)
+    {
+        damageText.x = position.x
+        damageText.y = position.y
+        damageText.setText(Math.floor(damage))
+        damageText.alpha = 1
+    }
+
+    lerp(a, b, t)
+    {
+        return a + (b - a) * t
     }
 }
