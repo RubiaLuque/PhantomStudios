@@ -1,6 +1,6 @@
 import CombatScene from "./CombatScene.js";
-import Entity from "./Entity.js";
-import Team from "./Team.js";
+import Entity from "../CombatSystem/Entity.js";
+import Team from "../CombatSystem/Team.js";
 let team1, team2;
 
 const Type = {

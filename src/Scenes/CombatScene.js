@@ -1,7 +1,7 @@
-import CustomButton from "./CustomButton.js";
-import DamageText from "./DamageText.js";
-import DialogueInterpreter from "./DialogueInterpreter.js";
-import MusicAnalyser from "./MusicAnalyser.js";
+import CustomButton from "../UI/CustomButton.js";
+import DamageText from "../CombatSystem/DamageText.js";
+import DialogueInterpreter from "../DialogueInterpreter.js";
+import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -88,6 +88,8 @@ export default class CombatScene extends Phaser.Scene {
 
                     selectedCharacter = team1.GetCharacter(currentCharacter);
                     self.SetButtonNextToCharacter(selectedCharacter);
+                    arrow.x = selectedCharacter.sprite.x
+                    arrow.y = selectedCharacter.sprite.y - 70
                     phase = 'select';
                 }
             });
@@ -138,17 +140,11 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         selectedCharacter = team1.GetCharacter(0);
+        arrow.x = selectedCharacter.sprite.x
+        arrow.y = selectedCharacter.sprite.y - 70
         this.SetButtonNextToCharacter(selectedCharacter);
 
         damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
-
-        // this.sound.play('Reach_Out', { loop: true });
-        let dialogueBackground = this.add.rectangle(this.WIDTH/2, 50, 600, 100, '#EEF');
-        let dialogueText = this.add.text(this.WIDTH/2, 50, '', { fontSize: '32px', fill: '#FFF', align: 'left' });
-        dialogueBackground.alpha = 0.5;
-
-        this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
-        this.interpreter.SetDialogue("Hello@How are you?@I'm fine@I'm not fine@I'm horny");
 
         this.analyser = new MusicAnalyser('School_Days');
         this.analyser.Play();
@@ -156,8 +152,6 @@ export default class CombatScene extends Phaser.Scene {
 
     update()
     {
-        this.interpreter.update();
-
         let dataArray = this.analyser.GetDataArray();
 
         let i = 0;
@@ -166,12 +160,6 @@ export default class CombatScene extends Phaser.Scene {
             element.sprite.scale = 0.15 + (dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000)
             i++;
         });
-
-        if(selectedCharacter != null)
-        {
-            arrow.x = selectedCharacter.sprite.x
-            arrow.y = selectedCharacter.sprite.y - 70
-        }
 
         let range = 5
         

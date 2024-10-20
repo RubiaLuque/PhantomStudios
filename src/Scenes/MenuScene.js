@@ -1,4 +1,4 @@
-import Entity from "./Entity.js";
+import Entity from "../CombatSystem/Entity.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
