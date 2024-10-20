@@ -1,5 +1,7 @@
 import CustomButton from "./CustomButton.js";
 import DamageText from "./DamageText.js";
+import DialogueInterpreter from "./DialogueInterpreter.js";
+import MusicAnalyser from "./MusicAnalyser.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -35,6 +37,9 @@ export default class CombatScene extends Phaser.Scene {
     init(teams){
         team1 = teams.team1;
         team2 = teams.team2;
+
+        this.WIDTH = this.game.config.width;
+        this.HEIGHT = this.game.config.height;
     }
 
     preload(){
@@ -127,28 +132,22 @@ export default class CombatScene extends Phaser.Scene {
         damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
         // this.sound.play('Reach_Out', { loop: true });
+        let dialogueBackground = this.add.rectangle(this.WIDTH/2, 50, 600, 100, '#EEF');
+        let dialogueText = this.add.text(this.WIDTH/2, 50, 'AAAAAA', { fontSize: '32px', fill: '#FFF'});
+        dialogueBackground.alpha = 0.5;
 
-        audioElement = document.getElementById("Going_Down");
-        audioContext = new AudioContext();
-        analyser = audioContext.createAnalyser();
-        source = audioContext.createMediaElementSource(audioElement);
+        this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
+        this.interpreter.SetDialogue("Hello@How are you?@I'm fine@I'm not fine@I'm horny");
 
-        analyser.fftSize = 256;
-        bufferLength = analyser.frequencyBinCount;
-
-        dataArray = new Uint8Array(bufferLength);
-        source.connect(analyser);
-        source.connect(audioContext.destination);
-
-        analyser.getByteTimeDomainData(dataArray);
-        audioContext.resume();
-        audioElement.play();
-        audioElement.volume = 0.4;
+        this.analyser = new MusicAnalyser('Reach_Out');
+        this.analyser.Play();
     }
 
     update()
     {
-        analyser.getByteFrequencyData(dataArray);
+        this.interpreter.update();
+
+        let dataArray = this.analyser.GetDataArray();
 
         let i = 0;
         team1.entities.forEach(element => {
