@@ -4,6 +4,7 @@ export default class DialogueInterpreter {
         this.dialogueText = dialogueText;
         this.scene = scene;
         this.background = background;
+        this.background.visible = false;
         scene.add.existing(this.background);
 
         this.nextInput = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -16,6 +17,7 @@ export default class DialogueInterpreter {
         this.lines = dialogue.split("@");
         this.lines[this.lines.length] = "";
         this.endCallback = endCallback;
+        this.dialogueText.text = this.lines.shift();
     }
 
     update()

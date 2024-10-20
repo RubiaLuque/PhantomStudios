@@ -21,12 +21,10 @@ let currentCharacter = 0;
 
 let team1, team2;
 let arrow;
-let onEndTurn;
+let onEndTurn, onPhaseChange;
 let phase = 'select';
 
 const freqPositions = [50, 60, 70, 80];
-
-let audioElement, audioContext, analyser, dataArray, source, bufferLength;
 
 /*Escena de Phaser*/
 export default class CombatScene extends Phaser.Scene {
@@ -59,18 +57,18 @@ export default class CombatScene extends Phaser.Scene {
         AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.Attack;
-                phase = 'combat';
-                team2.entities.forEach(element => { element.sprite.setInteractive(); });
+                onPhaseChange.emit('combat');
             }
         );
+        AttackButton.setButtonScale(0.5, 0.25);
 
         MagicButton = new CustomButton(this, 400, 500, "Button", "Magic",
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
-                phase = 'combat';
-                team2.entities.forEach(element => { element.sprite.setInteractive(); });
+                onPhaseChange.emit('combat');
             }
         );
+        MagicButton.setButtonScale(0.5, 0.25);
 
         team1.Create(this, 100, 100, this);
         team2.Create(this, 600, 100, this);
@@ -89,6 +87,7 @@ export default class CombatScene extends Phaser.Scene {
                     }
 
                     selectedCharacter = team1.GetCharacter(currentCharacter);
+                    self.SetButtonNextToCharacter(selectedCharacter);
                     phase = 'select';
                 }
             });
@@ -112,6 +111,17 @@ export default class CombatScene extends Phaser.Scene {
         this.add.existing(arrow)
 
         onEndTurn = new Phaser.Events.EventEmitter();
+        onPhaseChange = new Phaser.Events.EventEmitter();
+
+        onPhaseChange.on('combat', function(){
+            team2.entities.forEach(element => { element.sprite.setInteractive(); });
+            phase = 'combat';
+        });
+
+        onPhaseChange.on('select', function(){
+            team2.entities.forEach(element => { element.sprite.disableInteractive(); });
+            phase = 'select';
+        });
 
         onEndTurn.on('endTurn', function(){
             team2.entities.forEach(element => { element.Attack(team1.GetRandomCharacter()); });
@@ -128,18 +138,19 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         selectedCharacter = team1.GetCharacter(0);
+        this.SetButtonNextToCharacter(selectedCharacter);
 
         damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
         // this.sound.play('Reach_Out', { loop: true });
         let dialogueBackground = this.add.rectangle(this.WIDTH/2, 50, 600, 100, '#EEF');
-        let dialogueText = this.add.text(this.WIDTH/2, 50, 'AAAAAA', { fontSize: '32px', fill: '#FFF'});
+        let dialogueText = this.add.text(this.WIDTH/2, 50, '', { fontSize: '32px', fill: '#FFF', align: 'left' });
         dialogueBackground.alpha = 0.5;
 
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
         this.interpreter.SetDialogue("Hello@How are you?@I'm fine@I'm not fine@I'm horny");
 
-        this.analyser = new MusicAnalyser('Reach_Out');
+        this.analyser = new MusicAnalyser('School_Days');
         this.analyser.Play();
     }
 
@@ -184,5 +195,13 @@ export default class CombatScene extends Phaser.Scene {
     lerp(a, b, t)
     {
         return a + (b - a) * t
+    }
+
+    SetButtonNextToCharacter(character)
+    {
+        AttackButton.setButtonPosition(character.sprite.x + 120, character.sprite.y - 20);
+        AttackButton.setButtonRotation(-0.1);
+        MagicButton.setButtonPosition(character.sprite.x + 120, character.sprite.y + 30);
+        MagicButton.setButtonRotation(0.1);
     }
 }
