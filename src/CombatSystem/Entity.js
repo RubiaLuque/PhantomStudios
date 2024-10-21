@@ -46,24 +46,34 @@ export default class Entity
 
         if(this.health <= 0) this.Die()
 
+        let self = this
+        let xTracker = this.sprite.x
+        let goBack = false
+
+        this.scene.time.addEvent({ delay : 5,
+            callback: function(){
+                if(goBack){
+                    self.sprite.x -= 1
+                    if(self.sprite.x <= xTracker - 10){
+                        self.sprite.x = xTracker - 10
+                        self.scene.time.removeEvent(this)
+                    }
+                }
+                else{
+                    self.sprite.x += 1
+                    if(self.sprite.x >= xTracker + 10){
+                        self.sprite.x = xTracker + 10
+                        goBack = true
+                    }
+                }
+            },
+            loop: true
+        });
+
         this.on.emit('GetDamage', damage)
     }
 
-    Attack(other, endCallback = function(){})
-    {
-        let self = this;
-        let damage = self.damage;
-        if(Math.random() < self.luck/10)
-        {
-            console.log(self.name + ' critical hit')
-            damage *= 2
-        }
-        other.GetDamage(damage, self.type)
-
-        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
-    }
-
-    MagicAttack(other, endCallback = function(){})
+    AttackTemplate(other, type)
     {
         let damage = this.damage;
         if(Math.random() < this.luck/10)
@@ -71,8 +81,31 @@ export default class Entity
             console.log(this.name + ' critical hit')
             damage *= 1.5
         }
-        other.GetDamage(damage, this.type)
+        other.GetDamage(damage, type)
 
+        let self = this
+
+        this.scene.time.addEvent({ delay : 5,
+            callback: function(){
+                self.sprite.rotation += 0.1
+                if(self.sprite.rotation >= 3)
+                {
+                    self.sprite.rotation = 0
+                    self.scene.time.removeEvent(this)
+                }
+            },
+            loop: true });
+    }
+
+    Attack(other, endCallback = function(){})
+    {
+        this.AttackTemplate(other, Type.physical)
+        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
+    }
+
+    MagicAttack(other, endCallback = function(){})
+    {
+        this.AttackTemplate(other, this.type)
         this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
     }
 

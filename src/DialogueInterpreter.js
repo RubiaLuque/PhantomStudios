@@ -37,7 +37,7 @@ export default class DialogueInterpreter {
                 {
                     self.background.visible = false;
                     self.dialogueText.text = "";
-                    self.scene.time.removeAllEvents();
+                    self.scene.time.removeEvent(this);
                     self.endCallback();
                 }
             },
