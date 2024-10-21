@@ -19,13 +19,13 @@ export default class DialogueInterpreter {
         this.endCallback = endCallback;
         this.dialogueText.text = this.lines.shift();
         let self = this;
+        this.background.visible = true;
 
         this.scene.time.addEvent({
             delay: 10,
             callback: function(){
                 if(self.lines.length > 0)
                 {
-                    self.background.visible = true;
                     if(self.scene.time.now > self.delay && self.next)
                     {
                         self.next = false;

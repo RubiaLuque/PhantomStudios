@@ -78,34 +78,24 @@ export default class CombatScene extends Phaser.Scene {
             element.sprite.on('pointerdown', function(){
                 if(element.alive && phase == 'combat')
                 {
-                    selectedCharacter.selectedAttack(element);
-                    currentCharacter++;
-
-                    if(currentCharacter >= team1.GetCharacterCount())
-                    {
-                        onEndTurn.emit('endTurn');
-                        currentCharacter = 0;
-                    }
-
-                    selectedCharacter = team1.GetCharacter(currentCharacter);
-                    self.SetButtonNextToCharacter(selectedCharacter);
-                    arrow.x = selectedCharacter.sprite.x
-                    arrow.y = selectedCharacter.sprite.y - 70
-                    phase = 'select';
+                    selectedCharacter.selectedAttack(element, function(){onPhaseChange.emit('next')});
+                    onPhaseChange.emit('wait');
                 }
-            });
-            element.sprite.on('pointerout', function(){
-                if(phase == 'select')team2.entities.forEach(element => { element.sprite.disableInteractive(); });
-            });
-
-            element.on.on('GetDamage', function(damage){
-                self.onDamage(element.sprite, damage);
+                element.sprite.emit('pointerout');
             });
         });
 
-        team1.entities.forEach(element => {
-            element.on.on('GetDamage', function(damage){
-                self.onDamage(element.sprite, damage);
+        [team1, team2].forEach(team => {
+            team.entities.forEach(element => {
+                    element.on.on('GetDamage', function(damage){
+                        self.onDamage(element.sprite, damage);
+                    });
+
+                    element.on.on('select', function(){
+                        self.SetButtonNextToCharacter(selectedCharacter);
+                        arrow.x = selectedCharacter.sprite.x
+                        arrow.y = selectedCharacter.sprite.y - 70
+                    });
             });
         });
 
@@ -121,13 +111,28 @@ export default class CombatScene extends Phaser.Scene {
             phase = 'combat';
         });
 
+        onPhaseChange.on('next', function(){
+                currentCharacter++;
+
+                if(currentCharacter >= team1.GetCharacterCount())
+                {
+                    onEndTurn.emit('endTurn');
+                    currentCharacter = 0;
+                }
+
+                selectedCharacter = team1.GetCharacter(currentCharacter);
+                selectedCharacter.on.emit('select');
+
+                onPhaseChange.emit('select');
+        });
+
         onPhaseChange.on('select', function(){
             team2.entities.forEach(element => { element.sprite.disableInteractive(); });
             phase = 'select';
         });
 
         onEndTurn.on('endTurn', function(){
-            team2.entities.forEach(element => { element.Attack(team1.GetRandomCharacter()); });
+            team2.entities.forEach(element => { element.Attack(team1.GetRandomCharacter(), function(){onPhaseChange.emit('wait')}); });
         });
 
         team1.onTeam.on('death', function(){

@@ -12,10 +12,10 @@ export default class player extends Phaser.GameObjects.Image {
 
         let Javi, Fueyo, Mika, Muxu
         
-        Javi = new Entity('Javi', 10, 15, Type.horny, 2, "Javi", scene.sound, 'oioioi')
-        Mika = new Entity('Mika', 5, 20, Type.depression, 2, "Mika", scene.sound, 'what_the_sigma')
-        Fueyo = new Entity('Fueyo', 7, 17, Type.wrath, 2, "Fueyo", scene.sound, 'shiny')
-        Muxu = new Entity('Muxu', 6, 12, Type.anxiety, 4, "Muxu", scene.sound, 'skibidiToilet')
+        Javi = new Entity('Javi', 10, 15, Type.horny, 2, "Javi", scene, 'oioioi')
+        Mika = new Entity('Mika', 5, 20, Type.depression, 2, "Mika", scene, 'what_the_sigma')
+        Fueyo = new Entity('Fueyo', 7, 17, Type.wrath, 2, "Fueyo", scene, 'shiny')
+        Muxu = new Entity('Muxu', 6, 12, Type.anxiety, 4, "Muxu", scene, 'skibidiToilet')
 
         this.team = [Javi, Mika, Fueyo, Muxu]
     }

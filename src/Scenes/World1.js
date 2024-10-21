@@ -34,8 +34,8 @@ export default class World1 extends Phaser.Scene
     {
         Player = new player(this, 100, 100);
 
-        let Fork = new Entity('Fork', 90, 50, Type.depression, 1, "Fork", this.sound, 'kaj')
-        let Fork2 = new Entity('Fork', 3, 50, Type.depression, 1, "Fork", this.sound, 'kaj')
+        let Fork = new Entity('Fork', 90, 50, Type.depression, 1, "Fork", this, 'kaj')
+        let Fork2 = new Entity('Fork', 3, 50, Type.depression, 1, "Fork", this, 'kaj')
         let enemies = [Fork, Fork2]
 
         this.enemy = new Phaser.GameObjects.Image(this, 200, 200, 'Fork');

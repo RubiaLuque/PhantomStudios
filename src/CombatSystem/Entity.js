@@ -1,6 +1,6 @@
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, image, sound, damageSound)
+    constructor(name, damage, health, type, luck, image, scene, damageSound)
     {
         this.name = name
         this.health = health
@@ -11,7 +11,8 @@ export default class Entity
         this.on = new Phaser.Events.EventEmitter()
 
         this.image = image
-        this.sound = sound
+        this.scene = scene
+        this.sound = scene.sound
         this.damageSound = damageSound
     }
 
@@ -48,18 +49,21 @@ export default class Entity
         this.on.emit('GetDamage', damage)
     }
 
-    Attack(other)
+    Attack(other, endCallback = function(){})
     {
-        let damage = this.damage;
-        if(Math.random() < this.luck/10)
+        let self = this;
+        let damage = self.damage;
+        if(Math.random() < self.luck/10)
         {
-            console.log(this.name + ' critical hit')
+            console.log(self.name + ' critical hit')
             damage *= 2
         }
-        other.GetDamage(damage, 'physical')
+        other.GetDamage(damage, self.type)
+
+        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
     }
 
-    MagicAttack(other)
+    MagicAttack(other, endCallback = function(){})
     {
         let damage = this.damage;
         if(Math.random() < this.luck/10)
@@ -68,6 +72,8 @@ export default class Entity
             damage *= 1.5
         }
         other.GetDamage(damage, this.type)
+
+        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
     }
 
     Die()
