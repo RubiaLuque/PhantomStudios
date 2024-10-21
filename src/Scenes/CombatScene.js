@@ -1,7 +1,8 @@
 import CustomButton from "../UI/CustomButton.js";
 import DamageText from "../CombatSystem/DamageText.js";
-import DialogueInterpreter from "../DialogueInterpreter.js";
 import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
+import Team from "../CombatSystem/Team.js";
+import DialogueInterpreter from "../DialogueInterpreter.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -33,8 +34,8 @@ export default class CombatScene extends Phaser.Scene {
     }
 
     init(teams){
-        team1 = teams.team1;
-        team2 = teams.team2;
+        team1 = new Team(teams.team1)
+        team2 = new Team(teams.team2)
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
@@ -146,7 +147,7 @@ export default class CombatScene extends Phaser.Scene {
 
         damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
-        this.analyser = new MusicAnalyser('School_Days');
+        this.analyser = new MusicAnalyser('Going_Down');
         this.analyser.Play();
     }
 

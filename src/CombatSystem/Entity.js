@@ -35,6 +35,7 @@ export default class Entity
 
     GetDamage(damage, type)
     {
+        console.log(this.damageSound)
         this.sound.play(this.damageSound)
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2

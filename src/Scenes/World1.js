@@ -1,7 +1,10 @@
 import CombatScene from "./CombatScene.js";
 import Entity from "../CombatSystem/Entity.js";
 import Team from "../CombatSystem/Team.js";
+import player from "../Navigation/Player.js";
 let team1, team2;
+
+let Player
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -23,32 +26,34 @@ export default class World1 extends Phaser.Scene
 
     preload()
     {
-        let Javi, Fueyo, Mika, Muxu
-        
-        Javi = new Entity('Javi', 10, 15, Type.horny, 2, "Javi", this.sound, 'oioioi')
-        Mika = new Entity('Mika', 5, 20, Type.depression, 2, "Mika", this.sound, 'what_the_sigma')
-        Fueyo = new Entity('Fueyo', 7, 17, Type.wrath, 2, "Fueyo", this.sound, 'shiny')
-        Muxu = new Entity('Muxu', 6, 12, Type.anxiety, 4, "Muxu", this.sound, 'skibidiToilet')
-
-        let allies = [Javi, Fueyo, Mika, Muxu]
-
-        let Fork = new Entity('Fork', 90, 50, Type.depression, 1, "Fork", this.sound, 'kaj')
-        let Fork2 = new Entity('Fork', 3, 50, Type.depression, 1, "Fork", this.sound, 'kaj')
-        let enemies = [Fork, Fork2]
-        
-        team1 = new Team(allies);
-        team2 = new Team(enemies);
-
-        this.scene.add('combat', CombatScene)
+        this.load.image("Main_Team", "assets/images/Main_Team.png");
+        this.load.image("Fork", "assets/images/Fork.png");
     }
 
     create()
     {
-        this.scene.start('combat', {team1, team2});
+        Player = new player(this, 100, 100);
+
+        let Fork = new Entity('Fork', 90, 50, Type.depression, 1, "Fork", this.sound, 'kaj')
+        let Fork2 = new Entity('Fork', 3, 50, Type.depression, 1, "Fork", this.sound, 'kaj')
+        let enemies = [Fork, Fork2]
+
+        this.enemy = new Phaser.GameObjects.Image(this, 200, 200, 'Fork');
+        this.add.existing(this.enemy);
+        this.enemy.scale = 0.2;
+
+        this.enemy.team = enemies;
+
+        this.scene.add('combat', CombatScene)
     }
 
     update()
     {
+        Player.preUpdate();
 
+        if(Phaser.Geom.Intersects.RectangleToRectangle(Player.getBounds(), this.enemy.getBounds()))
+        {
+            this.scene.start('combat', {team1: Player.team, team2: this.enemy.team})
+        }
     }
 }
