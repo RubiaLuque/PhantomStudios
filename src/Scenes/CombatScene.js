@@ -55,9 +55,13 @@ export default class CombatScene extends Phaser.Scene {
     create(){
         self = this;
 
+        team1.Create(this, 100, 100, this);
+        team2.Create(this, 600, 100, this);
+
         AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.Attack;
+                team2.entities.forEach(element => {element.sprite.setInteractive()})
                 onPhaseChange.emit('combat');
             }
         );
@@ -66,22 +70,29 @@ export default class CombatScene extends Phaser.Scene {
         MagicButton = new CustomButton(this, 400, 500, "Button", "Magic",
             function(){
                 selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
+                team2.entities.forEach(element => {element.sprite.setInteractive()})
                 onPhaseChange.emit('combat');
             }
         );
         MagicButton.setButtonScale(0.5, 0.25);
 
-        team1.Create(this, 100, 100, this);
-        team2.Create(this, 600, 100, this);
-
         team2.entities.forEach(element => {
             element.sprite.on('pointerdown', function(){
-                if(element.alive && phase == 'combat')
+                if(element.alive)
                 {
+                    AttackButton.setActive(false)
+                    MagicButton.setActive(false)
                     selectedCharacter.selectedAttack(element, function(){onPhaseChange.emit('next')});
-                    onPhaseChange.emit('wait');
+                    team2.entities.forEach(element => {element.sprite.disableInteractive()});
+
+                    element.sprite.emit('pointerup');
+                    element.sprite.emit('pointerout');
                 }
-                element.sprite.emit('pointerout');
+            });
+
+            element.sprite.on('pointerover', function(){
+                        arrow.x = element.sprite.x
+                        arrow.y = element.sprite.y - 70
             });
         });
 
@@ -92,9 +103,9 @@ export default class CombatScene extends Phaser.Scene {
                     });
 
                     element.on.on('select', function(){
-                        self.SetButtonNextToCharacter(selectedCharacter);
-                        arrow.x = selectedCharacter.sprite.x
-                        arrow.y = selectedCharacter.sprite.y - 70
+                        if(team == team1) self.SetButtonNextToCharacter(selectedCharacter);
+                        arrow.x = element.sprite.x
+                        arrow.y = element.sprite.y - 70
                     });
             });
         });
@@ -113,26 +124,48 @@ export default class CombatScene extends Phaser.Scene {
 
         onPhaseChange.on('next', function(){
                 currentCharacter++;
+                selectedCharacter = team1.GetCharacter(currentCharacter);
 
                 if(currentCharacter >= team1.GetCharacterCount())
                 {
                     onEndTurn.emit('endTurn');
-                    currentCharacter = 0;
+                    currentCharacter = -1;
                 }
-
-                selectedCharacter = team1.GetCharacter(currentCharacter);
-                selectedCharacter.on.emit('select');
-
-                onPhaseChange.emit('select');
-        });
-
-        onPhaseChange.on('select', function(){
-            team2.entities.forEach(element => { element.sprite.disableInteractive(); });
-            phase = 'select';
+                else
+                {
+                    AttackButton.setActive(true)
+                    MagicButton.setActive(true)
+                    selectedCharacter.on.emit('select');
+                }
         });
 
         onEndTurn.on('endTurn', function(){
-            team2.entities.forEach(element => { element.Attack(team1.GetRandomCharacter(), function(){onPhaseChange.emit('wait')}); });
+            let i = 0;
+
+            self.time.addEvent({ delay : 1000, 
+            callback: function(){
+                if(i < team2.GetCharacterCount())
+                {
+                    let current = team2.GetCharacter(i);
+                    current.on.emit('select');
+
+                    self.time.addEvent({ delay : 500,
+                        callback: function(){
+                            let target = team1.GetRandomCharacter();
+                            current.Attack(target, function(){onPhaseChange.emit('wait')});
+                            arrow.x = target.sprite.x
+                            arrow.y = target.sprite.y - 70
+                        }, loop: false });
+
+                    i++;
+                }
+                else
+                {
+                    onPhaseChange.emit('next');
+                    self.time.removeAllEvents();
+                }
+            }, 
+            loop: true });
         });
 
         team1.onTeam.on('death', function(){

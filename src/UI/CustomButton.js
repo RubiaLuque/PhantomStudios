@@ -46,4 +46,9 @@ export default class CustomButton extends Phaser.GameObjects.Sprite
     {
         this.container.rotation = rotation;
     }
+
+    setActive(value)
+    {
+        this.container.visible = value;
+    }
 }
