@@ -147,6 +147,11 @@ export default class CombatScene extends Phaser.Scene {
 
         damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
+        let dialogueBackground = this.add.rectangle(400, 500, 800, 200, 0x000000);
+        dialogueBackground.alpha = 0.5;
+        let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
+        this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
+
         this.analyser = new MusicAnalyser('Going_Down');
         this.analyser.Play();
     }

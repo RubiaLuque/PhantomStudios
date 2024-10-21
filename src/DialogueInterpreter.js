@@ -18,25 +18,31 @@ export default class DialogueInterpreter {
         this.lines[this.lines.length] = "";
         this.endCallback = endCallback;
         this.dialogueText.text = this.lines.shift();
-    }
+        let self = this;
 
-    update()
-    {
-        if(this.lines.length > 0)
-        {
-            this.background.visible = true;
-            if(this.scene.time.now > this.delay && this.next)
-            {
-                this.next = false;
-                this.delay = this.scene.time.now + 100;
-                this.dialogueText.text = this.lines.shift();
-            }
-        }
-        else if(this.nextInput.isDown)
-        {
-            this.background.visible = false;
-            this.dialogueText.text = "";
-            this.endCallback();
-        }
+        this.scene.time.addEvent({
+            delay: 10,
+            callback: function(){
+                if(self.lines.length > 0)
+                {
+                    self.background.visible = true;
+                    if(self.scene.time.now > self.delay && self.next)
+                    {
+                        self.next = false;
+                        self.delay = self.scene.time.now + 100;
+                        self.dialogueText.text = self.lines.shift();
+                    }
+                }
+                else if(self.nextInput.isDown)
+                {
+                    self.background.visible = false;
+                    self.dialogueText.text = "";
+                    self.scene.time.removeAllEvents();
+                    self.endCallback();
+                }
+            },
+            callbackScope: self.scene,
+            loop: true
+        });
     }
 }
