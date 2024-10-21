@@ -55,7 +55,7 @@ export default class Entity
                 if(goBack){
                     self.sprite.x -= 1
                     if(self.sprite.x <= xTracker - 10){
-                        self.sprite.x = xTracker - 10
+                        self.sprite.x = xTracker;
                         self.scene.time.removeEvent(this)
                     }
                 }
