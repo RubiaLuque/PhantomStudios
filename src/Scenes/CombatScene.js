@@ -50,7 +50,6 @@ export default class CombatScene extends Phaser.Scene {
         this.HEIGHT = this.game.config.height;
 
         currentCharacter = 0;
-        this.analyser.Play();
     }
 
     preload(){
@@ -223,6 +222,8 @@ export default class CombatScene extends Phaser.Scene {
         dialogueBackground.alpha = 0.5;
         let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
+
+        this.analyser.Play();
     }
 
     update()

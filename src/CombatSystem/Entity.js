@@ -127,3 +127,35 @@ const Type = {
     depression: {name:'depression', str: 'wrath'},
     physical: {name:'physical', str: 'depression'}
 }
+
+// const AlteredState = {
+//     None: {
+//         enter: function(){},
+//         check: function(){return true},
+//         exit: function(){}
+//     },
+//     Sueño: { 
+//         enter: function(){},
+//         check: function(target){ target.health += 4; return false},
+//         exit: function(){}
+//     },
+//     Sordo: {
+//         enter: function(){},
+//         check: function(){return true},
+//         exit: function(){}
+//     },
+//     Miedo:{
+//         enter: function(){},
+//         check: function(target, team){ 
+//             let selected = team.GetRandomCharacterExcept(target);
+//             target.sprite.setPosition(selected.x - 100, selected.y);
+//             return true
+//         },
+//         exit: function(){}
+//     },
+//     Papeado:{
+//         enter: function(){},
+//         check: function(){return true},
+//         exit: function(){}
+//     }
+// }

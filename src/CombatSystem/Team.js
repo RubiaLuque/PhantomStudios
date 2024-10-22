@@ -52,6 +52,12 @@ export default class Team
         return this.entities[Math.floor(Math.random() * this.entities.length)]
     }
 
+    GetRandomCharacterExcept(except)
+    {
+        let aux = this.entities.filter(entity => entity != except)
+        return aux[Math.floor(Math.random() * aux.length)]
+    }
+
     GetCharacterCount()
     {
         return this.entities.length
