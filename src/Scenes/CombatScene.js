@@ -3,6 +3,8 @@ import DamageText from "../CombatSystem/DamageText.js";
 import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
 import Team from "../CombatSystem/Team.js";
 import DialogueInterpreter from "../DialogueInterpreter.js";
+import LifeBar from "../CombatSystem/LifeBar.js";
+import World1 from "./World1.js";
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -13,6 +15,7 @@ const Type = {
 }
 
 let AttackButton, MagicButton, resultText, damageText;
+let nuclearBombButton;
 let selectedCharacter;
 
 let XcamVel = 0.05;
@@ -24,6 +27,8 @@ let team1, team2;
 let arrow;
 let onEndTurn, onPhaseChange;
 let phase = 'select';
+let turnText;
+let lastPlayerPosition, currentEnemyId;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -31,14 +36,21 @@ const freqPositions = [50, 60, 70, 80];
 export default class CombatScene extends Phaser.Scene {
     constructor(){
         super({key: 'combat'});
+
+        this.analyser = new MusicAnalyser('Reach_Out');
     }
 
     init(teams){
         team1 = new Team(teams.team1)
         team2 = new Team(teams.team2)
+        lastPlayerPosition = teams.lastPlayerPosition;
+        currentEnemyId = teams.enemyId;
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
+
+        currentCharacter = 0;
+        this.analyser.Play();
     }
 
     preload(){
@@ -55,8 +67,11 @@ export default class CombatScene extends Phaser.Scene {
     create(){
         self = this;
 
-        team1.Create(this, 100, 100, this);
-        team2.Create(this, 600, 100, this);
+        team1.Create(this, 250, 100, this);
+        team2.Create(this, 700, 100, this);
+
+        turnText = this.add.text(400, 500, 'Your turn', { fontSize: '50px', fill: '#FFF'});
+        this.add.existing(turnText);
 
         AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
             function(){
@@ -75,6 +90,13 @@ export default class CombatScene extends Phaser.Scene {
             }
         );
         MagicButton.setButtonScale(0.5, 0.25);
+
+        nuclearBombButton = new CustomButton(this, 600, 550, "Button", "Nuclear Bomb",
+            function(){
+                team2.entities.forEach(element => {element.GetDamage(1000, Type.physical)});
+            }
+        );
+        nuclearBombButton.setButtonScale(0.5, 0.25);
 
         team2.entities.forEach(element => {
             element.sprite.on('pointerdown', function(){
@@ -107,6 +129,10 @@ export default class CombatScene extends Phaser.Scene {
                         arrow.x = element.sprite.x
                         arrow.y = element.sprite.y - 70
                     });
+
+                    let bounds = element.sprite.getBounds();
+                    if(team == team2) new LifeBar(self, element.sprite.x, element.sprite.y - bounds.height/2, 'Button', element);
+                    else new LifeBar(self, element.sprite.x - 100, element.sprite.y, 'Button', element, true);
             });
         });
 
@@ -141,6 +167,7 @@ export default class CombatScene extends Phaser.Scene {
 
         onEndTurn.on('endTurn', function(){
             let i = 0;
+            turnText.setText('Enemy turn');
 
             self.time.addEvent({ delay : 1000, 
             callback: function(){
@@ -161,6 +188,7 @@ export default class CombatScene extends Phaser.Scene {
                 }
                 else
                 {
+                    turnText.setText('Your turn');
                     onPhaseChange.emit('next');
                     self.time.removeAllEvents();
                 }
@@ -176,6 +204,12 @@ export default class CombatScene extends Phaser.Scene {
         team2.onTeam.on('death', function(){
             console.log('You win');
             resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
+            self.time.addEvent({ delay : 1000, 
+                callback: function(){
+                self.unLoad();
+                self.scene.start('World1',
+                {pos: lastPlayerPosition, id: currentEnemyId});}, 
+                loop: false });
         });
 
         selectedCharacter = team1.GetCharacter(0);
@@ -189,9 +223,6 @@ export default class CombatScene extends Phaser.Scene {
         dialogueBackground.alpha = 0.5;
         let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
-
-        this.analyser = new MusicAnalyser('Going_Down');
-        this.analyser.Play();
     }
 
     update()
@@ -235,5 +266,10 @@ export default class CombatScene extends Phaser.Scene {
         AttackButton.setButtonRotation(-0.1);
         MagicButton.setButtonPosition(character.sprite.x + 120, character.sprite.y + 30);
         MagicButton.setButtonRotation(0.1);
+    }
+
+    unLoad()
+    {
+        this.analyser.Stop();
     }
 }

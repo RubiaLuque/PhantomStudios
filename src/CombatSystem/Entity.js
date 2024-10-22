@@ -4,6 +4,7 @@ export default class Entity
     {
         this.name = name
         this.health = health
+        this.maxHealth = health
         this.damage = damage
         this.type = type
         this.alive = true;
