@@ -1,6 +1,7 @@
 import Entity from "../CombatSystem/Entity.js";
 
-const SPEED = 1.5;
+let vel = 1.5;
+let canRoll = true;
 export default class player extends Phaser.GameObjects.Image {
     constructor(scene, x, y){
         super(scene, x, y, 'Main_Team')
@@ -11,6 +12,7 @@ export default class player extends Phaser.GameObjects.Image {
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
         this.sKey = this.scene.input.keyboard.addKey('S')
+        this.spaceKey = this.scene.input.keyboard.addKey('SPACE')
 
         let Javi, Fueyo, Mika, Muxu
         
@@ -20,6 +22,7 @@ export default class player extends Phaser.GameObjects.Image {
         Muxu = new Entity('Muxu', 6, 12, Type.anxiety, 4, "Muxu", scene, 'skibidiToilet')
 
         this.team = [Javi, Mika, Fueyo, Muxu]
+        this.scene = scene
     }
 
     Move(){
@@ -30,12 +33,33 @@ export default class player extends Phaser.GameObjects.Image {
         if (this.wKey.isDown) direction.y--;
 
         direction.normalize();
-        this.x += direction.x * SPEED;
-        this.y += direction.y * SPEED;
+        this.x += direction.x * vel;
+        this.y += direction.y * vel;
     }
 
     preUpdate(){
         this.Move()
+        if(this.spaceKey.isDown && canRoll){this.Roll()}
+    }
+
+    Roll()
+    {
+        let self = this
+        canRoll = false;
+        vel = 5;
+
+        this.scene.time.addEvent({ delay : 5,
+        callback: function(){
+            self.rotation += 0.1
+            if(self.rotation >= 3)
+            {
+                self.rotation = 0
+                self.scene.time.removeEvent(this)
+                vel = 1.5;
+                self.scene.time.delayedCall(500, function(){canRoll = true;} );
+            }
+        },
+        loop: true });
     }
 }
 
