@@ -31,6 +31,7 @@ let onEndTurn, onPhaseChange;
 let turnText;
 let lastPlayerPosition, currentEnemyId;
 let phase, center;
+let currentTeam;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -174,8 +175,11 @@ export default class CombatScene extends Phaser.Scene {
             arrow.tint = 0xFF0000;
             turnText.tint = 0xFF0000;
             arrow.visible = false;
+            currentTeam = team2;
 
-            self.time.delayedCall(1000, function(){self.cameras.main.startFollow(arrow, true, 0.025, 0.025, 0, 0);} );
+            self.time.delayedCall(1000, function(){
+                self.cameras.main.startFollow(arrow, true, 0.025, 0.025, 0, 0);} 
+            );
 
             self.time.addEvent({ delay : 1000, 
             callback: function(){
@@ -201,6 +205,7 @@ export default class CombatScene extends Phaser.Scene {
                     arrow.tint = 0xFFFFFF;
                     turnText.setText('Your turn');
                     onPhaseChange.emit('next');
+                    currentTeam = team1;
                     self.time.removeAllEvents();
                     self.cameras.main.startFollow(center, true, 0.005, 0.005, 0, 0);
                 }
@@ -236,6 +241,7 @@ export default class CombatScene extends Phaser.Scene {
         let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
 
+        currentTeam = team1;
         this.analyser.SetRandomSong();
         this.analyser.Restart();
     }
@@ -245,7 +251,7 @@ export default class CombatScene extends Phaser.Scene {
         let dataArray = this.analyser.GetDataArray();
 
         let i = 0;
-        team1.entities.forEach(element => {
+        currentTeam.entities.forEach(element => {
             let value = dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000;
             element.sprite.setScale(0.30 - value, 0.15 + value);
             i++;
