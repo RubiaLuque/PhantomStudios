@@ -7,6 +7,8 @@ export default class LifeBar extends Phaser.GameObjects.Sprite
         this.tint = 0xff0000;
         scene.add.existing(this);
 
+        scene.add.text(x-20, y-5, this.entity.name);
+
         let UpdateBar = this.UpdateBar.bind(this);
         this.entity.on.on('GetDamage', UpdateBar);
         UpdateBar();

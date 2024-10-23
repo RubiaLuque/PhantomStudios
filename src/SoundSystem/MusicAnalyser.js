@@ -1,16 +1,37 @@
 export default class MusicAnalyser {
-    constructor(Song){
-        this.audioElement = document.getElementById(Song);
+    constructor(Songs){
         this.audioContext = new AudioContext();
         this.analyser = this.audioContext.createAnalyser();
-        this.source = this.audioContext.createMediaElementSource(this.audioElement);
+        this.songs = [];
+        this.currentSong = 0;
+
+        Songs.forEach(element => {
+            let audioElement = document.getElementById(element);
+            let source = this.audioContext.createMediaElementSource(audioElement);
+            this.songs.push({source: source, audioElement: audioElement});
+        });
 
         this.analyser.fftSize = 256;
         this.bufferLength = this.analyser.frequencyBinCount;
 
-        this.source.connect(this.analyser);
-        this.source.connect(this.audioContext.destination);
+        let currentSong = this.songs[this.currentSong];
+        currentSong.source.connect(this.analyser);
+        currentSong.source.connect(this.audioContext.destination);
     }
+
+    SetSong(index){
+        let currentSong = this.songs[this.currentSong];
+        currentSong.source.disconnect(this.analyser);
+        currentSong.source.disconnect(this.audioContext.destination);
+
+        this.currentSong = index;
+        
+        let newSong = this.songs[this.currentSong];
+        newSong.source.connect(this.analyser);
+        newSong.source.connect(this.audioContext.destination);
+    }
+
+    SetRandomSong(){this.SetSong(Math.floor(Math.random() * this.songs.length));}
 
     GetDataArray()
     {
@@ -19,19 +40,19 @@ export default class MusicAnalyser {
         return dataArray;
     }
 
-    SetAudioElement(Song)
+    Restart()
     {
-        this.audioElement = document.getElementById(Song);
-        this.source = this.audioContext.createMediaElementSource(this.audioElement);
+        this.songs[this.currentSong].audioElement.currentTime = 0;
+        this.Play();
     }
 
     Play()
     {
-        this.audioElement.play();
+        this.songs[this.currentSong].audioElement.play();
     }
 
     Stop()
     {
-        this.audioElement.pause();
+        this.songs[this.currentSong].audioElement.pause();
     }
 }

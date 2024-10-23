@@ -6,6 +6,8 @@ import DialogueInterpreter from "../DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
 import World1 from "./World1.js";
 
+const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN'];
+
 const Type = {
     horny : {name:'horny', str: 'depression'},
     anxiety: {name:'anxiety', str: 'horny'},
@@ -26,9 +28,9 @@ let currentCharacter = 0;
 let team1, team2;
 let arrow;
 let onEndTurn, onPhaseChange;
-let phase = 'select';
 let turnText;
 let lastPlayerPosition, currentEnemyId;
+let phase;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -37,7 +39,7 @@ export default class CombatScene extends Phaser.Scene {
     constructor(){
         super({key: 'combat'});
 
-        this.analyser = new MusicAnalyser('Reach_Out');
+        this.analyser = new MusicAnalyser(songs);
     }
 
     init(teams){
@@ -167,9 +169,12 @@ export default class CombatScene extends Phaser.Scene {
         onEndTurn.on('endTurn', function(){
             let i = 0;
             turnText.setText('Enemy turn');
+            arrow.tint = 0xFF0000;
+            arrow.visible = false;
 
             self.time.addEvent({ delay : 1000, 
             callback: function(){
+                arrow.visible = true;
                 if(i < team2.GetCharacterCount())
                 {
                     let current = team2.GetCharacter(i);
@@ -187,6 +192,7 @@ export default class CombatScene extends Phaser.Scene {
                 }
                 else
                 {
+                    arrow.tint = 0xFFFFFF;
                     turnText.setText('Your turn');
                     onPhaseChange.emit('next');
                     self.time.removeAllEvents();
@@ -223,7 +229,8 @@ export default class CombatScene extends Phaser.Scene {
         let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
 
-        this.analyser.Play();
+        this.analyser.SetRandomSong();
+        this.analyser.Restart();
     }
 
     update()
@@ -269,8 +276,5 @@ export default class CombatScene extends Phaser.Scene {
         MagicButton.setButtonRotation(0.1);
     }
 
-    unLoad()
-    {
-        this.analyser.Stop();
-    }
+    unLoad(){this.analyser.Stop();}
 }
