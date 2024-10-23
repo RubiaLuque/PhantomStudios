@@ -61,6 +61,7 @@ export default class World1 extends Phaser.Scene
             this.scene.add('combat', CombatScene)
             sceneAdded = true;
         }
+        this.cameras.main.startFollow(Player, true, 0.05, 0.05);
     }
 
     update()
@@ -74,5 +75,6 @@ export default class World1 extends Phaser.Scene
                     lastPlayerPosition: {x: Player.x, y: Player.y}, enemyId: enemy.id});
             }
         });
+
     }
 }

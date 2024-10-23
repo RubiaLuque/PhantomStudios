@@ -1,4 +1,6 @@
 import Entity from "../CombatSystem/Entity.js";
+
+const SPEED = 1.5;
 export default class player extends Phaser.GameObjects.Image {
     constructor(scene, x, y){
         super(scene, x, y, 'Main_Team')
@@ -21,10 +23,15 @@ export default class player extends Phaser.GameObjects.Image {
     }
 
     Move(){
-        if (this.dKey.isDown) this.x++;
-        if (this.aKey.isDown) this.x--;
-        if (this.sKey.isDown) this.y++;
-        if (this.wKey.isDown) this.y--;
+        let direction = new Phaser.Math.Vector2(0, 0);
+        if (this.dKey.isDown) direction.x++;
+        if (this.aKey.isDown) direction.x--;
+        if (this.sKey.isDown) direction.y++;
+        if (this.wKey.isDown) direction.y--;
+
+        direction.normalize();
+        this.x += direction.x * SPEED;
+        this.y += direction.y * SPEED;
     }
 
     preUpdate(){

@@ -30,7 +30,7 @@ let arrow;
 let onEndTurn, onPhaseChange;
 let turnText;
 let lastPlayerPosition, currentEnemyId;
-let phase;
+let phase, center;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -38,7 +38,6 @@ const freqPositions = [50, 60, 70, 80];
 export default class CombatScene extends Phaser.Scene {
     constructor(){
         super({key: 'combat'});
-
         this.analyser = new MusicAnalyser(songs);
     }
 
@@ -67,6 +66,9 @@ export default class CombatScene extends Phaser.Scene {
 
     create(){
         self = this;
+        center = new Phaser.GameObjects.Image(this, this.WIDTH/2, this.HEIGHT/2, '');
+        this.add.existing(center);
+        center.visible = false;
 
         team1.Create(this, 250, 100, this);
         team2.Create(this, 700, 100, this);
@@ -172,6 +174,8 @@ export default class CombatScene extends Phaser.Scene {
             arrow.tint = 0xFF0000;
             arrow.visible = false;
 
+            self.time.delayedCall(1000, function(){self.cameras.main.startFollow(arrow, true, 0.025, 0.025, 0, 0);} );
+
             self.time.addEvent({ delay : 1000, 
             callback: function(){
                 arrow.visible = true;
@@ -196,6 +200,7 @@ export default class CombatScene extends Phaser.Scene {
                     turnText.setText('Your turn');
                     onPhaseChange.emit('next');
                     self.time.removeAllEvents();
+                    self.cameras.main.startFollow(center, true, 0.005, 0.005, 0, 0);
                 }
             }, 
             loop: true });
