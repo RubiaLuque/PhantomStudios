@@ -1,5 +1,5 @@
 import CustomButton from "../UI/CustomButton.js";
-import DamageText from "../CombatSystem/DamageText.js";
+import FloatingText from "../CombatSystem/FloatingText.js";
 import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
 import Team from "../CombatSystem/Team.js";
 import DialogueInterpreter from "../DialogueInterpreter.js";
@@ -172,6 +172,7 @@ export default class CombatScene extends Phaser.Scene {
             let i = 0;
             turnText.setText('Enemy turn');
             arrow.tint = 0xFF0000;
+            turnText.tint = 0xFF0000;
             arrow.visible = false;
 
             self.time.delayedCall(1000, function(){self.cameras.main.startFollow(arrow, true, 0.025, 0.025, 0, 0);} );
@@ -196,6 +197,7 @@ export default class CombatScene extends Phaser.Scene {
                 }
                 else
                 {
+                    turnText.tint = 0xFFFFFF;
                     arrow.tint = 0xFFFFFF;
                     turnText.setText('Your turn');
                     onPhaseChange.emit('next');
@@ -217,7 +219,7 @@ export default class CombatScene extends Phaser.Scene {
             self.time.addEvent({ delay : 1000, 
                 callback: function(){
                 self.unLoad();
-                self.scene.start('World1',
+                self.scene.start('WinScene',
                 {pos: lastPlayerPosition, id: currentEnemyId});}, 
                 loop: false });
         });
@@ -227,7 +229,7 @@ export default class CombatScene extends Phaser.Scene {
         arrow.y = selectedCharacter.sprite.y - 70
         this.SetButtonNextToCharacter(selectedCharacter);
 
-        damageText = new DamageText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
+        damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
         let dialogueBackground = this.add.rectangle(400, 500, 800, 200, 0x000000);
         dialogueBackground.alpha = 0.5;
@@ -244,8 +246,8 @@ export default class CombatScene extends Phaser.Scene {
 
         let i = 0;
         team1.entities.forEach(element => {
-
-            element.sprite.scale = 0.15 + (dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000)
+            let value = dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000;
+            element.sprite.setScale(0.30 - value, 0.15 + value);
             i++;
         });
 
@@ -256,6 +258,9 @@ export default class CombatScene extends Phaser.Scene {
 
         if(this.cameras.main.y > range-0.025 || this.cameras.main.y < -range+0.025) YcamVel *= -1
         this.cameras.main.y += YcamVel
+
+        turnText.x = this.cameras.main.scrollX + 450
+        turnText.y = this.cameras.main.scrollY + 400
 
         damageText.update()
     }

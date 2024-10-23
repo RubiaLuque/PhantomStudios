@@ -1,6 +1,7 @@
 import CombatScene from "./CombatScene.js";
 import Entity from "../CombatSystem/Entity.js";
 import Team from "../CombatSystem/Team.js";
+import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
 let team1, team2;
 let pos = {x: 0, y: 0};
@@ -59,6 +60,7 @@ export default class World1 extends Phaser.Scene
         if(!sceneAdded)
         {
             this.scene.add('combat', CombatScene)
+            this.scene.add('WinScene', WinScene);
             sceneAdded = true;
         }
         this.cameras.main.startFollow(Player, true, 0.05, 0.05);

@@ -1,4 +1,4 @@
-export default class DamageText extends Phaser.GameObjects.Text
+export default class FloatingText extends Phaser.GameObjects.Text
 {
     constructor(scene, x, y, text, style)
     {
@@ -24,5 +24,11 @@ export default class DamageText extends Phaser.GameObjects.Text
     lerp(a, b, t)
     {
         return a + (b - a) * t
+    }
+
+    setText(text)
+    {
+        this.alpha = 1
+        super.setText(text)
     }
 }
