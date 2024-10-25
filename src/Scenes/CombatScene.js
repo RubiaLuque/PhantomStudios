@@ -134,25 +134,25 @@ export default class CombatScene extends Phaser.Scene {
         //Asignacion de eventos comunes en todos los personajes
         [team1, team2].forEach(team => {
             //Asignamos un evento cuando los personajes reciben daño para que se ejecute la funcion onDamage
-            team.entities.forEach(element => {
-                    element.on.on('GetDamage', function(damage){
-                        self.onDamage(element.sprite, damage);
+            team.entities.forEach(entity => {
+                    entity.on.on('GetDamage', function(damage){
+                        self.onDamage(entity.sprite, damage);
                     });
 
                     //Evento para cuando se selecciona un personaje ya se del equipo 1 o 2
                     //Si es del equipo 1 los botones de ataque y magia se ponen al lado del personaje
-                    element.on.on('select', function(){
+                    entity.on.on('select', function(){
                         if(team == team1) self.SetButtonNextToCharacter(selectedCharacter);
-                        arrow.x = element.sprite.x
-                        arrow.y = element.sprite.y - 70
+                        arrow.x = entity.sprite.x
+                        arrow.y = entity.sprite.y - 70
                     });
 
                     //Creamos la barra de vida para cada personaje
                     //Bounds indica el tamaño del sprite para que la barra de vida se ponga arriba del sprite
                     //Si el personaje es del equipo 2 la barra de vida se pone a la izquierda del personaje en vez de arriba
-                    let bounds = element.sprite.getBounds();
-                    if(team == team2) new LifeBar(self, element.sprite.x, element.sprite.y - bounds.height/2, 'Button', element);
-                    else new LifeBar(self, element.sprite.x - 100, element.sprite.y, 'Button', element, true);
+                    let bounds = entity.sprite.getBounds();
+                    if(team == team2) new LifeBar(self, entity.sprite.x, entity.sprite.y - bounds.height/2, 'Button', entity);
+                    else new LifeBar(self, entity.sprite.x - 100, entity.sprite.y, 'Button', entity, true);
             });
         });
 
@@ -231,7 +231,7 @@ export default class CombatScene extends Phaser.Scene {
                     turnText.setText('Your turn');
                     onPhaseChange.emit('next');
                     currentTeam = team1;
-                    self.time.removeAllEvents();
+                    self.time.removeEvent(this);
                     self.cameras.main.startFollow(center, true, 0.005, 0.005, 0, 0);
                 }
             }, 
@@ -274,7 +274,6 @@ export default class CombatScene extends Phaser.Scene {
         dialogueBackground.alpha = 0.5;
         let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
-
 
         //Incializamos la musica
         this.analyser.SetRandomSong();
