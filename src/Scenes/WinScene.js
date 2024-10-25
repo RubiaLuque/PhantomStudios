@@ -2,6 +2,7 @@ import FloatingText from "../CombatSystem/FloatingText.js";
 import CustomButton from "../UI/CustomButton.js";
 const characters = ['Javi', 'Mika', 'Fueyo', 'Muxu'];
 let expText;
+let pos, enemyId;
 export default class WinScene extends Phaser.Scene
 {
     constructor(){
@@ -16,6 +17,12 @@ export default class WinScene extends Phaser.Scene
         this.load.image("Muxu", "assets/images/Muxu.png");
         this.load.image("Button", "assets/images/Button.png");
         this.load.audio('win', ['assets/music/Win_Theme.mp3']);
+    }
+
+    init(result)
+    {
+        pos = result.pos
+        enemyId = result.id;
     }
 
     create()
@@ -58,7 +65,7 @@ export default class WinScene extends Phaser.Scene
         this.time.delayedCall(5000, function(){
             new CustomButton(self, 400, 500, 'Button', 'Exit', function(){
                 self.sound.stopAll();
-                self.scene.start('World1');
+                self.scene.start('World1', {pos: pos, id: enemyId});
             });
         });
     }

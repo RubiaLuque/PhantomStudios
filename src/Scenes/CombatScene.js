@@ -6,7 +6,7 @@ import DialogueInterpreter from "../DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
 import World1 from "./World1.js";
 
-const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN'];
+const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
