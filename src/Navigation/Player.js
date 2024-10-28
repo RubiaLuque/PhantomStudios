@@ -1,4 +1,5 @@
 import Entity from "../CombatSystem/Entity.js";
+import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
 
 let vel = 1.5;
 let canRoll = true;
@@ -16,10 +17,10 @@ export default class player extends Phaser.GameObjects.Image {
 
         let Javi, Fueyo, Mika, Muxu
         
-        Javi = new Entity('Javi', 10, 15, Type.horny, 2, "Javi", scene, 'oioioi')
-        Mika = new Entity('Mika', 5, 20, Type.depression, 2, "Mika", scene, 'what_the_sigma')
-        Fueyo = new Entity('Fueyo', 7, 17, Type.wrath, 2, "Fueyo", scene, 'shiny')
-        Muxu = new Entity('Muxu', 6, 12, Type.anxiety, 4, "Muxu", scene, 'skibidiToilet')
+        Javi = Entity.TranslateEntity(MainTeam.Javi, scene);
+        Mika = Entity.TranslateEntity(MainTeam.Mika, scene);
+        Fueyo = Entity.TranslateEntity(MainTeam.Fueyo, scene);
+        Muxu = Entity.TranslateEntity(MainTeam.Muxu, scene);
 
         this.team = [Javi, Mika, Fueyo, Muxu]
         this.scene = scene

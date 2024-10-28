@@ -17,6 +17,10 @@ export default class Entity
         this.damageSound = damageSound
     }
 
+    static TranslateEntity(container, scene) {
+        return new Entity(container.name, container.Attack, container.health, container.type, container.luck, container.image, scene, container.damageSound)
+    }
+
     Setup()
     {
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
