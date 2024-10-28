@@ -18,7 +18,7 @@ export default class Entity
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.Attack, container.health, container.type, container.luck, container.image, scene, container.damageSound)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.image, scene, container.damageSound)
     }
 
     Setup()
@@ -46,6 +46,7 @@ export default class Entity
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 
+        console.log(damage);
         this.health -= damage
         console.log(this.name + ' health:' + this.health)
 
@@ -86,6 +87,7 @@ export default class Entity
             console.log(this.name + ' critical hit')
             damage *= 1.5
         }
+        console.log(this)
         other.GetDamage(damage, type)
 
         let self = this
