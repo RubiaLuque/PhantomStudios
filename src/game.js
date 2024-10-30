@@ -16,9 +16,9 @@ let config = {
 	physics: { 
 		default: 'arcade', 
 		arcade: { 
-			gravity: { y: 200 }, 
+			gravity: { y: 100 }, 
 			debug: true
-		} 
+		}
 	},
 	backgroundColor: '#447'
 };

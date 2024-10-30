@@ -43,6 +43,10 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         if(this.spaceKey.isDown && canRoll){this.Roll()}
     }
 
+    update(){
+
+    }
+
     Roll()
     {
         let self = this

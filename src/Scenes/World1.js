@@ -38,14 +38,26 @@ export default class World1 extends Phaser.Scene
         this.load.image("Demon", "assets/images/Demon.png");
         this.load.image("Uroboros", "assets/images/Uroboros.png");
         this.load.image("Skibidi", "assets/images/Skibidi.png");
+        this.load.image('TestTileset', 'assets/images/SpritesPrueba.png');
+        this.load.tilemapTiledJSON('TestTileMap', 'assets/tilemaps/Testing.json');
     }
 
     create()
     {
-        Player = new player(this, 100, 100);
-        Player.setPosition(pos.x, pos.y);
+        this.tileMap = this.make.tilemap({
+            key: 'TestTileMap'
+        })
 
-        this.enemies = [];
+        const set = this.tileMap.addTilesetImage('Prueba', 'TestTileset')
+
+        this.collidables = this.tileMap.createLayer('Plataformas', set)
+        this.collidables.setCollision(2);
+
+        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: player, key: 'Player'})
+
+        this.physics.add.collider(this.player[0], this.collidables)
+
+        /*this.enemies = [];
         for(let i = 0; i < 4; i++)
         {
             if(defeatedEnemiesIds.includes(i)) continue;
@@ -65,7 +77,7 @@ export default class World1 extends Phaser.Scene
             enemy.team = enemies;
             enemy.id = i;
             this.enemies.push(enemy);
-        }
+        }*/
 
         if(!sceneAdded)
         {
@@ -73,20 +85,20 @@ export default class World1 extends Phaser.Scene
             this.scene.add('WinScene', WinScene);
             sceneAdded = true;
         }
-        this.cameras.main.startFollow(Player, true, 0.05, 0.05);
+        this.cameras.main.startFollow(this.player[0], true, 0.05, 0.05);
     }
 
     update()
     {
-        Player.preUpdate();
+        this.player[0].preUpdate()
 
-        this.enemies.forEach(enemy => {
+        /*this.enemies.forEach(enemy => {
             if(Phaser.Geom.Intersects.RectangleToRectangle(Player.getBounds(), enemy.getBounds()))
             {
                 this.scene.start('combat', {team1: Player.team, team2: enemy.team, 
                     lastPlayerPosition: {x: Player.x, y: Player.y}, enemyId: enemy.id});
             }
-        });
+        });*/
 
     }
 }
