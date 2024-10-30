@@ -4,12 +4,14 @@ import Team from "../CombatSystem/Team.js";
 
 let vel = 1.5;
 let canRoll = true;
-export default class player extends Phaser.GameObjects.Image {
+export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y){
         super(scene, x, y, 'Main_Team')
 
         this.scale = 0.5;
         scene.add.existing(this);
+        scene.physics.add.existing(this);
+        this.setGravityY(0.05);
         this.wKey = this.scene.input.keyboard.addKey('W')
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
