@@ -1,8 +1,9 @@
 import CombatScene from "./CombatScene.js";
 import Entity from "../CombatSystem/Entity.js";
-import Team from "../CombatSystem/Team.js";
 import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
+import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
+import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 let team1, team2;
 let pos = {x: 0, y: 0};
 let sceneAdded = false;
@@ -34,6 +35,9 @@ export default class World1 extends Phaser.Scene
     {
         this.load.image("Main_Team", "assets/images/Main_Team.png");
         this.load.image("Fork", "assets/images/Fork.png");
+        this.load.image("Demon", "assets/images/Demon.png");
+        this.load.image("Uroboros", "assets/images/Uroboros.png");
+        this.load.image("Skibidi", "assets/images/Skibidi.png");
     }
 
     create()
@@ -46,10 +50,16 @@ export default class World1 extends Phaser.Scene
         {
             if(defeatedEnemiesIds.includes(i)) continue;
 
-            let Fork = new Entity('Fork', 90, 50, Type.depression, 1, "Fork", this, 'kaj')
-            let Fork2 = new Entity('Fork', 3, 50, Type.depression, 1, "Fork", this, 'kaj')
-            let enemies = [Fork, Fork2]
-            let enemy = new Phaser.GameObjects.Image(this, 125 * (i + 1), 125 * (i + 1), 'Fork');
+            let enemyPreset = EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)];
+            let enemyImage = enemyPreset[0];
+            let enemies = [];
+
+            enemyPreset.forEach(enemy => {
+                console.log(this.scene)
+                enemies.push(Entity.TranslateEntity(MainTeam.enemies[enemy], this.scene.scene));
+            })
+
+            let enemy = new Phaser.GameObjects.Image(this, 125 * (i + 1), 125 * (i + 1), enemyImage);
             this.add.existing(enemy);
             enemy.scale = 0.2;
             enemy.team = enemies;
