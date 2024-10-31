@@ -75,7 +75,7 @@
                  "name":"Enemy",
                  "point":true,
                  "rotation":0,
-                 "type":"",
+                 "type":"[\"Demon\", \"Skibidi\"]",
                  "visible":true,
                  "width":0,
                  "x":189.333,
@@ -115,7 +115,7 @@
  "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"left-down",
- "tiledversion":"1.11.0",
+ "tiledversion":"1.10.2",
  "tileheight":32,
  "tilesets":[
         {
