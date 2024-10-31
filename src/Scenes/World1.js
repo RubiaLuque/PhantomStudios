@@ -78,7 +78,7 @@ export default class World1 extends Phaser.Scene
         }
         enemyIndex++;
         })
-
+        console.log(this.enemies)
         if(!sceneAdded)
         {
             this.scene.add('combat', CombatScene)
