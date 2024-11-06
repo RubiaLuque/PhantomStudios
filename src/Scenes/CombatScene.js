@@ -192,7 +192,7 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         //Se emite cuando el turno del jugador termina
-        onEndTurn.on('endTurn', ()=>{
+        onEndTurn.on('endTurn', function(){
             let i = 0;
             turnText.setText('Enemy turn');
             arrow.tint = 0xFF0000;
@@ -203,19 +203,19 @@ export default class CombatScene extends Phaser.Scene {
             //Los delayed call son como lo time.addEvent
             //Los usamos en este caso para retrasar la funcion que se va a ejecutar, de esa forma conseguimos
             //que el combate se vea claro y no se ejecute todo de golpe
-            this.time.delayedCall(1000, ()=>{
+            self.time.delayedCall(1000, function(){
                 self.cameras.main.startFollow(arrow, true, 0.025, 0.025, 0, 0);} 
             );
 
-            this.time.addEvent({ delay : 1000, 
-            callback: ()=>{
+            self.time.addEvent({ delay : 1000, 
+            callback: function(){
                 arrow.visible = true;
                 if(i < team2.GetCharacterCount())
                 {
                     let current = team2.GetCharacter(i);
                     current.on.emit('select');
 
-                    this.time.addEvent({ delay : 500,
+                    self.time.addEvent({ delay : 500,
                         callback: ()=>{
                             let target = team1.GetRandomCharacter();
                             current.Attack(target, ()=>{onPhaseChange.emit('wait')});
@@ -232,8 +232,8 @@ export default class CombatScene extends Phaser.Scene {
                     turnText.setText('Your turn');
                     onPhaseChange.emit('next');
                     currentTeam = team1;
-                    this.time.removeEvent(this);
-                    this.cameras.main.startFollow(center, true, 0.005, 0.005, 0, 0);
+                    self.time.removeEvent(this);
+                    self.cameras.main.startFollow(center, true, 0.005, 0.005, 0, 0);
                 }
             }, 
             loop: true });
