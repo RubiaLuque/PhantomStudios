@@ -167,14 +167,14 @@ export default class CombatScene extends Phaser.Scene {
         onPhaseChange = new Phaser.Events.EventEmitter();
 
         //Evento que se emite cuando se selecciona el ataque o la magia
-        onPhaseChange.on('combat', ()=>{
+        onPhaseChange.on('combat', function(){
             team2.entities.forEach(element => { element.sprite.setInteractive(); });
             phase = 'combat';
         });
 
         //Evento que se emite en cuanto se ataca a un enemigo despues de seleccionar el ataque o la magia
         //Cambiamos de personaje y si ya no hay mas personajes cambiamos de turno
-        onPhaseChange.on('next', ()=>{
+        onPhaseChange.on('next', function(){
                 currentCharacter++;
                 selectedCharacter = team1.GetCharacter(currentCharacter);
 
