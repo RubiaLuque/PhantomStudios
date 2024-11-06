@@ -62,14 +62,12 @@ export default class World1 extends Phaser.Scene
         this.enemies.forEach(enemy =>{
             
             enemy.id = enemyIndex;
-            console.log(enemy.id)
             if(defeatedEnemiesIds.includes(enemy.id)) this.enemies[enemyIndex].destroy()
             else{
             let enemyPreset = EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)];
             let enemies = [];
 
             enemyPreset.forEach(enemy => {
-                console.log(this.scene)
                 enemies.push(Entity.TranslateEntity(MainTeam.enemies[enemy], this.scene.scene));
             })
 

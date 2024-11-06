@@ -34,6 +34,7 @@ let phase, center;
 let currentTeam;
 
 const freqPositions = [50, 60, 70, 80];
+//phases
 
 /*Escena de Phaser*/
 export default class CombatScene extends Phaser.Scene {
@@ -117,7 +118,7 @@ export default class CombatScene extends Phaser.Scene {
                 {
                     AttackButton.setActive(false)
                     MagicButton.setActive(false)
-                    selectedCharacter.selectedAttack(element, function(){onPhaseChange.emit('next')});
+                    selectedCharacter.selectedAttack(element, ()=>{onPhaseChange.emit('next')});
                     team2.entities.forEach(element => {element.sprite.disableInteractive()});
 
                     element.sprite.emit('pointerup');
@@ -135,8 +136,8 @@ export default class CombatScene extends Phaser.Scene {
         [team1, team2].forEach(team => {
             //Asignamos un evento cuando los personajes reciben daño para que se ejecute la funcion onDamage
             team.entities.forEach(entity => {
-                    entity.on.on('GetDamage', function(damage){
-                        self.onDamage(entity.sprite, damage);
+                    entity.on.on('GetDamage', (damage) => {
+                        this.onDamage(entity.sprite, damage);
                     });
 
                     //Evento para cuando se selecciona un personaje ya se del equipo 1 o 2
@@ -215,9 +216,9 @@ export default class CombatScene extends Phaser.Scene {
                     current.on.emit('select');
 
                     self.time.addEvent({ delay : 500,
-                        callback: function(){
+                        callback: ()=>{
                             let target = team1.GetRandomCharacter();
-                            current.Attack(target, function(){onPhaseChange.emit('wait')});
+                            current.Attack(target, ()=>{onPhaseChange.emit('wait')});
                             arrow.x = target.sprite.x
                             arrow.y = target.sprite.y - 70
                         }, loop: false });
@@ -240,20 +241,20 @@ export default class CombatScene extends Phaser.Scene {
 
         //Evento que se emite cuando el equipo se queda sin personajes con vida
         //Las comprobaciones de esto tienen lugar en la clase Team que sabe cuando una entidad del equipo muere
-        team1.onTeam.on('death', function(){
+        team1.onTeam.on('death', ()=>{
             console.log('You lose');
-            resultText = self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
+            resultText = this.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
         });
 
-        team2.onTeam.on('death', function(){
+        team2.onTeam.on('death', ()=>{
             console.log('You win');
-            resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
+            resultText = this.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
 
             //Tras ganar retrasamos un poco la carga de la pantalla de victoria
-            self.time.addEvent({ delay : 1000, 
-                callback: function(){
-                self.unLoad();
-                self.scene.start('WinScene',
+            this.time.addEvent({ delay : 1000, 
+                callback: ()=>{
+                this.unLoad();
+                this.scene.start('WinScene',
                 {pos: lastPlayerPosition, id: currentEnemyId});}, 
                 loop: false });
         });
