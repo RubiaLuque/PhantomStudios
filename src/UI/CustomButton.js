@@ -51,4 +51,9 @@ export default class CustomButton extends Phaser.GameObjects.Sprite
     {
         this.container.visible = value;
     }
+
+    setTextPosition(x, y){
+        this.text.x = this.x + x;
+        this.text.y = this.y + y;
+    }
 }
