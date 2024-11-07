@@ -4,10 +4,14 @@ import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
 import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
+import CustomButton from "../UI/CustomButton.js";
+//import MainMenu from "./MainMenu.js";
+
 let team1, team2;
 let pos = {x: 0, y: 0};
 let sceneAdded = false;
 let defeatedEnemiesIds = [];
+let mainMenuButton;
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -38,10 +42,17 @@ export default class World1 extends Phaser.Scene
         this.load.image("Skibidi", "assets/images/Skibidi.png");
         this.load.image('TestTileset', 'assets/images/SpritesPrueba.png');
         this.load.tilemapTiledJSON('TestTileMap', 'assets/tilemaps/Testing.json');
+        this.load.image('button', 'assets/images/Button.png');
+        //this.scene.add('Main_Menu', MainMenu); 
     }
 
     create()
     {
+        // mainMenuButton = new CustomButton(this, 10, 10, 'button', 'Return', 
+        //     () =>{
+        //         this.scene.start(MainMenu);
+        //     }
+        // );
 
         this.tileMap = this.make.tilemap({
             key: 'TestTileMap'

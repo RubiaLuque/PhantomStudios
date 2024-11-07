@@ -52,6 +52,7 @@ export default class CustomButton extends Phaser.GameObjects.Sprite
         this.container.visible = value;
     }
 
+    // Se situa el texto dentro del boton relativo al mismo
     setTextPosition(x, y){
         this.text.x = this.x + x;
         this.text.y = this.y + y;
