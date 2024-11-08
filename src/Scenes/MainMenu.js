@@ -1,5 +1,4 @@
 import CustomButton from "../UI/CustomButton.js";
-import World1 from "./World1.js";
 import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
 
 let StartButton, ContinueButton;
@@ -17,7 +16,6 @@ export default class MainMenu extends Phaser.Scene {
     preload(){
         this.load.audio('CityRuins_MainMenu', ['assets/music/CityRuins_MainMenu.mp3']);
         this.load.image('Button', 'assets/images/Button.png');
-        this.scene.add('World1', World1); //Siguiente escena
     }
 
     create(){
