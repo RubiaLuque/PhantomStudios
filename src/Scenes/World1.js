@@ -47,10 +47,10 @@ export default class World1 extends Phaser.Scene
     create()
     {
         mainMenuButton = new CustomButton(this, 10, 10, 'button', 'Return', 
-            () =>{
-                this.scene.start("main_menu");
-            }
-        );
+             () =>{
+                 this.scene.start("main_menu");
+             }
+         );
 
         this.tileMap = this.make.tilemap({
             key: 'TestTileMap'
@@ -65,11 +65,15 @@ export default class World1 extends Phaser.Scene
 
         this.physics.add.collider(this.player, this.collidables)
 
-        this.enemies = this.tileMap.createFromObjects("Entidades", {name: 'Enemy', key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
+        this.enemies = this.tileMap.createFromObjects("Entidades", {name: 'Enemy', clasType: Phaser.Physics.Arcade.Sprite, key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
         console.log(this.enemies)
         let enemyIndex = 0;
         this.enemies.forEach(enemy =>{
             
+            this.physics.add.existing(enemy);
+            //enemy.setGravityY(0.05);
+            this.physics.add.collider(enemy, this.collidables)
+
             enemy.id = enemyIndex;
             console.log(enemy.id)
             if(defeatedEnemiesIds.includes(enemy.id)) this.enemies[enemyIndex].destroy()
