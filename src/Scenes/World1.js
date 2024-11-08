@@ -40,6 +40,8 @@ export default class World1 extends Phaser.Scene
         this.load.image("Uroboros", "assets/images/Uroboros.png");
         this.load.image("Skibidi", "assets/images/Skibidi.png");
         this.load.image('TestTileset', 'assets/images/SpritesPrueba.png');
+        this.load.image("Tiles", "assets/tilemaps/tilemap_prueba.png")
+        this.load.tilemapTiledJSON("World1", "assets/tilemaps/mundo1.json")
         this.load.tilemapTiledJSON('TestTileMap', 'assets/tilemaps/Testing.json');
         this.load.image('button', 'assets/images/Button.png');
     }
@@ -53,19 +55,19 @@ export default class World1 extends Phaser.Scene
          );
 
         this.tileMap = this.make.tilemap({
-            key: 'TestTileMap'
+            key: "World1"
         })
 
-        const set = this.tileMap.addTilesetImage('Prueba', 'TestTileset')
+        const set = this.tileMap.addTilesetImage('Prueba', 'Tiles')
 
-        this.collidables = this.tileMap.createLayer('Plataformas', set)
-        this.collidables.setCollision(2);
+        this.collidables = this.tileMap.createLayer('Capa de patrones 1', set)
+        this.collidables.setCollision(1);
 
-        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
 
         this.physics.add.collider(this.player, this.collidables)
 
-        this.enemies = this.tileMap.createFromObjects("Entidades", {name: 'Enemy', clasType: Phaser.Physics.Arcade.Sprite, key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
+        this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', clasType: Phaser.Physics.Arcade.Sprite, key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
         console.log(this.enemies)
         let enemyIndex = 0;
         this.enemies.forEach(enemy =>{
