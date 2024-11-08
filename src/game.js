@@ -10,7 +10,7 @@ let config = {
 	width:  800,
 	height: 600,
 	pixelArt: true,
-    parent: "Persona6",
+    parent: "Juego",
 	scale: {
 		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
@@ -22,7 +22,7 @@ let config = {
 			debug: true
 		}
 	},
-	backgroundColor: '#447'
+	backgroundColor: '#202020'
 };
 
 new Phaser.Game(config);
