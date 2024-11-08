@@ -46,12 +46,14 @@ export default class World1 extends Phaser.Scene
 
     create()
     {
-        mainMenuButton = new CustomButton(this, 10, 10, 'button', 'Return', 
+        mainMenuButton = new CustomButton(this, 40, 20, 'button', 'Return', 
              () =>{
                  this.scene.start("main_menu");
              }
          );
-
+        mainMenuButton.setButtonScale(0.25,0.25);
+        mainMenuButton.setTextPosition(-20,-7);
+        
         this.tileMap = this.make.tilemap({
             key: 'TestTileMap'
         })
