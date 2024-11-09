@@ -2,7 +2,7 @@ import Entity from "../CombatSystem/Entity.js";
 import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
 import Team from "../CombatSystem/Team.js";
 
-let vel = 1.5;
+let vel = 100;
 let canRoll = true;
 export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y){
@@ -11,7 +11,6 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         this.scale = 0.5;
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.setGravityY(0.05);
         this.wKey = this.scene.input.keyboard.addKey('W')
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
@@ -34,8 +33,8 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         if (this.wKey.isDown) direction.y--;
 
         direction.normalize();
-        this.x += direction.x * vel;
-        this.y += direction.y * vel;
+        this.body.setVelocityX(direction.x * vel);
+        this.body.setVelocityY(direction.y * vel);
     }
 
     preUpdate(){

@@ -18,8 +18,14 @@ let config = {
 	physics: { 
 		default: 'arcade', 
 		arcade: { 
-			gravity: { y: 100 }, 
+			gravity: { y: 2000 }, 
 			debug: true
+		},
+		checkCollision: {
+			up: true,
+			down: true,
+			left: true,
+			right: true
 		}
 	},
 	backgroundColor: '#202020'
