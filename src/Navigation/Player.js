@@ -3,7 +3,7 @@ import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
 import Team from "../CombatSystem/Team.js";
 
 let vel = 100;
-let canRoll = true;
+let canRoll = false; //da error
 export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y){
         super(scene, x, y, 'Main_Team')

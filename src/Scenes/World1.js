@@ -1,9 +1,9 @@
 import CombatScene from "./CombatScene.js";
-import Entity from "../CombatSystem/Entity.js";
 import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
-import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
+import Enemy from "../Navigation/Enemy.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
+
 import CustomButton from "../UI/CustomButton.js";
 
 let team1, team2;
@@ -68,34 +68,22 @@ export default class World1 extends Phaser.Scene
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
 
         this.physics.add.collider(this.player, this.collidables)
-
-        this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', clasType: Phaser.Physics.Arcade.Sprite, key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
+        
+        this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', clasType: Enemy, key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
         console.log(this.enemies)
         let enemyIndex = 0;
         this.enemies.forEach(enemy =>{
             
-            this.physics.add.existing(enemy);
-            //enemy.setGravityY(0.05);
             this.physics.add.collider(enemy, this.collidables)
 
             enemy.id = enemyIndex;
-            console.log(enemy.id)
-            if(defeatedEnemiesIds.includes(enemy.id)) this.enemies[enemyIndex].destroy()
-            else{
-            let enemyPreset = EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)];
-            let enemies = [];
-
-            enemyPreset.forEach(enemy => {
-                console.log(this.scene)
-                enemies.push(Entity.TranslateEntity(MainTeam.enemies[enemy], this.scene.scene));
-            })
-
-            enemy.scale = 0.2;
-            enemy.team = enemies;
-        }
-        enemyIndex++;
+            console.log(enemy.id);
+            if (defeatedEnemiesIds.includes(enemy.id)) this.enemies[enemyIndex].destroy();
+                
+            enemyIndex++;
         })
-        console.log(this.enemies)
+
+        console.log(this.enemies);
         /*if(!sceneAdded)
         {
             this.scene.add('combat', CombatScene)
