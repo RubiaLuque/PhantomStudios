@@ -66,10 +66,14 @@ export default class World1 extends Phaser.Scene
         this.collidables.setCollision(1);
 
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        /*if (pos != { x: 0, y: 0 }) {
+            this.player.x = pos.x
+            this.player.y = pos.y
+        }*/
 
         this.physics.add.collider(this.player, this.collidables)
         
-        this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', clasType: Enemy, key: EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)][0]}); //Buscar forma de que este sprite sea aleatorio en cada miembro
+        this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', classType: Enemy, key: 'Fork'}); //Buscar forma de que este sprite sea aleatorio en cada miembro
         console.log(this.enemies)
         let enemyIndex = 0;
         this.enemies.forEach(enemy =>{
@@ -100,6 +104,8 @@ export default class World1 extends Phaser.Scene
         this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {
+                console.log(this.player.team);
+                console.log(enemy.team)
                 this.scene.start('combat', {team1: this.player.team, team2: enemy.team, 
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
             }

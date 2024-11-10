@@ -5,10 +5,11 @@ import Team from "../CombatSystem/Team.js";
 let vel = 100;
 let canRoll = false; //da error
 export default class player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y){
+    constructor(scene, x, y) {
+        console.log("A")
         super(scene, x, y, 'Main_Team')
 
-        this.scale = 0.5;
+        this.scale = 0.25;
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.wKey = this.scene.input.keyboard.addKey('W')
@@ -35,6 +36,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         direction.normalize();
         this.body.setVelocityX(direction.x * vel);
         this.body.setVelocityY(direction.y * vel);
+        console.log(this.x)
     }
 
     preUpdate(){

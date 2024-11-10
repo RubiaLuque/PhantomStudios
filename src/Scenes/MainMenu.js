@@ -26,7 +26,7 @@ export default class MainMenu extends Phaser.Scene {
         //Boton comienzo de partida
         StartButton = new CustomButton(this, 400, 400, 'Button', 'MISSION START!!', 
             ()=>{
-                this.scene.start('World1');
+                this.scene.start('World1', { pos: undefined });
             }
         );
         StartButton.setButtonScale(1, 0.5);
