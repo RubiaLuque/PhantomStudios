@@ -10,7 +10,16 @@
   <link rel="icon" type="image/jpg" href="assets/web/CircleLogo.png">
   <link rel="stylesheet" href="src/style.css"> <!-- Esto cargaria un archivo de estilo, pero no es necesario en Fiddle porque lo hace automáticamente -->
   <script src="lib/phaser.js"></script>
-  <script src="src/game.js" type="module"></script> <!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
+  <script src="src/game.js" type="module">
+    // var onloadCallback = function() {
+    // alert("grecaptcha is ready!");};</script> <!--Aquí podriamos cargar los scripts, también se puede en el <body>, y pasa lo mismo que con el css de antes, en verdad aquí no estamos cargando nada-->
+  <!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> -->
+  <audio id="Reach_Out" src="assets/music/Reach_Out.mp3" preload="auto"></audio>
+  <audio id="Going_Down" src="assets/music/Going_Down.mp3" preload="auto"></audio>
+  <audio id="CYN" src="assets/music/CYN.mp3" preload="auto"></audio>
+  <audio id="School_Days" src="assets/music/School_Days.mp3" preload="auto"></audio>
+  <audio id="Break_Out" src="assets/music/Break_Out.mp3" preload="auto"></audio>
+  <audio id="CityRuins_MainMenu" src="assets/music/CityRuins_MainMenu.mp3" preload="auto"></audio>
 </head>
 
 <body>
@@ -35,7 +44,6 @@
         </div>
     </nav>
 
-    
     <div id="Descripcion" class="DescClass">
         <h1 style="text-align: center;">DESCRIPCIÓN</h1>
         <p style="text-align: justify;">
@@ -47,29 +55,91 @@
     </div>
     
     <div class="GameSection">
-        <h1 style="text-align: center;">PERSONA 6</h1>
-        <div id="Persona6">
+        <h1 style="text-align: center;">JUEGO: VINCERE FABULAM</h1>
+        <div id="Juego">
         </div>
     </div>
 
-    <div id="autores">
+    <!-- <form action="?" method="POST">
+        <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+        <br/>
+        <input type="submit" value="Submit">
+    </form> -->
+
+    <div id="autores" style="background-color: rgb(66, 66, 66); padding-bottom: 30px; padding-top: 20px">
         <h1 style="text-align: center;">QUIÉNES SOMOS</h1>
-        <ul class="AuthorsList">
-            <li class="authElem">JAVIER VALSECA</li>
-            <li class="authElem">MUXU RUBIA</li>
-            <li class="authElem">MIKA RODRÍGUEZ</li>
-            <li class="authElem">JAVIER FUEYO</li>
-        </ul>
+        <table class="AuthorsTable">
+            <tr>
+                <th class="authElem">JAVIER VALSECA</th>
+                <th class="authElem">MUXU RUBIA</th>
+                <th class="authElem">MIKA RODRÍGUEZ</th>
+                <th class="authElem">JAVIER FUEYO</th>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                          <div class="flip-box-front">
+                              <img class="authImg" src="assets/web/el_ermitanio.jpg" style="width: 200px; height: 400px;">
+                          </div>
+                          <div class="flip-box-back">
+                            <h2>JAVI 1.0</h2>
+                            <p>Persona 5 lover</p>
+                          </div>
+                        </div>
+                      </div> 
+                </td>
+                <td class="authImg">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <img src="assets/web/la_justicia.webp" style="width: 200px; height: 400px;">
+                          </div>
+                          <div class="flip-box-back">
+                            <h2>MUXU</h2>
+                            <p>Ratilla de alcantarilla</p>
+                          </div>
+                        </div>
+                      </div> 
+                </td>
+                <td class="authImg">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                          <div class="flip-box-front">
+                              <img src="assets/web/el_mundo.jpg" style="width: 200px; height: 400px;">
+                          </div>
+                          <div class="flip-box-back">
+                            <h2>MIKA</h2>
+                            <p>He-wife material</p>
+                          </div>
+                        </div>
+                      </div> 
+                </td>
+                <td class="authImg">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                          <div class="flip-box-front">
+                              <img src="assets/web/el_ahorcado.png" style="width: 200px; height: 400px;">
+                          </div>
+                          <div class="flip-box-back">
+                            <h2>JAVI 2.0</h2>
+                            <p>No thoughts head empty</p>
+                          </div>
+                        </div>
+                      </div> 
+                </td>
+            </tr>
+        </table>
     </div>
 
-    <nav id="redesSociales" style="background-color: rgb(96, 96, 96);">
+    <nav id="redesSociales" style="background-color: rgb(96, 96, 96); padding-bottom: 30px; padding-top: 20px">
         <div class="bottomSection">
             <h1 style="text-align: center;">REDES</h1>
             <a href="https://x.com/Phantom_Stud1os">
                 <img src="assets/web/TwitterLogo.png" height="100"  style="margin-left: auto;">
             </a>
             <a href="https://github.com/RubiaLuque/PhantomStudios">
-                <img src="assets/web/GitHubLogo.png" height="100" style="padding-left: 20px;">
+                <img src="assets/web/GithubLogo.png" height="100" style="padding-left: 20px;">
             </a>
         </div>
     </nav>

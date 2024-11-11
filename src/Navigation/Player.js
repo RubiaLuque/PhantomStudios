@@ -1,22 +1,86 @@
-export default class player extends Phaser.GameObjects.Image {
-    constructor(scene, x, y){
-        super(scene, x, y, 'player')
+import Entity from "../CombatSystem/Entity.js";
+import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
+import Team from "../CombatSystem/Team.js";
+
+let vel = 200;
+let canRoll = false; //da error
+let ableToJump = false;
+
+export default class player extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y) {
+        console.log("A")
+        super(scene, x, y, 'Main_Team')
+
+        this.scale = 0.25;
+        
         scene.add.existing(this);
+        scene.physics.add.existing(this);
+
         this.wKey = this.scene.input.keyboard.addKey('W')
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
         this.sKey = this.scene.input.keyboard.addKey('S')
+        this.spaceKey = this.scene.input.keyboard.addKey('SPACE')
+
+       this.team = []; 
+       MainTeam.entities.forEach(entity =>
+            this.team.push(Entity.TranslateEntity(entity, scene))
+       )
+
+        this.scene = scene
+        
     }
 
     Move(){
-        if (this.dKey.isDown) this.x++;
-        if (this.aKey.isDown) this.x--;
-        if (this.sKey.isDown) this.y++;
-        if (this.wKey.isDown) this.y--;
+        
+        console.log(this.body.velocity.y)
+        if (this.body.velocity.y == 0 /*&& this.body.touching.down*/) ableToJump = true
+        else ableToJump = false
+
+        let direction = new Phaser.Math.Vector2(0, 0);
+        if (this.dKey.isDown) direction.x++;
+        if (this.aKey.isDown) direction.x--;
+        if (this.wKey.isDown && ableToJump) this.body.setVelocityY(vel * -3)
+
+        direction.normalize();
+        this.body.setVelocityX(direction.x * vel);
+        //console.log(this.x)
     }
 
     preUpdate(){
         this.Move()
-        console.log(this.x, this.y)
+        if(this.spaceKey.isDown && canRoll){this.Roll()}
     }
+
+    update(){
+
+    }
+
+    Roll()
+    {
+        let self = this
+        canRoll = false;
+        vel = 5;
+
+        this.scene.time.addEvent({ delay : 5,
+        callback: function(){
+            self.rotation += 0.1
+            if(self.rotation >= 3)
+            {
+                self.rotation = 0
+                self.scene.time.removeEvent(this)
+                vel = 1.5;
+                self.scene.time.delayedCall(500, function(){canRoll = true;} );
+            }
+        },
+        loop: true });
+    }
+}
+
+const Type = {
+    horny : {name:'horny', str: 'depression'},
+    anxiety: {name:'anxiety', str: 'horny'},
+    wrath: {name:'wrath', str: 'anxiety'},
+    depression: {name:'depression', str: 'wrath'},
+    physical: {name:'physical', str: 'depression'}
 }
