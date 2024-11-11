@@ -18,3 +18,15 @@ Además, si pulsas el siguiente [enlace](https://rubialuque.github.io/PhantomStu
 <br>
 
 ## Capturas del juego (Hito 2)
+
+Menú principal del juego:
+![imagen](https://github.com/user-attachments/assets/0907f187-bd45-42fd-bf39-5230192da396) 
+<br><br>
+Combate:
+![imagen](https://github.com/user-attachments/assets/7c31ab24-a941-4231-b611-c538261879ca)
+<br><br>
+Fragmento primer nivel:
+![imagen](https://github.com/user-attachments/assets/3241f87c-601d-45f7-aead-0a5d07759601)
+
+
+
