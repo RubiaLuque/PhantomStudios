@@ -64,12 +64,13 @@ export default class World1 extends Phaser.Scene
 
         this.collidables = this.tileMap.createLayer('Capa de patrones 1', set)
         this.collidables.setCollision(1);
-
+        
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
-        /*if (pos != { x: 0, y: 0 }) {
+        
+        if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
             this.player.y = pos.y
-        }*/
+        }
 
         this.physics.add.collider(this.player, this.collidables)
         

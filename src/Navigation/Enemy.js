@@ -16,7 +16,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.team.push(Entity.TranslateEntity(MainTeam.enemies[enemy], scene)); //Puede estar mal (scene)
         })
         
-        this.scale = 0.2;
+        this.scale = 0.15;
         this.id = 0;
     }
 }
