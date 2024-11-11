@@ -2,16 +2,20 @@ import Entity from "../CombatSystem/Entity.js";
 import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
 import Team from "../CombatSystem/Team.js";
 
-let vel = 100;
+let vel = 200;
 let canRoll = false; //da error
+let ableToJump = false;
+
 export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         console.log("A")
         super(scene, x, y, 'Main_Team')
 
         this.scale = 0.25;
+        
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
         this.wKey = this.scene.input.keyboard.addKey('W')
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
@@ -24,19 +28,23 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
        )
 
         this.scene = scene
+        
     }
 
     Move(){
+        
+        console.log(this.body.velocity.y)
+        if (this.body.velocity.y == 0 /*&& this.body.touching.down*/) ableToJump = true
+        else ableToJump = false
+
         let direction = new Phaser.Math.Vector2(0, 0);
         if (this.dKey.isDown) direction.x++;
         if (this.aKey.isDown) direction.x--;
-        if (this.sKey.isDown) direction.y++;
-        if (this.wKey.isDown) direction.y--;
+        if (this.wKey.isDown && ableToJump) this.body.setVelocityY(vel * -3)
 
         direction.normalize();
         this.body.setVelocityX(direction.x * vel);
-        this.body.setVelocityY(direction.y * vel);
-        console.log(this.x)
+        //console.log(this.x)
     }
 
     preUpdate(){
