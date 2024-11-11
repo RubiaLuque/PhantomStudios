@@ -33,14 +33,15 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
 
     Move(){
         
-        console.log(this.body.velocity.y)
-        if (this.body.velocity.y == 0 /*&& this.body.touching.down*/) ableToJump = true
-        else ableToJump = false
+        if (this.body.deltaY() > 0 && this.body.onFloor()) ableToJump = true
 
         let direction = new Phaser.Math.Vector2(0, 0);
         if (this.dKey.isDown) direction.x++;
         if (this.aKey.isDown) direction.x--;
-        if (this.wKey.isDown && ableToJump) this.body.setVelocityY(vel * -3)
+        if (this.wKey.isDown && ableToJump) {
+            this.body.setVelocityY(vel * -3)
+            ableToJump = false;
+        }
 
         direction.normalize();
         this.body.setVelocityX(direction.x * vel);

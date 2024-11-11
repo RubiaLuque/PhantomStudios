@@ -4,6 +4,8 @@ export default class CustomButton extends Phaser.GameObjects.Sprite
     constructor(scene, x, y, texture, text, callback)
     {
         super(scene, 0, 0, texture);
+        this.depth = 1; //Para que se renderice por encima del tilemap
+
         this.setScale(this.currentScale.x, this.currentScale.y);
         this.setInteractive();
 

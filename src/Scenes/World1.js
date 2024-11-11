@@ -48,15 +48,7 @@ export default class World1 extends Phaser.Scene
 
     create()
     {
-        mainMenuButton = new CustomButton(this, 40, 20, 'button', 'Return', 
-             () =>{
-                 this.scene.start("main_menu");
-             }
-         );
-        mainMenuButton.setButtonScale(0.25,0.25);
-        mainMenuButton.setTextPosition(-20,-7);
-        
-        this.tileMap = this.make.tilemap({
+           this.tileMap = this.make.tilemap({
             key: "World1"
         })
 
@@ -96,6 +88,16 @@ export default class World1 extends Phaser.Scene
             sceneAdded = true;
         }*/
         this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+
+        mainMenuButton = new CustomButton(this, 50, 25, 'button', 'Return', 
+            () =>{
+                this.scene.start("main_menu");
+            }
+        );
+       mainMenuButton.setButtonScale(0.25,0.25);
+       mainMenuButton.setTextPosition(-20,-7);
+       mainMenuButton.setScrollFactor(0);
+       mainMenuButton.text.setScrollFactor(0);
     }
 
     update()
