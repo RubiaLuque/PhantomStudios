@@ -70,8 +70,6 @@ export default class CombatScene extends Phaser.Scene {
     }
 
     create(){
-        this.scene.add('WinScene', WinScene);
-
         self = this;
 
         //Objeto centro para tener facilidad de centrar la camara
