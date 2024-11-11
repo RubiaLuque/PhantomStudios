@@ -13,5 +13,8 @@ El juego consistirá en un rpg estilo clásico (Chrono Trigger, Golden Sun, Fina
 
 ## Dónde encontrarnos
 Nos podeis encontrar en Twitter (o X) como @Phantom_Stud1os. 
+
 Además, si pulsas el siguiente [enlace](https://rubialuque.github.io/PhantomStudios/) podrás visitar nuestra página web oficial.
 <br>
+
+## Capturas del juego (Hito 2)
