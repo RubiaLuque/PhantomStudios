@@ -60,6 +60,8 @@ export default class MenuScene extends Phaser.Scene {
             if(currentCharacter > 3) currentCharacter = 0;
             selectedCharacter = charactersQueue[currentCharacter];
         });
+
+        
     }
 
     update()

@@ -1,4 +1,4 @@
-
+let index = 0;
 export default class MusicAnalyser {
     constructor(Songs){
         this.audioContext = new AudioContext();
@@ -10,6 +10,8 @@ export default class MusicAnalyser {
             let audioElement = document.getElementById(element);
             let source = this.audioContext.createMediaElementSource(audioElement);
             this.songs.push({source: source, audioElement: audioElement});
+            this.songs[element] = this.songs[index];
+            index++;
         });
 
         this.analyser.fftSize = 256;
@@ -32,7 +34,10 @@ export default class MusicAnalyser {
         newSong.source.connect(this.audioContext.destination);
     }
 
-    SetRandomSong(){this.SetSong(Math.floor(Math.random() * this.songs.length));}
+    SetRandomSong(Songs){
+        if(Songs != undefined) this.SetSong(Songs[Math.floor(Math.random() * Songs.length)]);
+        else this.SetSong(this.songs[Math.floor(Math.random() * this.songs.length)]);
+    }
 
     GetDataArray()
     {

@@ -15,7 +15,6 @@ export default class MainMenu extends Phaser.Scene {
     }
 
     preload(){
-        this.load.audio('CityRuins_MainMenu', ['assets/music/CityRuins_MainMenu.mp3']);
         this.load.image('Button', 'assets/images/Button.png');
         this.load.image('Banner', 'assets/images/Vincere_fabulam.png');
     }
@@ -26,6 +25,7 @@ export default class MainMenu extends Phaser.Scene {
         //Boton comienzo de partida
         StartButton = new CustomButton(this, 400, 400, 'Button', 'MISSION START!!', 
             ()=>{
+                analyser.Stop();
                 this.scene.start('World1', { pos: undefined });
             }
         );
@@ -41,7 +41,8 @@ export default class MainMenu extends Phaser.Scene {
         ContinueButton.setButtonScale(1,0.5);
         ContinueButton.setTextPosition(-60,-10); //Se setea el texto del boton relativo a este
 
-        
+        analyser.SetSong('CityRuins_MainMenu');
+        analyser.Restart();
     }
 
     update(){

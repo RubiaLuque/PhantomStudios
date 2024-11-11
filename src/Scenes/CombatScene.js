@@ -1,6 +1,6 @@
 import CustomButton from "../UI/CustomButton.js";
 import FloatingText from "../CombatSystem/FloatingText.js";
-import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
+import {analyser} from "../SoundSystem/Index.js"
 import Team from "../CombatSystem/Team.js";
 import DialogueInterpreter from "../DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
@@ -40,7 +40,6 @@ const freqPositions = [50, 60, 70, 80];
 export default class CombatScene extends Phaser.Scene {
     constructor(){
         super({key: 'combat'});
-        //this.analyser = new MusicAnalyser(songs);
     }
 
     init(teams){
@@ -253,7 +252,7 @@ export default class CombatScene extends Phaser.Scene {
             //Tras ganar retrasamos un poco la carga de la pantalla de victoria
             self.time.addEvent({ delay : 1000, 
                 callback: function(){
-                //self.unLoad();
+                self.unLoad();
                 self.scene.start('WinScene',
                 {pos: lastPlayerPosition, id: currentEnemyId});}, 
                 loop: false });
@@ -277,22 +276,22 @@ export default class CombatScene extends Phaser.Scene {
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
 
         //Incializamos la musica
-        //this.analyser.SetRandomSong();
-        //this.analyser.Restart();
+        analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
+        analyser.Restart();
     }
 
     update()
     {
         //Obtenemos los valores de las frecuencias de la musica y las guardamos en un array
-        //let dataArray = this.analyser.GetDataArray();
+        let dataArray = analyser.GetDataArray();
 
         //Cambiamos el tamaño de los personajes segun las frecuencias de la musica
-        /*let i = 0;
+        let i = 0;
         currentTeam.entities.forEach(element => {
             let value = dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000;
             element.sprite.setScale(0.30 - value, 0.15 + value);
             i++;
-        });*/
+        });
 
         //Le damos un ligero movimiento a la camara para mas dinamismo
         let range = 5
@@ -336,5 +335,5 @@ export default class CombatScene extends Phaser.Scene {
     }
 
     //Funcion que se ejecuta al salir de la escena
-    //unLoad(){this.analyser.Stop();}
+    unLoad(){analyser.Stop();}
 }
