@@ -5,8 +5,10 @@ export default class CardsEffects {
         
     }
 
-    MagicianEffect() { }
+    MagicianEffect() { 
+        
+    }
     
-    
+
 
 }
