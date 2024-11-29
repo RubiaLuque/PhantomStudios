@@ -1,9 +1,9 @@
 import TarotCard from "./TarotCard.js";
-import CardsEffects from "./CardsEffects.js";
+import { CardsEffects } from "./CardsEffects.js"; //Fichero con funciones genericas
 
 const Type = {
     Fool: { function: CardsEffects.FoolEffect, texture: "Fool" },
-    Magician: { function: CardsEffects.MagicianEffect, texture: "Maician" }
+    Magician: { function: CardsEffects.MagicianEffect, texture: "Magician" }
     // High_Priestess =
     // Empress =
     // Emperor =
@@ -33,7 +33,9 @@ export default class RandomCardSelector {
     }
 
     RandomElection() {
-        let rand = this.vector[Math.int(Math.random() * (this.vector.length))];
-        return rand;
+        let rand = this.vector[Math.floor(Math.random() * (this.vector.length))];
+        return Type[rand];
     }
+
+
 }

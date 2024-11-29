@@ -33,6 +33,7 @@ let turnText;
 let lastPlayerPosition, currentEnemyId;
 let phase, center;
 let currentTeam;
+let cardEnemies, cardTeam;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -55,6 +56,9 @@ export default class CombatScene extends Phaser.Scene {
         this.HEIGHT = this.game.config.height;
 
         currentCharacter = 0;
+
+        cardTeam = teams.cardTeam;
+        cardEnemies = teams.cardEnemies;
     }
 
     preload(){
@@ -71,18 +75,23 @@ export default class CombatScene extends Phaser.Scene {
     create(){
         self = this;
 
+        
         //Objeto centro para tener facilidad de centrar la camara
         center = new Phaser.GameObjects.Image(this, this.WIDTH/2, this.HEIGHT/2, '');
         this.add.existing(center);
         center.visible = false;
-
+        
         //Creacion de los personajes para que se vean en escena
         team1.Create(this, 250, 100, this);
         team2.Create(this, 700, 100, this);
-
+        
         //Creacion del texto que indica de quien es el turno
         turnText = this.add.text(400, 500, 'Your turn', { fontSize: '50px', fill: '#FFF'});
         this.add.existing(turnText);
+        
+        //Acciones de las cartas previamente 
+        cardTeam.DoAction(team1);
+        cardEnemies.DoAction(team2);
 
         //Creacion de los botones para seleccionar ataque o magia. Tambien el nuclear pero ese es para debug
         AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
