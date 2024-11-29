@@ -3,7 +3,7 @@ import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
 import Enemy from "../Navigation/Enemy.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
-
+import CardsScene from "./CardsScene.js";
 import CustomButton from "../UI/CustomButton.js";
 
 let team1, team2;
@@ -109,7 +109,7 @@ export default class World1 extends Phaser.Scene
             {
                 console.log(this.player.team);
                 console.log(enemy.team)
-                this.scene.start('combat', {team1: this.player.team, team2: enemy.team, 
+                this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
             }
         });

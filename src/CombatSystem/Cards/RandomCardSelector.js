@@ -1,5 +1,5 @@
-import TarotCard from "./TarotCard";
-import CardsEffects from "./CardsEffects";
+import TarotCard from "./TarotCard.js";
+import CardsEffects from "./CardsEffects.js";
 
 const Type = {
     Fool: { function: CardsEffects.FoolEffect, texture: "Fool" },
