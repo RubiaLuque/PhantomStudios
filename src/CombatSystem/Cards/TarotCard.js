@@ -17,11 +17,6 @@ export default class TarotCard extends Phaser.GameObjects.Sprite{
         this.funct(team);
     }
 
-    //Metodo de las animaciones
-    CardAnimation() {
-        
-    }
-
     SetCardPosition(x, y) {
         this.x = x;
         this.y = y;

@@ -21,6 +21,7 @@ export default class CardsScene extends Phaser.Scene{
         //Cartas tarot
         this.load.image("Fool", "assets/images/cards/Fool.jpg");
         this.load.image("Magician", "assets/images/cards/Magician.jpg");
+        this.load.image("Back", "assets/images/cards/Back_3.jpg");
     }
 
     //Crear los objetos de la escena + lo que ocurre en el primer frame
@@ -31,17 +32,25 @@ export default class CardsScene extends Phaser.Scene{
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
         let teamElection = this.randomCardSelector.RandomElection();
         let enemiesElection = this.randomCardSelector.RandomElection();
-
+        
         //Cartas elegidas 
         this.cardTeam = new TarotCard(this, 250, 250, teamElection.texture, teamElection.function);
         this.cardEnemies = new TarotCard(this, 550, 250, enemiesElection.texture, enemiesElection.function);
+        //Para que no aparezcan las imagenes en el fondo al hacer la animacion de flip
+        this.cardTeam.setAlpha(0, 0, 0, 0);
+        this.cardEnemies.setAlpha(0, 0, 0, 0);
 
+        //Texturas de la parte de atras de las cartas
+        this.backTeam = this.add.image(250, 250, "Back");
+        this.backEnenmies = this.add.image(550, 250, "Back");
+        
         this.cardTeam.SetCardScale(0.7, 0.7);
         this.cardEnemies.SetCardScale(0.7, 0.7);
-
-        this.cardTeam.CardAnimation();
-        this.cardEnemies.CardAnimation();
+        this.backTeam.setScale(0.7, 0.7);
+        this.backEnenmies.setScale(0.7, 0.7);
         
+        //Animacion de las cartas rotando
+        this.DoCardAnimation();
     }
 
     //Frames posteriores de la escena
@@ -53,6 +62,26 @@ export default class CardsScene extends Phaser.Scene{
                 lastPlayerPosition: this.lastPlayerPosition, enemyId: this.enemyId,
                 cardTeam: this.cardTeam, cardEnemies: this.cardEnemies});
         }
+    }
+
+    DoCardAnimation() {
+        this.tweens.add({
+            targets: this.backTeam,
+            props: {
+                scaleX: { value: 0, duration: 1000, yoyo: true },
+                texture: { value: this.cardTeam.texture, duration: 0, delay: 1000 }
+            },
+            ease: 'quart.in'
+        });
+
+        this.tweens.add({
+            targets: this.backEnenmies,
+            props: {
+                scaleX: { value: 0, duration: 1000, yoyo: true },
+                texture: { value: this.cardEnemies.texture, duration: 0, delay: 1000 }
+            },
+            ease: 'quart.in',
+        });
     }
 
 }
