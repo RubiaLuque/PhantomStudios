@@ -22,10 +22,12 @@ export default class CardsScene extends Phaser.Scene{
         this.load.image("Fool", "assets/images/cards/Fool.jpg");
         this.load.image("Magician", "assets/images/cards/Magician.jpg");
         this.load.image("Back", "assets/images/cards/Back_3.jpg");
+        this.load.image("GoldenStar", "assets/images/cards/golden_star.png");
     }
 
     //Crear los objetos de la escena + lo que ocurre en el primer frame
     create() { 
+        
         this.randomCardSelector = new RandomCardSelector();
         this.space = this.input.keyboard.addKey("SPACE");
         this.text = this.add.text(300,520, "Press SPACE to continue.", { fill: '#FFFFFF' });
@@ -51,6 +53,7 @@ export default class CardsScene extends Phaser.Scene{
         
         //Animacion de las cartas rotando
         this.DoCardAnimation();
+        //this.AddParticles(); <-- No va bien
     }
 
     //Frames posteriores de la escena
@@ -81,6 +84,15 @@ export default class CardsScene extends Phaser.Scene{
                 texture: { value: this.cardEnemies.texture, duration: 0, delay: 1000 }
             },
             ease: 'quart.in',
+        });
+    }
+
+    AddParticles() {
+        this.add.particles(100, 100, 'GoldenStar', {
+            speed: 10,
+            lifespan: 1000,
+            gravityY: 20,
+            gravityX: 20
         });
     }
 

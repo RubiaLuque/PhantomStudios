@@ -90,8 +90,8 @@ export default class CombatScene extends Phaser.Scene {
         this.add.existing(turnText);
         
         //Acciones de las cartas previamente 
-        cardTeam.DoAction(team1);
-        cardEnemies.DoAction(team2);
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team1, team2);
 
         //Creacion de los botones para seleccionar ataque o magia. Tambien el nuclear pero ese es para debug
         AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
