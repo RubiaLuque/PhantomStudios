@@ -10,6 +10,7 @@ import CustomButton from "../UI/CustomButton.js";
 let team1, team2;
 let pos = {x: 0, y: 0};
 let sceneAdded = false;
+let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
 
@@ -31,6 +32,8 @@ export default class World1 extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
+        if(result.healths != undefined) healths = result.healths;
+        console.log(result.healths)
     }
 
     preload()
@@ -63,9 +66,20 @@ export default class World1 extends Phaser.Scene
 
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
         
+        console.log(healths)
         if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
             this.player.y = pos.y
+            this.player.team.forEach(entity =>{
+                if(healths[entity.name] == undefined)
+                {
+                    entity.health = 1;
+                }
+                else
+                {
+                    entity.health = healths[entity.name]
+                }
+            })
         }
 
         this.physics.add.collider(this.player, this.collidables)
@@ -103,6 +117,7 @@ export default class World1 extends Phaser.Scene
        mainMenuButton.setTextPosition(-20,-7);
        mainMenuButton.setScrollFactor(0);
        mainMenuButton.text.setScrollFactor(0);
+       console.log(this.player.team)
     }
 
     update()
@@ -119,7 +134,7 @@ export default class World1 extends Phaser.Scene
             }
         });
         
-        console.log(this.cafeteria)
+        
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
         {
             this.scene.start('CafeteriaScene')

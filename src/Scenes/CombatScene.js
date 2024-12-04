@@ -262,8 +262,15 @@ export default class CombatScene extends Phaser.Scene {
             self.time.addEvent({ delay : 1000, 
                 callback: function(){
                 self.unLoad();
+
+                let healths = {};
+                team1.entities.forEach(entity =>{
+                    healths[entity.name] = entity.health;
+                })
+                console.log(healths)
+
                 self.scene.start('WinScene',
-                {pos: lastPlayerPosition, id: currentEnemyId});}, 
+                {pos: lastPlayerPosition, id: currentEnemyId, healths: healths});}, 
                 loop: false });
         });
 
