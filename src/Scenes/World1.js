@@ -2,7 +2,7 @@ import CombatScene from "./CombatScene.js";
 import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
 import Enemy from "../Navigation/Enemy.js";
-import Cafeteria from "../Navigation/cafeteria.js";
+import Cafeteria from "../Navigation/Cafeteria.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 import CardsScene from "./CardsScene.js";
 import CustomButton from "../UI/CustomButton.js";
