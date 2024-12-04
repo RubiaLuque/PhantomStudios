@@ -137,7 +137,7 @@ export default class World1 extends Phaser.Scene
         
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
         {
-            this.scene.start('CafeteriaScene')
+            this.scene.start('CafeteriaScene', {team: this.player.team})
         }
     }
 }
