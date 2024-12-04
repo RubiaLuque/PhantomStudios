@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="3" nextobjectid="30">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="3" nextobjectid="29">
  <editorsettings>
-  <export target="mundo1.json" format="json"/>
+  <export target="mundo1.1.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="tilemap_prueba.tsx"/>
  <layer id="1" name="Capa de patrones 1" width="30" height="20">
@@ -393,13 +393,10 @@
   <object id="24" name="Miniboss" x="896" y="-546">
    <point/>
   </object>
-  <object id="25" name="Player" x="1230.46" y="362.083">
+  <object id="25" name="Player" x="1455.79" y="372.75">
    <point/>
   </object>
   <object id="26" name="Enemy" x="511" y="329">
-   <point/>
-  </object>
-  <object id="29" name="Cafeteria" x="1457.58" y="330">
    <point/>
   </object>
  </objectgroup>

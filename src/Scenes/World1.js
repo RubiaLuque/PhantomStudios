@@ -2,7 +2,6 @@ import CombatScene from "./CombatScene.js";
 import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
 import Enemy from "../Navigation/Enemy.js";
-import Cafeteria from "../Navigation/cafeteria.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 
 import CustomButton from "../UI/CustomButton.js";
@@ -36,7 +35,6 @@ export default class World1 extends Phaser.Scene
     preload()
     {
         this.load.image("Main_Team", "assets/images/Main_Team.png");
-        this.load.image("Cafeteria", "assets/images/Cafeteria.png");
         this.load.image("Fork", "assets/images/Fork.png");
         this.load.image("Demon", "assets/images/Demon.png");
         this.load.image("Uroboros", "assets/images/Uroboros.png");
@@ -59,8 +57,6 @@ export default class World1 extends Phaser.Scene
         this.collidables = this.tileMap.createLayer('Capa de patrones 1', set)
         this.collidables.setCollision(1);
         
-        this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
-
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
         
         if (pos.x != 0 && pos.y != 0) {
@@ -93,7 +89,6 @@ export default class World1 extends Phaser.Scene
         }*/
         this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
-
         mainMenuButton = new CustomButton(this, 50, 25, 'button', 'Return', 
             () =>{
                 this.scene.start("main_menu");
@@ -118,11 +113,6 @@ export default class World1 extends Phaser.Scene
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
             }
         });
-        
-        console.log(this.cafeteria)
-        if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
-        {
-            this.scene.start('CafeteriaScene')
-        }
+
     }
 }
