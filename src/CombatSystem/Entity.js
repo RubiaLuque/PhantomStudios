@@ -1,3 +1,5 @@
+import { AlteredState } from "./Data/AlteredState.js"
+
 export default class Entity
 {
     constructor(name, damage, health, type, luck, image, scene, damageSound)
@@ -15,6 +17,7 @@ export default class Entity
         this.scene = scene
         this.sound = scene.sound
         this.damageSound = damageSound
+        this.alteredState = AlteredState.none;
     }
 
     static TranslateEntity(container, scene) {

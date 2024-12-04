@@ -53,7 +53,6 @@ export default class CardsScene extends Phaser.Scene{
         
         //Animacion de las cartas rotando
         this.DoCardAnimation();
-        //this.AddParticles(); <-- No va bien
     }
 
     //Frames posteriores de la escena
@@ -84,15 +83,6 @@ export default class CardsScene extends Phaser.Scene{
                 texture: { value: this.cardEnemies.texture, duration: 0, delay: 1000 }
             },
             ease: 'quart.in',
-        });
-    }
-
-    AddParticles() {
-        this.add.particles(100, 100, 'GoldenStar', {
-            speed: 10,
-            lifespan: 1000,
-            gravityY: 20,
-            gravityX: 20
         });
     }
 

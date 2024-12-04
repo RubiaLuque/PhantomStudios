@@ -1,3 +1,6 @@
+import Entity from "../Entity"
+import { AlteredState } from "../Data/AlteredState.js";
+
 export const CardsEffects = {
     //Si hay algun this es referente a la clase desde la que se llame o el objeto mas cercano a la llamada.
     //Mejor no usar this, sino parametros que se le pasen a las funciones. Si un parametro no se va a usar se pone
@@ -7,34 +10,47 @@ export const CardsEffects = {
     //Team1 --> party
     //Team2 --> Enemigos
 
-    FoolEffect: (team1, _)=> {
+    FoolEffect: (thisTeam, _)=> {
         
     },
 
-    MagicianEffect: (team1, team2) => { 
+    MagicianEffect: (thisTeam, _) => { 
         
     },
 
-    High_PriestessEffect: (team1, team2) => {
+    High_PriestessEffect: (thisTeam, _) => {
+        thisTeam.entities.forEach(e => {
+            e.luck+=2;
+        });   
+    },
+
+    EmperorEffect: (thisTeam, _) => {
+        thisTeam.getRandomCharacter().alteredState = AlteredState.papeado;
+    },
+
+    EmpressEffect: (thisTeam, _) => {
+        thisTeam.getRandomCharacter().alteredState = AlteredState.fear;
+    },
+
+    HierophantEffect: (thisTeam, _) => {
 
     },
 
-    EmperorEffect: (team1, team2) => {
-
-    },
-
-    EmpressEffect: (team1, team2) => {
-
-    },
-
-    EmperorEffect: (team1, team2) => {
+    LoversEffect: (thisTeam, thatTeam) => {
 
     },
     
-    // Hierophant =
-    // Lovers =
-    // Chariot = 
-    // Strength =
+    ChariotEffect: (thisTeam, _) => {
+
+    },
+
+    StrengthEffect: (thisTeam, _) => {
+        thisTeam.entities.forEach(e => {
+            e.strength+=3;
+        });
+    },
+
+    
     // Hermit = 
     // Wheel_of_Fortune = 
     // Justice =
