@@ -1,4 +1,4 @@
-import player from "../Navigation/Player.js";
+import playerCafeteria from "../Navigation/CafeteriaPlayer.js";
 
 
 let pos = {x: 0, y: 0};
@@ -10,7 +10,7 @@ export default class CafeteriaScene extends Phaser.Scene
 
     init(result)
     {
-        if(result.pos != undefined) pos = result.pos;
+        //if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
     }
 
@@ -31,7 +31,7 @@ export default class CafeteriaScene extends Phaser.Scene
         this.collidables = this.tileMap.createLayer('Colisionables', set)
         this.collidables.setCollision(3);
         
-        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Main_Team'})[0] //key sirve para indicar que image carga
         
 
         if (pos.x != 0 && pos.y != 0) {
