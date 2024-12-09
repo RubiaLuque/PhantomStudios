@@ -22,39 +22,40 @@ export default class DialogueInterpreter {
     }
 
     SetDialogue(dialogue, endCallback = function(){}){
-        this.lines = dialogue.split("@");
+        let lines = dialogue.split("@");
         this.background.visible = true;
         let self = this;
+        let delay = 0;
 
         this.scene.time.addEvent({
             delay: 10,
-            callback: function(){
-                if(this.lines.length >= 0)
+            callback: ()=>{
+                if(lines.length >= 0)
                 {
-                    if(this.scene.time.now > this.delay && this.next)
+                    if(self.scene.time.now > delay && self.next)
                     {
-                        this.next = false;
-                        this.delay = this.scene.time.now + 100;
+                        self.next = false;
+                        delay = self.scene.time.now + 100;
 
-                        let line = this.lines.shift();
+                        let line = lines.shift();
 
                         let characterData = line.split(":")[0].split("/");
                         let currentCharacter = DialogueCharacterData[characterData[0]];
 
-                        this.character.setTexture(characterData[0] + "_sheet", currentCharacter[characterData[1]]);
+                        self.character.setTexture(characterData[0] + "_sheet", currentCharacter[characterData[1]]);
 
                         let newText = line.split(":")[1];
-                        this.scene.time.addEvent({
+                        self.scene.time.addEvent({
                             delay: 10,
                             callback: ()=>
                             {
-                                let dataArray = this.analyser.GetDataArray();
+                                let dataArray = self.analyser.GetDataArray();
                                 let value = dataArray[20] * dataArray[20] / 300000;
-                                this.character.setScale(0.30 - value, 0.15 + value);
+                                self.character.setScale(0.30 - value, 0.15 + value);
 
                                 if(newText.length > 0)
                                 {
-                                    this.dialogueText.text += newText.shift();
+                                    self.dialogueText.text += newText.shift();
                                 }
                             },
                             loop: true
