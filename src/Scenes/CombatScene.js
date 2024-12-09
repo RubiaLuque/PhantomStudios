@@ -286,7 +286,7 @@ export default class CombatScene extends Phaser.Scene {
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
         //Creacion del interprete de dialogos, para que se pueda usar si es necesario
-        this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
+        this.interpreter = new DialogueInterpreter(this);
 
         //Incializamos la musica
         analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
