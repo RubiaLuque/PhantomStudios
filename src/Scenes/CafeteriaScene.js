@@ -5,6 +5,8 @@ import { NPCEffects } from "../CombatSystem/Data/NPCEffects.js";
 
 
 let pos = {x: 0, y: 0};
+let healths;
+let NPCFound = ["Andres", "Sanchez"]
 export default class CafeteriaScene extends Phaser.Scene
 {
     constructor(){
@@ -15,6 +17,8 @@ export default class CafeteriaScene extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
+        if(result.healths != undefined) healths = result.healths;
+        if(result.NPCFound != undefined) NPCFound = result.NPCFound;
     }
 
     preload(){
@@ -45,26 +49,31 @@ export default class CafeteriaScene extends Phaser.Scene
         
         this.door = this.tileMap.createFromObjects("Entidades", {name: 'Door', classType: Cafeteria, key: 'Door'})[0]
 
-        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Main_Team'})[0] //key sirve para indicar que image carga
         
         this.NPCs = this.tileMap.createFromObjects("Entidades", {name: 'NPC', classType: NPC})
-
-        console.log(this.NPCs)
+        
         let i = 0;
         this.NPCs.forEach(NPC =>{
             NPC.name = NPCEffects.NPCs[i].name;
-            NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
-            NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
-            NPC.image = NPCEffects.NPCs[i].image;
-            NPC.upgradeAvailable = true;
+            NPCFound.forEach(A =>{
+                if(NPC.name == A){
+                    NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
+                    NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
+                    NPC.image = NPCEffects.NPCs[i].image;
+                    NPC.upgradeAvailable = true;
+                    
+                    NPC.sprite = this.add.sprite(NPC.x, NPC.y, NPC.name)
+                    NPC.sprite.scale = 0.2;
+                }
+                else{
+                    NPC.destroy();
+                }
+            })
             
-            NPC.sprite = this.add.sprite(NPC.x, NPC.y, NPC.name)
-            NPC.sprite.scale = 0.2;
-
             i++;
         })
-        console.log(this.NPCs)
-
+        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        
         this.physics.add.collider(this.player, this.collidables)
         this.physics.add.collider(this.player, this.door)
         this.physics.add.collider(this.player, this.NPCs)
@@ -75,7 +84,7 @@ export default class CafeteriaScene extends Phaser.Scene
     {
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.door.getBounds()))
         {
-            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}})
+            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, healths: healths, NPCFound: NPCFound})
         }
 
         this.NPCs.forEach(A => {

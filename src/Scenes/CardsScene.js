@@ -2,7 +2,6 @@ import RandomCardSelector from "../CombatSystem/Cards/RandomCardSelector.js"
 import { analyser } from "../SoundSystem/Index.js"
 import TarotCard from "../CombatSystem/Cards/TarotCard.js";
 
-
 export default class CardsScene extends Phaser.Scene{
     constructor(){
         super({key: 'cards'});
@@ -14,6 +13,7 @@ export default class CardsScene extends Phaser.Scene{
         this.team2 = prevScene.team2;
         this.lastPlayerPosition = prevScene.lastPlayerPosition;
         this.enemyId = prevScene.enemyId;
+        this.NPCFound = prevScene.NPCFound
     }
 
     //
@@ -62,7 +62,7 @@ export default class CardsScene extends Phaser.Scene{
         if (isDownSpace) {
             this.scene.start('combat', {team1: this.team1, team2: this.team2, 
                 lastPlayerPosition: this.lastPlayerPosition, enemyId: this.enemyId,
-                cardTeam: this.cardTeam, cardEnemies: this.cardEnemies});
+                cardTeam: this.cardTeam, cardEnemies: this.cardEnemies, NPCFound: this.NPCFound});
         }
     }
 

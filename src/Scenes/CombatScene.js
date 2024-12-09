@@ -4,6 +4,7 @@ import {analyser} from "../SoundSystem/Index.js"
 import Team from "../CombatSystem/Team.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
+import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 import World1 from "./World1.js";
 import WinScene from "./WinScene.js";
 
@@ -34,6 +35,7 @@ let lastPlayerPosition, currentEnemyId;
 let phase, center;
 let currentTeam;
 let cardEnemies, cardTeam;
+let NPCFound;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -48,9 +50,10 @@ export default class CombatScene extends Phaser.Scene {
         team1 = new Team(teams.team1, "Party")
         team2 = new Team(teams.team2, "Enemies")
 
-        //Guardamos la posicion del jugador y el id del enemigo para la siguiente escena
+        //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
         currentEnemyId = teams.enemyId;
+        NPCFound = teams.NPCFound;
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
@@ -182,7 +185,7 @@ export default class CombatScene extends Phaser.Scene {
 
         //Evento que se emite en cuanto se ataca a un enemigo despues de seleccionar el ataque o la magia
         //Cambiamos de personaje y si ya no hay mas personajes cambiamos de turno
-        onPhaseChange.on('next', function(){
+        onPhaseChange.on('next', ()=>{
                 currentCharacter++;
                 selectedCharacter = team1.GetCharacter(currentCharacter);
 
@@ -191,7 +194,7 @@ export default class CombatScene extends Phaser.Scene {
                     onEndTurn.emit('endTurn');
                     currentCharacter = -1;
                 }
-                else
+                else if(selectedCharacter.alteredState({scene: this.scene, team: team1, phase: onPhaseChange}))
                 {
                     AttackButton.setActive(true)
                     MagicButton.setActive(true)
@@ -270,7 +273,7 @@ export default class CombatScene extends Phaser.Scene {
                 console.log(healths)
 
                 self.scene.start('WinScene',
-                {pos: lastPlayerPosition, id: currentEnemyId, healths: healths});}, 
+                {pos: lastPlayerPosition, id: currentEnemyId, healths: healths, NPCFound: this.NPCFound});}, 
                 loop: false });
         });
 
@@ -284,9 +287,6 @@ export default class CombatScene extends Phaser.Scene {
 
         //Creacion del texto de daño
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
-
-        //Creacion del interprete de dialogos, para que se pueda usar si es necesario
-        this.interpreter = new DialogueInterpreter(this);
 
         //Incializamos la musica
         analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
