@@ -2,7 +2,7 @@ import CustomButton from "../UI/CustomButton.js";
 import FloatingText from "../CombatSystem/FloatingText.js";
 import {analyser} from "../SoundSystem/Index.js"
 import Team from "../CombatSystem/Team.js";
-import DialogueInterpreter from "../DialogueInterpreter.js";
+import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
 import World1 from "./World1.js";
 import WinScene from "./WinScene.js";
