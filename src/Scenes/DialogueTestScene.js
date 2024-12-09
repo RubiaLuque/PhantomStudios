@@ -1,4 +1,5 @@
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
+
 export default class DialogueTextScene extends Phaser.Scene{
     constructor(){
         super({key: 'DialogueTestScene'});
