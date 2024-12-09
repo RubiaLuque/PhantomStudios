@@ -43,7 +43,23 @@ export default class DialogueInterpreter {
 
                         this.character.setTexture(characterData[0] + "_sheet", currentCharacter[characterData[1]]);
 
-                        this.dialogueText.text = line.split(":")[1];
+                        let newText = line.split(":")[1];
+                        this.scene.time.addEvent({
+                            delay: 10,
+                            callback: ()=>
+                            {
+                                let dataArray = this.analyser.GetDataArray();
+                                let value = dataArray[20] * dataArray[20] / 300000;
+                                this.character.setScale(0.30 - value, 0.15 + value);
+
+                                if(newText.length > 0)
+                                {
+                                    this.dialogueText.text += newText.shift();
+                                }
+                            },
+                            loop: true
+                        })
+
                     }
                 }
                 else if(this.nextInput.isDown)
@@ -53,10 +69,6 @@ export default class DialogueInterpreter {
                     this.scene.time.removeEvent(this);
                     endCallback();
                 }
-
-                let dataArray = this.analyser.GetDataArray();
-                let value = dataArray[20] * dataArray[20] / 300000;
-                this.character.setScale(0.30 - value, 0.15 + value);
             }.bind(self),
             callbackScope: this.scene,
             loop: true
