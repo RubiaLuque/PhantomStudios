@@ -1,6 +1,7 @@
 import Cafeteria from "../Navigation/Cafeteria.js";
 import playerCafeteria from "../Navigation/CafeteriaPlayer.js";
-import Enemy from "../Navigation/Enemy.js";
+import NPC from "../Navigation/NPC.js";
+import { NPCEffects } from "../CombatSystem/Data/NPCEffects.js";
 
 
 let pos = {x: 0, y: 0};
@@ -12,15 +13,21 @@ export default class CafeteriaScene extends Phaser.Scene
 
     init(result)
     {
-        //if(result.pos != undefined) pos = result.pos;
+        if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
     }
 
     preload(){
         this.load.image("Main_Team", "assets/images/Main_Team.png");
         this.load.image("Door", "assets/images/CafetePuerta.png");
+        this.load.image("NPC", "assets/images/NPC.png");
         this.load.image("Tiles", "assets/tilemaps/tilemap_prueba.png")
         this.load.tilemapTiledJSON("Cafeteria", "assets/tilemaps/Cafeteria.json")
+        this.load.image("Andres", "assets/images/NPC.png")
+        this.load.image("Sanchez", "assets/images/NPC.png")
+        this.load.image("Toni", "assets/images/NPC.png")
+        this.load.image("Mozos", "assets/images/NPC.png")
+        this.load.image("Poletti", "assets/images/NPC.png")
     }
 
     create()
@@ -35,22 +42,47 @@ export default class CafeteriaScene extends Phaser.Scene
         this.collidables = this.tileMap.createLayer('Colisionables', set)
         this.collidables.setCollision(3);
         
+        
         this.door = this.tileMap.createFromObjects("Entidades", {name: 'Door', classType: Cafeteria, key: 'Door'})[0]
-        
-        
+
         this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        
+        this.NPCs = this.tileMap.createFromObjects("Entidades", {name: 'NPC', classType: NPC})
+
+        console.log(this.NPCs)
+        let i = 0;
+        this.NPCs.forEach(NPC =>{
+            NPC.name = NPCEffects.NPCs[i].name;
+            NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
+            NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
+            NPC.image = NPCEffects.NPCs[i].image;
+            NPC.upgradeAvailable = true;
+            
+            NPC.sprite = this.add.sprite(NPC.x, NPC.y, NPC.name)
+            NPC.sprite.scale = 0.2;
+
+            i++;
+        })
+        console.log(this.NPCs)
 
         this.physics.add.collider(this.player, this.collidables)
         this.physics.add.collider(this.player, this.door)
+        this.physics.add.collider(this.player, this.NPCs)
         this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
     }
 
     update()
     {
-        //this.player.preUpdate()
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.door.getBounds()))
+        {
+            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}})
+        }
+
+        this.NPCs.forEach(A => {
+            if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
             {
-                this.scene.start('World1')
+                
             }
+        });
     }
 }

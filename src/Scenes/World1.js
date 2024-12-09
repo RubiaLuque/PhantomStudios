@@ -70,6 +70,9 @@ export default class World1 extends Phaser.Scene
         if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
             this.player.y = pos.y
+        }
+        if (healths != undefined)
+        {
             this.player.team.forEach(entity =>{
                 if(healths[entity.name] == undefined)
                 {
@@ -122,7 +125,7 @@ export default class World1 extends Phaser.Scene
 
     update()
     {
-        this.player.preUpdate()
+        //this.player.preUpdate()
 
         this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
@@ -137,7 +140,7 @@ export default class World1 extends Phaser.Scene
         
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
         {
-            this.scene.start('CafeteriaScene', {team: this.player.team})
+            this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y} })
         }
     }
 }
