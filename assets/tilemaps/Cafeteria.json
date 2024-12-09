@@ -84,26 +84,26 @@
                 {
                  "height":0,
                  "id":3,
-                 "name":"Andres",
+                 "name":"NPC",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":191.527,
-                 "y":120
+                 "y":105
                 }, 
                 {
                  "height":0,
                  "id":4,
-                 "name":"Sanchez",
+                 "name":"NPC",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":798.399,
-                 "y":120
+                 "y":105
                 }, 
                 {
                  "height":0,
@@ -114,8 +114,44 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1008.66666666667,
+                 "x":1008.67,
                  "y":432
+                }, 
+                {
+                 "height":0,
+                 "id":6,
+                 "name":"NPC",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":290.666666666667,
+                 "y":313.333333333333
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"NPC",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":569.333333333333,
+                 "y":548
+                }, 
+                {
+                 "height":0,
+                 "id":8,
+                 "name":"NPC",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":613.333333333333,
+                 "y":330.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -124,7 +160,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":6,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

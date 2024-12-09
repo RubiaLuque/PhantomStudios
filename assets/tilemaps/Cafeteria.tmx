@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="32" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="32" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="9">
  <editorsettings>
   <export target="Cafeteria.json" format="json"/>
  </editorsettings>
@@ -56,13 +56,22 @@
   <object id="1" name="Player" x="958.747" y="452.037">
    <point/>
   </object>
-  <object id="3" name="Andres" x="191.527" y="120">
+  <object id="3" name="NPC" x="191.527" y="105">
    <point/>
   </object>
-  <object id="4" name="Sanchez" x="798.399" y="120">
+  <object id="4" name="NPC" x="798.399" y="105">
    <point/>
   </object>
   <object id="5" name="Door" x="1008.67" y="432">
+   <point/>
+  </object>
+  <object id="6" name="NPC" x="290.667" y="313.333">
+   <point/>
+  </object>
+  <object id="7" name="NPC" x="569.333" y="548">
+   <point/>
+  </object>
+  <object id="8" name="NPC" x="613.333" y="330.667">
    <point/>
   </object>
  </objectgroup>
