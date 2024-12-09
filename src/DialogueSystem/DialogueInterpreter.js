@@ -41,11 +41,6 @@ export default class DialogueInterpreter {
                         let characterData = line.split(":")[0].split("/");
                         let currentCharacter = DialogueCharacterData[characterData[0]];
 
-                        let dataArray = analyser.GetDataArray();
-
-                        let value = dataArray[20] * dataArray[20] / 300000;
-                        this.character.setScale(0.30 - value, 0.15 + value);
-
                         this.character.setTexture(characterData[0] + "_sheet", currentCharacter[characterData[1]]);
 
                         this.dialogueText.text = line.split(":")[1];
@@ -58,6 +53,10 @@ export default class DialogueInterpreter {
                     this.scene.time.removeEvent(this);
                     endCallback();
                 }
+
+                let dataArray = this.analyser.GetDataArray();
+                let value = dataArray[20] * dataArray[20] / 300000;
+                this.character.setScale(0.30 - value, 0.15 + value);
             }.bind(self),
             callbackScope: this.scene,
             loop: true
