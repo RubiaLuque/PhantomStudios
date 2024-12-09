@@ -1,5 +1,7 @@
+import { DialogueCharacterData } from "./DialogueCharacterData.js";
 export default class DialogueInterpreter {
-    delay = 1000;
+    names = [ "Javi", "Fueyo", "Mika", "Muxu" ];
+
     constructor(dialogueText, background, scene){
         this.dialogueText = dialogueText;
         this.scene = scene;
@@ -7,42 +9,50 @@ export default class DialogueInterpreter {
         this.background.visible = false;
         scene.add.existing(this.background);
 
+        this.character = scene.add.sprite(100, 100, "Fueyo");
+
         this.nextInput = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.nextInput.on('down', function(){
+        this.nextInput.on('down', ()=>{
             this.next = true;
-        }, this);
+        });
     }
 
     SetDialogue(dialogue, endCallback = function(){}){
         this.lines = dialogue.split("@");
-        this.lines[this.lines.length] = "";
-        this.endCallback = endCallback;
         this.dialogueText.text = this.lines.shift();
-        let self = this;
         this.background.visible = true;
+        let self = this;
 
         this.scene.time.addEvent({
             delay: 10,
             callback: function(){
-                if(self.lines.length > 0)
+                if(this.lines.length >= 0)
                 {
-                    if(self.scene.time.now > self.delay && self.next)
+                    if(this.scene.time.now > this.delay && this.next)
                     {
-                        self.next = false;
-                        self.delay = self.scene.time.now + 100;
-                        self.dialogueText.text = self.lines.shift();
+                        this.next = false;
+                        this.delay = this.scene.time.now + 100;
+
+                        let line = this.lines.shift();
+
+                        let characterData = line.split(":")[0].split("/");
+                        let currentCharacter = DialogueCharacterData[characterData[0]];
+
+                        this.character.setTexture(characterData[0] + "_sheet", currentCharacter[characterData[1]]);
+
+                        this.dialogueText.text = line.split(":")[1];
                     }
                 }
-                else if(self.nextInput.isDown)
+                else if(this.nextInput.isDown)
                 {
-                    self.background.visible = false;
-                    self.dialogueText.text = "";
-                    self.scene.time.removeEvent(this);
-                    self.endCallback();
+                    this.background.visible = false;
+                    this.dialogueText.text = "";
+                    this.scene.time.removeEvent(this);
+                    endCallback();
                 }
-            },
-            callbackScope: self.scene,
+            }.bind(self),
+            callbackScope: this.scene,
             loop: true
         });
-    }
+       }
 }
