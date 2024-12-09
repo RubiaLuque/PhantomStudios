@@ -29,7 +29,6 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
        )
 
         this.scene = scene
-        this.enterCafe = new Phaser.Events.EventEmitter();
         
     }
 

@@ -35,6 +35,7 @@ let lastPlayerPosition, currentEnemyId;
 let phase, center;
 let currentTeam;
 let cardEnemies, cardTeam;
+let NPCFound;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -49,9 +50,10 @@ export default class CombatScene extends Phaser.Scene {
         team1 = new Team(teams.team1)
         team2 = new Team(teams.team2)
 
-        //Guardamos la posicion del jugador y el id del enemigo para la siguiente escena
+        //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
         currentEnemyId = teams.enemyId;
+        NPCFound = teams.NPCFound;
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
@@ -271,7 +273,7 @@ export default class CombatScene extends Phaser.Scene {
                 console.log(healths)
 
                 self.scene.start('WinScene',
-                {pos: lastPlayerPosition, id: currentEnemyId, healths: healths});}, 
+                {pos: lastPlayerPosition, id: currentEnemyId, healths: healths, NPCFound: this.NPCFound});}, 
                 loop: false });
         });
 

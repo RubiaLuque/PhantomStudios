@@ -13,6 +13,7 @@ let sceneAdded = false;
 let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
+let NPCFound;
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -33,6 +34,7 @@ export default class World1 extends Phaser.Scene
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
         if(result.healths != undefined) healths = result.healths;
+        if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         console.log(result.healths)
     }
 
@@ -68,7 +70,7 @@ export default class World1 extends Phaser.Scene
         this.player.eKey.on("down", ()=>{
             if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
             {
-                this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y} })
+                this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound })
             }
         })
 
@@ -128,7 +130,6 @@ export default class World1 extends Phaser.Scene
        mainMenuButton.text.setScrollFactor(0);
        console.log(this.player.team)
 
-       this.entrarCafe = this.player.enterCafe.events;
     }
 
     update()
@@ -141,7 +142,7 @@ export default class World1 extends Phaser.Scene
                 console.log(this.player.team);
                 console.log(enemy.team)
                 this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
-                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
+                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound});
             }
         });
     }
