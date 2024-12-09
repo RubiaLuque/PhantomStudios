@@ -11,8 +11,6 @@ export default class DialogueInterpreter {
 
         this.background.visible = false;
 
-        scene.add.existing(this.background);
-
         this.character = scene.add.sprite(100, 100, "Fueyo");
 
         this.nextInput = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
