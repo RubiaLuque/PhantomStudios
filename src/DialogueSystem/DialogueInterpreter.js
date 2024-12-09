@@ -2,7 +2,7 @@ import { DialogueCharacterData } from "./DialogueCharacterData.js";
 export default class DialogueInterpreter {
     names = [ "Javi", "Fueyo", "Mika", "Muxu" ];
 
-    constructor(scene){
+    constructor(scene, analyser){
         this.scene = scene;
         
         this.dialogueBackground = scene.add.rectangle(400, 500, 800, 200, 0x000000);
@@ -17,6 +17,8 @@ export default class DialogueInterpreter {
         this.nextInput.on('down', ()=>{
             this.next = true;
         });
+
+        this.analyser = analyser;
     }
 
     SetDialogue(dialogue, endCallback = function(){}){
@@ -38,6 +40,11 @@ export default class DialogueInterpreter {
 
                         let characterData = line.split(":")[0].split("/");
                         let currentCharacter = DialogueCharacterData[characterData[0]];
+
+                        let dataArray = analyser.GetDataArray();
+
+                        let value = dataArray[20] * dataArray[20] / 300000;
+                        this.character.setScale(0.30 - value, 0.15 + value);
 
                         this.character.setTexture(characterData[0] + "_sheet", currentCharacter[characterData[1]]);
 
