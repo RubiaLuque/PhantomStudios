@@ -69,7 +69,7 @@ export default class DialogueInterpreter {
                     this.scene.time.removeEvent(this);
                     endCallback();
                 }
-            }.bind(self),
+            },
             callbackScope: this.scene,
             loop: true
         });
