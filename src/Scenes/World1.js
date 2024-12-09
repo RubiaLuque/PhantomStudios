@@ -13,6 +13,7 @@ let sceneAdded = false;
 let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
+let NPCFound;
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -33,6 +34,7 @@ export default class World1 extends Phaser.Scene
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
         if(result.healths != undefined) healths = result.healths;
+        if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         console.log(result.healths)
     }
 
@@ -65,7 +67,13 @@ export default class World1 extends Phaser.Scene
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
 
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
-        
+        this.player.eKey.on("down", ()=>{
+            if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
+            {
+                this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound })
+            }
+        })
+
         console.log(healths)
         if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
@@ -121,6 +129,7 @@ export default class World1 extends Phaser.Scene
        mainMenuButton.setScrollFactor(0);
        mainMenuButton.text.setScrollFactor(0);
        console.log(this.player.team)
+
     }
 
     update()
@@ -133,14 +142,9 @@ export default class World1 extends Phaser.Scene
                 console.log(this.player.team);
                 console.log(enemy.team)
                 this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
-                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
+                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound});
             }
         });
-        
-        
-        if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
-        {
-            this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y} })
-        }
     }
+
 }
