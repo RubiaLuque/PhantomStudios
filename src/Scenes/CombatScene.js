@@ -286,9 +286,6 @@ export default class CombatScene extends Phaser.Scene {
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
 
         //Creacion del interprete de dialogos, para que se pueda usar si es necesario
-        let dialogueBackground = this.add.rectangle(400, 500, 800, 200, 0x000000);
-        dialogueBackground.alpha = 0.5;
-        let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
         this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
 
         //Incializamos la musica

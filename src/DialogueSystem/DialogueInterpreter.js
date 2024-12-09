@@ -2,11 +2,16 @@ import { DialogueCharacterData } from "./DialogueCharacterData.js";
 export default class DialogueInterpreter {
     names = [ "Javi", "Fueyo", "Mika", "Muxu" ];
 
-    constructor(dialogueText, background, scene){
+    constructor(scene){
         this.dialogueText = dialogueText;
         this.scene = scene;
-        this.background = background;
+        
+        this.dialogueBackground = scene.add.rectangle(400, 500, 800, 200, 0x000000);
+        this.dialogueBackground.alpha = 0.5;
+        this.dialogueText = scene.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
+        
         this.background.visible = false;
+
         scene.add.existing(this.background);
 
         this.character = scene.add.sprite(100, 100, "Fueyo");
