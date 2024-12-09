@@ -192,7 +192,7 @@ export default class CombatScene extends Phaser.Scene {
                     onEndTurn.emit('endTurn');
                     currentCharacter = -1;
                 }
-                else if(selectedCharacter.AlteredState({scene: this.scene, team: team1, phase: onPhaseChange}))
+                else if(selectedCharacter.alteredState({scene: this.scene, team: team1, phase: onPhaseChange}))
                 {
                     AttackButton.setActive(true)
                     MagicButton.setActive(true)
