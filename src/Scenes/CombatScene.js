@@ -4,6 +4,7 @@ import {analyser} from "../SoundSystem/Index.js"
 import Team from "../CombatSystem/Team.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
+import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 import World1 from "./World1.js";
 import WinScene from "./WinScene.js";
 
@@ -182,7 +183,7 @@ export default class CombatScene extends Phaser.Scene {
 
         //Evento que se emite en cuanto se ataca a un enemigo despues de seleccionar el ataque o la magia
         //Cambiamos de personaje y si ya no hay mas personajes cambiamos de turno
-        onPhaseChange.on('next', function(){
+        onPhaseChange.on('next', ()=>{
                 currentCharacter++;
                 selectedCharacter = team1.GetCharacter(currentCharacter);
 
@@ -191,7 +192,7 @@ export default class CombatScene extends Phaser.Scene {
                     onEndTurn.emit('endTurn');
                     currentCharacter = -1;
                 }
-                else
+                else if(selectedCharacter.AlteredState({scene: this.scene, team: team1, phase: onPhaseChange}))
                 {
                     AttackButton.setActive(true)
                     MagicButton.setActive(true)
