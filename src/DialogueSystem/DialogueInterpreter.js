@@ -21,7 +21,6 @@ export default class DialogueInterpreter {
 
     SetDialogue(dialogue, endCallback = function(){}){
         this.lines = dialogue.split("@");
-        this.dialogueText.text = this.lines.shift();
         this.background.visible = true;
         let self = this;
 
