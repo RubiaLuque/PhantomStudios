@@ -20,6 +20,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
         this.sKey = this.scene.input.keyboard.addKey('S')
+        this.eKey = this.scene.input.keyboard.addKey('E')
         this.spaceKey = this.scene.input.keyboard.addKey('SPACE')
 
        this.team = []; 
@@ -28,6 +29,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
        )
 
         this.scene = scene
+        this.enterCafe = new Phaser.Events.EventEmitter();
         
     }
 
@@ -45,7 +47,6 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
 
         direction.normalize();
         this.body.setVelocityX(direction.x * vel);
-        //console.log(this.x)
     }
 
     preUpdate(){

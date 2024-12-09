@@ -65,7 +65,13 @@ export default class World1 extends Phaser.Scene
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
 
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
-        
+        this.player.eKey.on("down", ()=>{
+            if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
+            {
+                this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y} })
+            }
+        })
+
         console.log(healths)
         if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
@@ -121,6 +127,8 @@ export default class World1 extends Phaser.Scene
        mainMenuButton.setScrollFactor(0);
        mainMenuButton.text.setScrollFactor(0);
        console.log(this.player.team)
+
+       this.entrarCafe = this.player.enterCafe.events;
     }
 
     update()
@@ -136,11 +144,6 @@ export default class World1 extends Phaser.Scene
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
             }
         });
-        
-        
-        if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
-        {
-            this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y} })
-        }
     }
+
 }
