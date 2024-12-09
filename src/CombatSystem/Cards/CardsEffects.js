@@ -7,14 +7,14 @@ export const CardsEffects = {
     // _ en el lugar donde iria dicho parametro en los parentesis de la funcion
 
     //Para todos los efectos:
-    //Team1 --> party
-    //Team2 --> Enemigos
+    //thisTeam --> equipo al que le ha tocado la carta
+    //thatTeam --> equipo al que no le ha tocado la carta
 
     FoolEffect: (thisTeam, _)=> {
         
     },
 
-    MagicianEffect: (thisTeam, _) => { 
+    MagicianEffect: (thisTeam, thatTeam) => { 
         
     },
 
@@ -51,20 +51,107 @@ export const CardsEffects = {
     },
 
     
-    // Hermit = 
-    // Wheel_of_Fortune = 
-    // Justice =
-    // Hanged_Man =
-    // Death =
-    // Temperance =
-    // Devil =
-    // Tower =
-    // Star =
-    // Moon = 
-    // Sun = 
-    // Judgement =
-    // World = 
+    HermitEffect: (thisTeam, thatTeam) => {
+
+    },
+
+
+    Wheel_of_FortuneEffect:(thisTeam, _) =>{
+        let rand = getRandomInt(2); //Da un numero aleatorio entre 0 y 1
+        let fortune;
+
+        if(rand == 1) fortune = 1;
+        else fortune = -1; 
+
+        thisTeam.entities.forEach(e => {
+            e.strength += fortune;
+            e.luck += fortune;
+            e.attack += fortune;
+            e.defense += defense;
+
+        });
+    },
+
+
+    JusticeEffect: (thisTeam, thatTeam) => {
+        //Esta carta tiene unos efectos diferentes según cual sea el equipo receptor
+        //Carta obtenida por el team de la party
+        if(thisTeam.name == "Party"){
+            thisTeam.entities.forEach(e => {
+                e.strength += 2;
+                e.luck += 2;
+                e.attack += 2;
+                e.defense += 2;
     
+            });
+        }
+        //Carta obtenida por los enemigos
+        else{
+            let enemy = thisTeam.getRandomCharacter();
+            let character = thatTeam.getRandomCharacter();
 
+            enemy.health = character.health;
+            enemy.luck = character.luck;
+            enemy.attack = character.attack;
+            enemy.defense = character.defense;
+        }
+    },
+    
+    Hanged_ManEffect: (thisTeam, _) => {
+        thisTeam.entities.getRandomCharacter().health = 1;
+    },
 
+    DeathEffect: (thisTeam, _) => {
+        thisTeam.entities.getRandomCharacter().Die();
+    },
+    
+    TemperanceEffect: (thisTeam, _) => {
+        thisTeam.entities.forEach(e => {
+            e.health+=5;
+        });
+    },
+
+    DevilEffect: (thisTeam, _) => {
+        let first = thisTeam.entities.getRandomCharacter();
+        first.health +=2;
+        first.defense += 2;
+        first.attack += 2;
+        first.luck += 2;
+
+        let second = thisTeam.entities.getRandomCharacterExcept(first);
+        first.health -=2;
+        first.defense -= 2;
+        first.attack -= 2;
+        first.luck -= 2;
+    },
+
+    TowerEffect: (thisTeam, _) => {
+        thisTeam.entities.forEach(e => {
+            e.defense += 2;
+        });
+    },
+
+    StarEffect: (thisTeam, _) => {
+        let star = thisTeam.getRandomCharacter();
+        star.health +=5;
+        star.defense += 5;
+        star.attack += 5;
+        star.luck += 5;
+    },
+    
+    MoonEffect: (thisTeam, thatTeam) => {
+        thisTeam.getRandomCharacter().alteredState = AlteredState.sleep;
+    },
+    
+    SunEffect: (thisTeam, thatTeam) => {
+        
+    },
+    
+    JudgementEffect: (thisTeam, thatTeam) => {
+        
+    },
+    
+    WorldEffect: (thisTeam, thatTeam) => {
+        thisTeam.getRandomCharacter().alteredState = AlteredState.deaf;
+    }
 }

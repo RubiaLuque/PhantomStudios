@@ -2,11 +2,13 @@ import { AlteredState } from "./Data/AlteredState.js"
 
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, image, scene, damageSound)
+    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound)
     {
         this.name = name
         this.health = health
         this.maxHealth = health
+        this.attack = attack
+        this.defense = defense
         this.damage = damage
         this.type = type
         this.alive = true;

@@ -45,8 +45,8 @@ export default class CombatScene extends Phaser.Scene {
 
     init(teams){
         //Inicializacion de los equipos, Team 1 es el jugador y Team 2 es el enemigo
-        team1 = new Team(teams.team1)
-        team2 = new Team(teams.team2)
+        team1 = new Team(teams.team1, "Party")
+        team2 = new Team(teams.team2, "Enemies")
 
         //Guardamos la posicion del jugador y el id del enemigo para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
