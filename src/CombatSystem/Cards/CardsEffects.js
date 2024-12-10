@@ -145,7 +145,7 @@ export const CardsEffects = {
     },
     
     MoonEffect: (thisTeam, _) => {
-        thisTeam.getRandomCharacter().alteredState = AlteredState.sleep;
+        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.sleep;
     },
     
     SunEffect: (thisTeam, _) => {
