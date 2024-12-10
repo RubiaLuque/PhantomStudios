@@ -10,7 +10,7 @@ export const MainTeam =
             defense: 10,
             luck: 0.5,
             image: "Javi",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         {
@@ -21,7 +21,7 @@ export const MainTeam =
             defense: 10,
             luck: 0.5,
             image: "Fueyo",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         {
@@ -32,7 +32,7 @@ export const MainTeam =
             defense: 10,
             luck: 0.5,
             image: "Mika",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         {
@@ -43,7 +43,7 @@ export const MainTeam =
             defense: 10,
             luck: 0.75,
             image: "Muxu",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         }
     ],
 
@@ -56,7 +56,7 @@ export const MainTeam =
             type: {horny: {name:"horny", str: "depression"}},
             luck: 0.5,
             image: "Uroboros",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         Demon: {
@@ -66,7 +66,7 @@ export const MainTeam =
             type: {wrath: {name:"wrath", str: "anxiety"}},
             luck: 0.5,
             image: "Demon",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         Skibidi: {
@@ -76,7 +76,7 @@ export const MainTeam =
             type: {depresion: {name:"depresion", str: "wrath"}},
             luck: 0.5,
             image: "Skibidi",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         Fork: {
@@ -86,7 +86,7 @@ export const MainTeam =
             type: {anxiety: {name:"anxiety", str: "horny"}},
             luck: 0.5,
             image: "Fork",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         }
     }
 }

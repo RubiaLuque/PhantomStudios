@@ -23,6 +23,7 @@ export default class CafeteriaScene extends Phaser.Scene
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
         if(result.healths != undefined) healths = result.healths;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
+        if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
     }
 
     preload(){
@@ -63,7 +64,14 @@ export default class CafeteriaScene extends Phaser.Scene
                     NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
                     NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
                     NPC.image = NPCEffects.NPCs[i].image;
+
                     NPC.upgradeAvailable = true;
+                    NPCTalked.forEach(B =>{
+                        if(NPC.name == B)
+                        {
+                            NPC.upgradeAvailable = false;
+                        }
+                    })
                     
                     NPC.sprite = this.add.sprite(NPC.x, NPC.y, NPC.image)
                     NPC.sprite.scale = 0.2;
@@ -95,6 +103,7 @@ export default class CafeteriaScene extends Phaser.Scene
                         function(){
                             self.player.team[0][A.upgradeStat] = self.player.team[0][A.upgradeStat] + A.upgradeAmount;
                             A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
                             JaviButton.text.destroy()
                             FueyoButton.text.destroy()
                             MikaButton.text.destroy()
@@ -103,12 +112,14 @@ export default class CafeteriaScene extends Phaser.Scene
                             MikaButton.destroy()
                             MuxuButton.destroy()
                             JaviButton.destroy()
+                            console.log(self.player.team)
                         }
                     );
                     FueyoButton = new CustomButton(this, 190, 600, "Button", "Fueyo", 
                         function(){
                             self.player.team[1][A.upgradeStat] = self.player.team[1][A.upgradeStat] + A.upgradeAmount;
                             A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
                             JaviButton.text.destroy()
                             FueyoButton.text.destroy()
                             MikaButton.text.destroy()
@@ -117,12 +128,14 @@ export default class CafeteriaScene extends Phaser.Scene
                             MikaButton.destroy()
                             MuxuButton.destroy()
                             FueyoButton.destroy()
+                            console.log(self.player.team)
                         }
                     );
                     MikaButton = new CustomButton(this, 380, 600, "Button", "Mika", 
                         function(){
                             self.player.team[2][A.upgradeStat] = self.player.team[2][A.upgradeStat] + A.upgradeAmount;
                             A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
                             JaviButton.text.destroy()
                             FueyoButton.text.destroy()
                             MikaButton.text.destroy()
@@ -131,12 +144,14 @@ export default class CafeteriaScene extends Phaser.Scene
                             FueyoButton.destroy()
                             MuxuButton.destroy()
                             MikaButton.destroy()
+                            console.log(self.player.team)
                         }
                     );
                     MuxuButton = new CustomButton(this, 570, 600, "Button", "Muxu", 
                         function(){
                             self.player.team[3][A.upgradeStat] = self.player.team[3][A.upgradeStat] + A.upgradeAmount;
                             A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
                             JaviButton.text.destroy()
                             FueyoButton.text.destroy()
                             MikaButton.text.destroy()
@@ -145,6 +160,7 @@ export default class CafeteriaScene extends Phaser.Scene
                             FueyoButton.destroy()
                             MikaButton.destroy()
                             MuxuButton.destroy()
+                            console.log(self.player.team)
                         }
                     );
                     JaviButton.setButtonScale(0.5, 0.25);
@@ -155,7 +171,6 @@ export default class CafeteriaScene extends Phaser.Scene
             }
         });
         })
-console.log(this.NPCs)
 
         this.physics.add.collider(this.player, this.collidables)
         this.physics.add.collider(this.player, this.door)
@@ -167,7 +182,7 @@ console.log(this.NPCs)
     {
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.door.getBounds()))
         {
-            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, healths: healths, NPCFound: NPCFound})
+            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, team: this.player.team, NPCFound: NPCFound, NPCTalked: NPCTalked})
         }
 
         

@@ -1,3 +1,4 @@
+import { analyser } from "../SoundSystem/Index.js"
 import { AlteredState } from "./Data/AlteredState.js"
 
 export default class Entity
@@ -17,13 +18,13 @@ export default class Entity
 
         this.image = image
         this.scene = scene
-        //this.sound = scene.sound
+        this.sound = analyser;
         this.damageSound = damageSound
         this.alteredState = AlteredState.none;
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.image, scene, container.damageSound)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound)
     }
 
     Setup()
@@ -47,7 +48,7 @@ export default class Entity
     GetDamage(damage, type)
     {
         console.log(this.damageSound)
-        this.sound.play(this.damageSound)
+        this.sound.Play(this.damageSound)
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 

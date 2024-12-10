@@ -14,6 +14,7 @@ export default class CardsScene extends Phaser.Scene{
         this.lastPlayerPosition = prevScene.lastPlayerPosition;
         this.enemyId = prevScene.enemyId;
         this.NPCFound = prevScene.NPCFound
+        this.NPCTalked = prevScene.NPCTalked;
     }
 
     //
@@ -81,7 +82,7 @@ export default class CardsScene extends Phaser.Scene{
         if (isDownSpace) {
             this.scene.start('combat', {team1: this.team1, team2: this.team2, 
                 lastPlayerPosition: this.lastPlayerPosition, enemyId: this.enemyId,
-                cardTeam: this.cardTeam, cardEnemies: this.cardEnemies, NPCFound: this.NPCFound});
+                cardTeam: this.cardTeam, cardEnemies: this.cardEnemies, NPCFound: this.NPCFound, NPCTalked: this.NPCTalked});
         }
     }
 

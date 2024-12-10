@@ -15,7 +15,9 @@ let sceneAdded = false;
 let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
-let NPCFound = ["Andres", "Sanchez"];
+let NPCFound = ["Andres", "Sanchez", "Toni"];
+let NPCTalked = [];
+let team;
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -35,8 +37,10 @@ export default class World1 extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
-        if(result.healths != undefined) healths = result.healths;
+        // if(result.healths != undefined) healths = result.healths;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
+        if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
+        if (result.team != undefined) team = result.team;
         console.log(result.healths)
     }
 
@@ -75,6 +79,9 @@ export default class World1 extends Phaser.Scene
         this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
 
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        if (team != undefined){
+            this.player.team = team;
+        }
         this.player.eKey.on("down", ()=>{
             if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
             {
@@ -87,24 +94,23 @@ export default class World1 extends Phaser.Scene
             }
         })
 
-        console.log(healths)
         if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
             this.player.y = pos.y
         }
-        if (healths != undefined)
-        {
-            this.player.team.forEach(entity =>{
-                if(healths[entity.name] == undefined)
-                {
-                    entity.health = 1;
-                }
-                else
-                {
-                    entity.health = healths[entity.name]
-                }
-            })
-        }
+        // if (healths != undefined)
+        // {
+        //     this.player.team.forEach(entity =>{
+        //         if(healths[entity.name] == undefined)
+        //         {
+        //             entity.health = 1;
+        //         }
+        //         else
+        //         {
+        //             entity.health = healths[entity.name]
+        //         }
+        //     })
+        // }
 
         this.physics.add.collider(this.player, this.collidables)
         
@@ -156,7 +162,7 @@ export default class World1 extends Phaser.Scene
                 console.log(this.player.team);
                 console.log(enemy.team)
                 this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
-                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound});
+                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked});
             }
         });
 

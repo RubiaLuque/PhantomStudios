@@ -36,7 +36,7 @@ let lastPlayerPosition, currentEnemyId;
 let phase, center;
 let currentTeam;
 let cardEnemies, cardTeam;
-let NPCFound;
+let NPCFound, NPCTalked;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -55,6 +55,7 @@ export default class CombatScene extends Phaser.Scene {
         lastPlayerPosition = teams.lastPlayerPosition;
         currentEnemyId = teams.enemyId;
         NPCFound = teams.NPCFound;
+        NPCTalked = teams.NPCTalked;
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
@@ -262,7 +263,7 @@ export default class CombatScene extends Phaser.Scene {
             console.log('You win');
             resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
             //Al ganar se borran los estados alterados de los personajes
-            this.team1.entities.forEach(e=>{
+            team1.entities.forEach(e=>{
                 e.ClearAlteredStates();
             });
 
@@ -271,14 +272,14 @@ export default class CombatScene extends Phaser.Scene {
                 callback: function(){
                 self.unLoad();
 
-                let healths = {};
-                team1.entities.forEach(entity =>{
-                    healths[entity.name] = entity.health;
-                })
-                console.log(healths)
+                // let healths = {};
+                // team1.entities.forEach(entity =>{
+                //     healths[entity.name] = entity.health;
+                // })
+                // console.log(healths)
 
                 self.scene.start('WinScene',
-                {pos: lastPlayerPosition, id: currentEnemyId, healths: healths, NPCFound: this.NPCFound});}, 
+                {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});}, 
                 loop: false });
         });
 
