@@ -1,6 +1,7 @@
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
+import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
 
-export default class DialogueTextScene extends Phaser.Scene{
+export default class DialogueTestScene extends Phaser.Scene{
     constructor(){
         super({key: 'DialogueTestScene'});
     }
@@ -11,6 +12,6 @@ export default class DialogueTextScene extends Phaser.Scene{
 
     create(){
         let dialogueInterpreter = new DialogueInterpreter(this)
-        dialogueInterpreter.SetDialogue('Javi/default:UwU@Javi/horny:Me corro aaaaa');
+        dialogueInterpreter.SetDialogue(dialogue['prueba']);
     }
 }
