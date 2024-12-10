@@ -25,11 +25,11 @@ export const CardsEffects = {
     },
 
     EmperorEffect: (thisTeam, _) => {
-        thisTeam.getRandomCharacter().alteredState = AlteredState.papeado;
+        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.papeado;
     },
 
     EmpressEffect: (thisTeam, _) => {
-        thisTeam.getRandomCharacter().alteredState = AlteredState.fear;
+        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.fear;
     },
 
     HierophantEffect: (thisTeam, _) => {
@@ -56,7 +56,7 @@ export const CardsEffects = {
             //ATAQUE ESPECIAL??
         }
         else{
-            thatTeam.getRandomCharacter().alteredState = AlteredState.no_attack;
+            thatTeam.entities.getRandomCharacter().alteredState = AlteredState.no_attack;
         }
     },
 
@@ -137,7 +137,7 @@ export const CardsEffects = {
     },
 
     StarEffect: (thisTeam, _) => {
-        let star = thisTeam.getRandomCharacter();
+        let star = thisTeam.entities.getRandomCharacter();
         star.health +=5;
         star.defense += 5;
         star.attack += 5;
