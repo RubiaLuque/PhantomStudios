@@ -30,7 +30,7 @@ export default class CafeteriaScene extends Phaser.Scene
         this.load.image("Main_Team", "assets/images/Main_Team.png");
         this.load.image("Door", "assets/images/CafetePuerta.png");
         this.load.image("NPC", "assets/images/NPC.png");
-        this.load.image("Tiles", "assets/tilemaps/tilemap_prueba.png")
+        this.load.image("Tiles", "assets/tilemaps/tilemap_cafeteria.png")
         this.load.tilemapTiledJSON("Cafeteria", "assets/tilemaps/Cafeteria.json")
         this.load.image("Andres", "assets/images/NPC.png")
         this.load.image("Sanchez", "assets/images/NPC.png")
@@ -45,7 +45,7 @@ export default class CafeteriaScene extends Phaser.Scene
             key: "Cafeteria"
         })
 
-        const set = this.tileMap.addTilesetImage('tilemap_prueba', 'Tiles')
+        const set = this.tileMap.addTilesetImage('tilemap_cafeteria', 'Tiles')
 
         this.floor = this.tileMap.createLayer('Suelo', set)
         this.collidables = this.tileMap.createLayer('Colisionables', set)
@@ -184,7 +184,5 @@ export default class CafeteriaScene extends Phaser.Scene
         {
             this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, team: this.player.team, NPCFound: NPCFound, NPCTalked: NPCTalked})
         }
-
-        
     }
 }
