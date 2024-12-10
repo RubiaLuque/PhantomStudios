@@ -7,6 +7,7 @@ import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 import CardsScene from "./CardsScene.js";
 import CustomButton from "../UI/CustomButton.js";
 import NPC from "../Navigation/NPC.js";
+import {analyser} from "../SoundSystem/Index.js";
 
 let team1, team2;
 let pos = {x: 0, y: 0};
@@ -63,6 +64,9 @@ export default class World1 extends Phaser.Scene
 
         const set = this.tileMap.addTilesetImage('tilemap_prueba', 'Tiles')
 
+        analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
+        analyser.Restart();
+        
         this.collidables = this.tileMap.createLayer('Capa de patrones 1', set)
         this.collidables.setCollision(1);
         
@@ -133,12 +137,13 @@ export default class World1 extends Phaser.Scene
                 this.scene.start("main_menu");
             }
         );
-       mainMenuButton.setButtonScale(0.25,0.25);
-       mainMenuButton.setTextPosition(-20,-7);
-       mainMenuButton.setScrollFactor(0);
-       mainMenuButton.text.setScrollFactor(0);
-       console.log(this.player.team)
+        mainMenuButton.setButtonScale(0.25,0.25);
+        mainMenuButton.setTextPosition(-20,-7);
+        mainMenuButton.setScrollFactor(0);
+        mainMenuButton.text.setScrollFactor(0);
+        console.log(this.player.team)
 
+        
     }
 
     update()

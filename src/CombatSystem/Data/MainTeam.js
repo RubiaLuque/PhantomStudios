@@ -7,6 +7,7 @@ export const MainTeam =
             damage: 20,
             health: 80,
             type: {horny: {name:"horny", str: "depression"}},
+            defense: 10,
             luck: 0.5,
             image: "Javi",
             damageSound: "oioioi"
@@ -17,6 +18,7 @@ export const MainTeam =
             damage: 10,
             health: 120,
             type: {wrath: {name:"wrath", str: "anxiety"}},
+            defense: 10,
             luck: 0.5,
             image: "Fueyo",
             damageSound: "oioioi"
@@ -27,6 +29,7 @@ export const MainTeam =
             damage: 5,
             health: 200,
             type: {depresion: {name:"depresion", str: "wrath"}},
+            defense: 10,
             luck: 0.5,
             image: "Mika",
             damageSound: "oioioi"
@@ -37,6 +40,7 @@ export const MainTeam =
             damage: 10,
             health: 90,
             type: {anxiety: {name:"anxiety", str: "horny"}},
+            defense: 10,
             luck: 0.75,
             image: "Muxu",
             damageSound: "oioioi"

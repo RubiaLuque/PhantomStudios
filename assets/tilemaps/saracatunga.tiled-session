@@ -9,8 +9,11 @@
     ],
     "fileStates": {
         "Cafeteria.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
             "scale": 0.75,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 474,
                 "y": 360.6666666666667
@@ -22,10 +25,10 @@
         },
         "mundo1.tmx": {
             "scale": 0.33,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1022.7272727272727,
-                "y": -769.6969696969697
+                "x": 795.4545454545456,
+                "y": -707.5757575757575
             }
         },
         "tilemap_prueba.tsx": {

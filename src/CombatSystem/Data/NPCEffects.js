@@ -16,21 +16,21 @@ export const NPCEffects =
 
         {
             name: "Toni",
-            upgradeStat: "Suerte",
-            upgradeAmount: 5,
+            upgradeStat: "luck",
+            upgradeAmount: 0.25,
             image: "NPC",
         },
 
         {
             name: "Mozos",
-            upgradeStat: "Defensa",
+            upgradeStat: "defense",
             upgradeAmount: 5,
             image: "NPC",
         },
 
         {
             name: "Poletti",
-            upgradeStat: "Daño",
+            upgradeStat: "damage",
             upgradeAmount: 5,
             image: "NPC",
         },
