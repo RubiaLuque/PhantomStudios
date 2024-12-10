@@ -10,7 +10,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         console.log("A")
         super(scene, x, y, 'Main_Team')
 
-        this.scale = 0.25;
+        this.scale = 0.05;
         
         scene.add.existing(this);
         scene.physics.add.existing(this);
