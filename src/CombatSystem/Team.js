@@ -1,7 +1,8 @@
 export default class Team
 {
-    constructor(entities)
+    constructor(entities, name)
     {
+        this.name = name;
         this.entities = entities
         this.onTeam = new Phaser.Events.EventEmitter()
         this.currentEntity = 0
@@ -9,6 +10,7 @@ export default class Team
 
     Preload(scene)
     {
+        
         scene.load.image("Shit", "assets/images/Shit.png")
         let self = this;
 

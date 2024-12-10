@@ -18,5 +18,10 @@ export const AlteredState =
         let target = data.team.GetRandomCharacterExcept(target);
         this.MagicAttack(target, data.phase.emit('next'))
         return false
+    },
+    no_attack: (data)=> { //Un personaje se salta su turno y no ataca. Se usa en la carta de Lovers
+        let target = data.team.GetRandomCharacter();
+        this.MoveTo(target.sprite.position, data.phase.emit('next'));
+        return false;
     }
 }

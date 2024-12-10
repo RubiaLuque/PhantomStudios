@@ -6,6 +6,8 @@ import Cafeteria from "../Navigation/Cafeteria.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 import CardsScene from "./CardsScene.js";
 import CustomButton from "../UI/CustomButton.js";
+import NPC from "../Navigation/NPC.js";
+import {analyser} from "../SoundSystem/Index.js";
 
 let team1, team2;
 let pos = {x: 0, y: 0};
@@ -13,6 +15,9 @@ let sceneAdded = false;
 let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
+let NPCFound = ["Andres", "Sanchez"];
+let NPCTalked = [];
+let team;
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -32,7 +37,10 @@ export default class World1 extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
-        if(result.healths != undefined) healths = result.healths;
+        // if(result.healths != undefined) healths = result.healths;
+        if(result.NPCFound != undefined) NPCFound = result.NPCFound;
+        if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
+        if (result.team != undefined) team = result.team;
         console.log(result.healths)
     }
 
@@ -40,6 +48,7 @@ export default class World1 extends Phaser.Scene
     {
         this.load.image("Main_Team", "assets/images/Main_Team.png");
         this.load.image("Cafeteria", "assets/images/Cafeteria.png");
+        this.load.image("NPC", "assets/images/NPC.png");
         this.load.image("Fork", "assets/images/Fork.png");
         this.load.image("Demon", "assets/images/Demon.png");
         this.load.image("Uroboros", "assets/images/Uroboros.png");
@@ -59,31 +68,49 @@ export default class World1 extends Phaser.Scene
 
         const set = this.tileMap.addTilesetImage('tilemap_prueba', 'Tiles')
 
+        analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
+        analyser.Restart();
+        
         this.collidables = this.tileMap.createLayer('Capa de patrones 1', set)
         this.collidables.setCollision(1);
         
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
 
+        this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
+
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
-        
-        console.log(healths)
+        if (team != undefined){
+            this.player.team = team;
+        }
+        this.player.eKey.on("down", ()=>{
+            if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
+            {
+                this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound })
+            }
+            if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.Toni.getBounds()))
+            {
+                NPCFound.push(this.Toni.name)
+                this.Toni.destroy()
+            }
+        })
+
         if (pos.x != 0 && pos.y != 0) {
             this.player.x = pos.x
             this.player.y = pos.y
         }
-        if (healths != undefined)
-        {
-            this.player.team.forEach(entity =>{
-                if(healths[entity.name] == undefined)
-                {
-                    entity.health = 1;
-                }
-                else
-                {
-                    entity.health = healths[entity.name]
-                }
-            })
-        }
+        // if (healths != undefined)
+        // {
+        //     this.player.team.forEach(entity =>{
+        //         if(healths[entity.name] == undefined)
+        //         {
+        //             entity.health = 1;
+        //         }
+        //         else
+        //         {
+        //             entity.health = healths[entity.name]
+        //         }
+        //     })
+        // }
 
         this.physics.add.collider(this.player, this.collidables)
         
@@ -116,11 +143,13 @@ export default class World1 extends Phaser.Scene
                 this.scene.start("main_menu");
             }
         );
-       mainMenuButton.setButtonScale(0.25,0.25);
-       mainMenuButton.setTextPosition(-20,-7);
-       mainMenuButton.setScrollFactor(0);
-       mainMenuButton.text.setScrollFactor(0);
-       console.log(this.player.team)
+        mainMenuButton.setButtonScale(0.25,0.25);
+        mainMenuButton.setTextPosition(-20,-7);
+        mainMenuButton.setScrollFactor(0);
+        mainMenuButton.text.setScrollFactor(0);
+        console.log(this.player.team)
+
+        
     }
 
     update()
@@ -133,14 +162,10 @@ export default class World1 extends Phaser.Scene
                 console.log(this.player.team);
                 console.log(enemy.team)
                 this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
-                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id});
+                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked});
             }
         });
-        
-        
-        if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
-        {
-            this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y} })
-        }
+
     }
+
 }

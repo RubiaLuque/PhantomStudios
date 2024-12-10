@@ -2,9 +2,15 @@ import Cafeteria from "../Navigation/Cafeteria.js";
 import playerCafeteria from "../Navigation/CafeteriaPlayer.js";
 import NPC from "../Navigation/NPC.js";
 import { NPCEffects } from "../CombatSystem/Data/NPCEffects.js";
+import CustomButton from "../UI/CustomButton.js";
+import Entity from "../CombatSystem/Entity.js";
 
 
 let pos = {x: 0, y: 0};
+let healths;
+let NPCFound = []
+let NPCTalked = []
+let JaviButton, FueyoButton, MikaButton, MuxuButton;
 export default class CafeteriaScene extends Phaser.Scene
 {
     constructor(){
@@ -15,6 +21,9 @@ export default class CafeteriaScene extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
+        if(result.healths != undefined) healths = result.healths;
+        if(result.NPCFound != undefined) NPCFound = result.NPCFound;
+        if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
     }
 
     preload(){
@@ -44,26 +53,124 @@ export default class CafeteriaScene extends Phaser.Scene
         
         
         this.door = this.tileMap.createFromObjects("Entidades", {name: 'Door', classType: Cafeteria, key: 'Door'})[0]
-
-        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Main_Team'})[0] //key sirve para indicar que image carga
         
         this.NPCs = this.tileMap.createFromObjects("Entidades", {name: 'NPC', classType: NPC})
-
-        console.log(this.NPCs)
+        
         let i = 0;
         this.NPCs.forEach(NPC =>{
             NPC.name = NPCEffects.NPCs[i].name;
-            NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
-            NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
-            NPC.image = NPCEffects.NPCs[i].image;
-            NPC.upgradeAvailable = true;
-            
-            NPC.sprite = this.add.sprite(NPC.x, NPC.y, NPC.name)
-            NPC.sprite.scale = 0.2;
+            NPCFound.forEach(A =>{
+                if(NPC.name == A){
+                    NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
+                    NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
+                    NPC.image = NPCEffects.NPCs[i].image;
 
+                    NPC.upgradeAvailable = true;
+                    NPCTalked.forEach(B =>{
+                        if(NPC.name == B)
+                        {
+                            NPC.upgradeAvailable = false;
+                        }
+                    })
+                    
+                    NPC.sprite = this.add.sprite(NPC.x, NPC.y, NPC.image)
+                    NPC.sprite.scale = 0.2;
+                }
+                else{
+                    NPC.destroy();
+                }
+            })
+            
             i++;
         })
-        console.log(this.NPCs)
+        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        
+        let self = this;
+        this.player.eKey.on("down", ()=>{
+            this.NPCs.forEach(A => {
+            if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
+            {
+                if(A.name == "Andres" || A.name == "Sanchez")
+                {
+                    this.player.team.forEach(character =>{
+                        character.health = character.maxHealth
+                        console.log("Equipo curado, tremendo bocadillo")
+                    })
+                }
+                else
+                {
+                    JaviButton = new CustomButton(this, 0, 600, "Button", "Javi", 
+                        function(){
+                            self.player.team[0][A.upgradeStat] = self.player.team[0][A.upgradeStat] + A.upgradeAmount;
+                            A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
+                            JaviButton.text.destroy()
+                            FueyoButton.text.destroy()
+                            MikaButton.text.destroy()
+                            MuxuButton.text.destroy()
+                            FueyoButton.destroy()
+                            MikaButton.destroy()
+                            MuxuButton.destroy()
+                            JaviButton.destroy()
+                            console.log(self.player.team)
+                        }
+                    );
+                    FueyoButton = new CustomButton(this, 190, 600, "Button", "Fueyo", 
+                        function(){
+                            self.player.team[1][A.upgradeStat] = self.player.team[1][A.upgradeStat] + A.upgradeAmount;
+                            A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
+                            JaviButton.text.destroy()
+                            FueyoButton.text.destroy()
+                            MikaButton.text.destroy()
+                            MuxuButton.text.destroy()
+                            JaviButton.destroy()
+                            MikaButton.destroy()
+                            MuxuButton.destroy()
+                            FueyoButton.destroy()
+                            console.log(self.player.team)
+                        }
+                    );
+                    MikaButton = new CustomButton(this, 380, 600, "Button", "Mika", 
+                        function(){
+                            self.player.team[2][A.upgradeStat] = self.player.team[2][A.upgradeStat] + A.upgradeAmount;
+                            A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
+                            JaviButton.text.destroy()
+                            FueyoButton.text.destroy()
+                            MikaButton.text.destroy()
+                            MuxuButton.text.destroy()
+                            JaviButton.destroy()
+                            FueyoButton.destroy()
+                            MuxuButton.destroy()
+                            MikaButton.destroy()
+                            console.log(self.player.team)
+                        }
+                    );
+                    MuxuButton = new CustomButton(this, 570, 600, "Button", "Muxu", 
+                        function(){
+                            self.player.team[3][A.upgradeStat] = self.player.team[3][A.upgradeStat] + A.upgradeAmount;
+                            A.upgradeAvailable = false;
+                            NPCTalked.push(A.name)
+                            JaviButton.text.destroy()
+                            FueyoButton.text.destroy()
+                            MikaButton.text.destroy()
+                            MuxuButton.text.destroy()
+                            JaviButton.destroy()
+                            FueyoButton.destroy()
+                            MikaButton.destroy()
+                            MuxuButton.destroy()
+                            console.log(self.player.team)
+                        }
+                    );
+                    JaviButton.setButtonScale(0.5, 0.25);
+                    FueyoButton.setButtonScale(0.5, 0.25);
+                    MikaButton.setButtonScale(0.5, 0.25);
+                    MuxuButton.setButtonScale(0.5, 0.25);
+                }
+            }
+        });
+        })
 
         this.physics.add.collider(this.player, this.collidables)
         this.physics.add.collider(this.player, this.door)
@@ -75,14 +182,9 @@ export default class CafeteriaScene extends Phaser.Scene
     {
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.door.getBounds()))
         {
-            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}})
+            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, team: this.player.team, NPCFound: NPCFound, NPCTalked: NPCTalked})
         }
 
-        this.NPCs.forEach(A => {
-            if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
-            {
-                
-            }
-        });
+        
     }
 }

@@ -36,7 +36,7 @@ export default class MusicAnalyser {
 
     SetRandomSong(Songs){
         if(Songs != undefined) this.SetSong(Songs[Math.floor(Math.random() * Songs.length)]);
-        else this.SetSong(this.songs[Math.floor(Math.random() * this.songs.length)]);
+        else this.SetSong(Math.floor(Math.random() * this.songs.length));
     }
 
     GetDataArray()

@@ -4,6 +4,8 @@ const characters = ['Javi', 'Mika', 'Fueyo', 'Muxu'];
 let expText;
 let pos, enemyId;
 let healths;
+let NPCFound, NPCTalked;
+let team;
 export default class WinScene extends Phaser.Scene
 {
     constructor(){
@@ -24,7 +26,9 @@ export default class WinScene extends Phaser.Scene
     {
         pos = result.pos
         enemyId = result.id;
-        healths = result.healths;
+        team = result.team;
+        NPCFound = result.NPCFound;
+        NPCTalked = result.NPCTalked;
         console.log(healths)
     }
 
@@ -68,7 +72,7 @@ export default class WinScene extends Phaser.Scene
         this.time.delayedCall(5000, function(){
             new CustomButton(self, 400, 500, 'Button', 'Exit', function(){
                 self.sound.stopAll();
-                self.scene.start('World1', {pos: pos, id: enemyId, healths: healths});
+                self.scene.start('World1', {pos: pos, id: enemyId, team: team, NPCFound: NPCFound, NPCTalked: NPCTalked});
             });
         });
     }

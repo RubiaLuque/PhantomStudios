@@ -1,12 +1,15 @@
+import { analyser } from "../SoundSystem/Index.js"
 import { AlteredState } from "./Data/AlteredState.js"
 
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, image, scene, damageSound)
+    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound)
     {
         this.name = name
         this.health = health
         this.maxHealth = health
+        this.attack = attack
+        this.defense = defense
         this.damage = damage
         this.type = type
         this.alive = true;
@@ -15,13 +18,13 @@ export default class Entity
 
         this.image = image
         this.scene = scene
-        this.sound = scene.sound
+        this.sound = analyser;
         this.damageSound = damageSound
         this.alteredState = AlteredState.none;
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.image, scene, container.damageSound)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound)
     }
 
     Setup()
@@ -45,7 +48,7 @@ export default class Entity
     GetDamage(damage, type)
     {
         console.log(this.damageSound)
-        this.sound.play(this.damageSound)
+        this.sound.Play(this.damageSound)
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 
@@ -124,6 +127,11 @@ export default class Entity
         this.alive = false;
         this.event.emit('die');
     }
+
+    //Se borran los estados alterados tras un combate
+    ClearAlteredStates(){
+        this.alteredState = AlteredState.none;
+    }
 }
 
 const Type = {
@@ -133,6 +141,7 @@ const Type = {
     depression: {name:'depression', str: 'wrath'},
     physical: {name:'physical', str: 'depression'}
 }
+
 
 // const AlteredState = {
 //     None: {

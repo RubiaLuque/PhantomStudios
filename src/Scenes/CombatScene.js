@@ -7,6 +7,7 @@ import LifeBar from "../CombatSystem/LifeBar.js";
 import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 import World1 from "./World1.js";
 import WinScene from "./WinScene.js";
+import Entity from "../CombatSystem/Entity.js";
 
 const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
 
@@ -31,6 +32,7 @@ let lastPlayerPosition, currentEnemyId;
 let phase;
 let currentTeam;
 let cardEnemies, cardTeam;
+let NPCFound, NPCTalked;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -42,12 +44,14 @@ export default class CombatScene extends Phaser.Scene {
 
     init(teams){
         //Inicializacion de los equipos, Team 1 es el jugador y Team 2 es el enemigo
-        team1 = new Team(teams.team1)
-        team2 = new Team(teams.team2)
+        team1 = new Team(teams.team1, "Party")
+        team2 = new Team(teams.team2, "Enemies")
 
-        //Guardamos la posicion del jugador y el id del enemigo para la siguiente escena
+        //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
         currentEnemyId = teams.enemyId;
+        NPCFound = teams.NPCFound;
+        NPCTalked = teams.NPCTalked;
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
@@ -206,7 +210,7 @@ export default class CombatScene extends Phaser.Scene {
             healths[entity.name] = entity.health;
         })
 
-        self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, healths: healths});
+        self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
         analyser.Stop();
     }
 }
