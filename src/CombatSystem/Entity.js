@@ -11,7 +11,7 @@ export default class Entity
         this.type = type
         this.alive = true;
         this.luck = luck
-        this.on = new Phaser.Events.EventEmitter()
+        this.event = new Phaser.Events.EventEmitter()
 
         this.image = image
         this.scene = scene
@@ -79,7 +79,7 @@ export default class Entity
             loop: true
         });
 
-        this.on.emit('GetDamage', damage)
+        this.event.emit('GetDamage', damage)
     }
 
     AttackTemplate(other, type)
@@ -87,10 +87,8 @@ export default class Entity
         let damage = this.damage;
         if(Math.random() < this.luck/10)
         {
-            console.log(this.name + ' critical hit')
             damage *= 1.5
         }
-        console.log(this)
         other.GetDamage(damage, type)
 
         let self = this
@@ -121,11 +119,10 @@ export default class Entity
 
     Die()
     {
-        console.log(this.name + ' died')
         this.sprite.setTexture('Shit')
         this.sprite.scale = 1;
         this.alive = false;
-        this.on.emit('die');
+        this.event.emit('die');
     }
 }
 

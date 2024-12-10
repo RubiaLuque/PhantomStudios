@@ -10,7 +10,7 @@ export default class LifeBar extends Phaser.GameObjects.Sprite
         scene.add.text(x-20, y-5, this.entity.name);
 
         let UpdateBar = this.UpdateBar.bind(this);
-        this.entity.on.on('GetDamage', UpdateBar);
+        this.entity.event.on('GetDamage', UpdateBar);
         UpdateBar();
     }
 

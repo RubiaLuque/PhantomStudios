@@ -4,6 +4,7 @@ export default class Team
     {
         this.entities = entities
         this.onTeam = new Phaser.Events.EventEmitter()
+        this.currentEntity = 0
     }
 
     Preload(scene)
@@ -16,7 +17,7 @@ export default class Team
             scene.load.image(entity.name, "assets/images/" + entity.image + ".png")
             scene.load.audio(entity.damageSound, "assets/music/" + entity.damageSound + ".wav")
 
-            entity.on.on('die', function(){
+            entity.event.on('die', function(){
                 self.entities.forEach((item, index) => {
                     if (item === entity) {
                         self.entities.splice(index, 1);
@@ -41,10 +42,27 @@ export default class Team
         })
     }
 
-    GetCharacter(index)
+    CurrentCharacter()
     {
-        if(index < 0 || index >= this.entities.length) index = 0
-        return this.entities[index]
+        return this.selectedEntity
+    }
+
+    GetNextCharacter()
+    {
+        let valid = true;
+        this.selectedEntity = this.entities[this.currentEntity]
+
+        if(this.currentEntity >= this.entities.length)
+        {
+            valid = false;
+            this.currentEntity = 0
+        }
+        else
+        {
+            this.currentEntity++
+        }
+
+        return {isValid: valid, entity: this.selectedEntity}
     }
 
     GetRandomCharacter()
