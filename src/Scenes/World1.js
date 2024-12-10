@@ -15,7 +15,7 @@ let sceneAdded = false;
 let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
-let NPCFound = ["Andres", "Sanchez", "Toni"];
+let NPCFound = ["Andres", "Sanchez"];
 let NPCTalked = [];
 let team;
 
