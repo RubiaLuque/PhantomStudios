@@ -4,7 +4,7 @@ import World1 from "./Scenes/World1.js";
 import WinScene from "./Scenes/WinScene.js";
 import CardsScene from "./Scenes/CardsScene.js";
 import CafeteriaScene from "./Scenes/CafeteriaScene.js";
-import DialogueTextScene from "./Scenes/DialogueTestScene.js";
+import DialogueTestScene from "./Scenes/DialogueTestScene.js";
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
  * la clase Game de Phaser, encargada de crear e iniciar el juego.
