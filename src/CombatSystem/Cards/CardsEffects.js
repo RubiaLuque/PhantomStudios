@@ -157,6 +157,6 @@ export const CardsEffects = {
     },
     
     WorldEffect: (thisTeam, _) => {
-        thisTeam.getRandomCharacter().alteredState = AlteredState.deaf;
+        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.deaf;
     }
 }

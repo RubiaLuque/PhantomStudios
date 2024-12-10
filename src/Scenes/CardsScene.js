@@ -27,7 +27,7 @@ export default class CardsScene extends Phaser.Scene{
         this.load.image("Chariot", "assets/images/cards/Chariot.jpg");
         this.load.image("Hanged_Man", "assets/images/cards/Hanged_Man.jpg");
         this.load.image("Hermit", "assets/images/cards/Hermit.jpg");
-        this.load.image("Sun", "assets/images/cards/Hermit.jpg");
+        this.load.image("Sun", "assets/images/cards/Sun.jpg");
         this.load.image("Temperance", "assets/images/cards/Temperance.jpg");
         this.load.image("Tower", "assets/images/cards/Tower.jpg");
         this.load.image("Lovers", "assets/images/cards/Lovers.jpg");
