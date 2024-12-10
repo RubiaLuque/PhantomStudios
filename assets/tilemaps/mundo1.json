@@ -567,8 +567,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1230.45666666667,
-                 "y":362.083333333333
+                 "x":1230.46,
+                 "y":362.083
                 }, 
                 {
                  "height":0,
@@ -591,8 +591,20 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1457.57575757576,
+                 "x":1457.58,
                  "y":330
+                }, 
+                {
+                 "height":0,
+                 "id":30,
+                 "name":"Toni",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":992,
+                 "y":-800
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -601,7 +613,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":30,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

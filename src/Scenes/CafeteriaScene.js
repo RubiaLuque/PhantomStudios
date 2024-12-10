@@ -6,7 +6,7 @@ import { NPCEffects } from "../CombatSystem/Data/NPCEffects.js";
 
 let pos = {x: 0, y: 0};
 let healths;
-let NPCFound = ["Andres", "Sanchez"]
+let NPCFound = []
 export default class CafeteriaScene extends Phaser.Scene
 {
     constructor(){

@@ -6,6 +6,7 @@ import Cafeteria from "../Navigation/Cafeteria.js";
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 import CardsScene from "./CardsScene.js";
 import CustomButton from "../UI/CustomButton.js";
+import NPC from "../Navigation/NPC.js";
 
 let team1, team2;
 let pos = {x: 0, y: 0};
@@ -13,7 +14,7 @@ let sceneAdded = false;
 let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
-let NPCFound;
+let NPCFound = ["Andres", "Sanchez"];
 
 const Type = {
     horny : {name:'horny', str: 'depression'},
@@ -42,6 +43,7 @@ export default class World1 extends Phaser.Scene
     {
         this.load.image("Main_Team", "assets/images/Main_Team.png");
         this.load.image("Cafeteria", "assets/images/Cafeteria.png");
+        this.load.image("NPC", "assets/images/NPC.png");
         this.load.image("Fork", "assets/images/Fork.png");
         this.load.image("Demon", "assets/images/Demon.png");
         this.load.image("Uroboros", "assets/images/Uroboros.png");
@@ -66,11 +68,18 @@ export default class World1 extends Phaser.Scene
         
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
 
+        this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
+
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
         this.player.eKey.on("down", ()=>{
             if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
             {
                 this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound })
+            }
+            if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.Toni.getBounds()))
+            {
+                NPCFound.push(this.Toni.name)
+                this.Toni.destroy()
             }
         })
 
@@ -145,6 +154,7 @@ export default class World1 extends Phaser.Scene
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound});
             }
         });
+
     }
 
 }
