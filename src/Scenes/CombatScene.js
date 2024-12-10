@@ -7,6 +7,7 @@ import LifeBar from "../CombatSystem/LifeBar.js";
 import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 import World1 from "./World1.js";
 import WinScene from "./WinScene.js";
+import Entity from "../CombatSystem/Entity.js";
 
 const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
 
@@ -260,6 +261,10 @@ export default class CombatScene extends Phaser.Scene {
         team2.onTeam.on('death', function(){
             console.log('You win');
             resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
+            //Al ganar se borran los estados alterados de los personajes
+            this.team1.entities.forEach(e=>{
+                e.ClearAlteredStates();
+            });
 
             //Tras ganar retrasamos un poco la carga de la pantalla de victoria
             self.time.addEvent({ delay : 1000, 

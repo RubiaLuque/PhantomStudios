@@ -19,10 +19,17 @@ export default class CardsScene extends Phaser.Scene{
     //
     preload() {
         //Cartas tarot
+        this.load.image("Back", "assets/images/cards/Back_3.jpg");
         this.load.image("Fool", "assets/images/cards/Fool.jpg");
         this.load.image("Magician", "assets/images/cards/Magician.jpg");
-        this.load.image("Back", "assets/images/cards/Back_3.jpg");
-        this.load.image("GoldenStar", "assets/images/cards/golden_star.png");
+        this.load.image("Empress", "assets/images/cards/Empress.jpg");
+        this.load.image("Devil", "assets/images/cards/Devil.jpg");
+        this.load.image("Chariot", "asset/images/cards/Chariot.jpg");
+        this.load.image("Hanged_Man", "assets/images/cards/Hanged_Man.jpg");
+        this.load.image("Hermit", "assets/images/cards/Hermit.jpg");
+        this.load.image("Sun", "assets/images/cards/Hermit.jpg");
+        this.load.image("Temperance", "assets/images/cards/Temperance.jpg");
+        this.load.image("Tower", "assets/images/cards/Tower.jpg");
     }
 
     //Crear los objetos de la escena + lo que ocurre en el primer frame

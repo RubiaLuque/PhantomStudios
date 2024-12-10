@@ -52,7 +52,12 @@ export const CardsEffects = {
 
     
     HermitEffect: (thisTeam, thatTeam) => {
-
+        if(thisTeam.name == "Party"){
+            //ATAQUE ESPECIAL??
+        }
+        else{
+            thatTeam.getRandomCharacter().alteredState = AlteredState.no_attack;
+        }
     },
 
 
@@ -119,10 +124,10 @@ export const CardsEffects = {
         first.luck += 2;
 
         let second = thisTeam.entities.getRandomCharacterExcept(first);
-        first.health -=2;
-        first.defense -= 2;
-        first.attack -= 2;
-        first.luck -= 2;
+        second.health -=2;
+        second.defense -= 2;
+        second.attack -= 2;
+        second.luck -= 2;
     },
 
     TowerEffect: (thisTeam, _) => {
@@ -139,11 +144,11 @@ export const CardsEffects = {
         star.luck += 5;
     },
     
-    MoonEffect: (thisTeam, thatTeam) => {
+    MoonEffect: (thisTeam, _) => {
         thisTeam.getRandomCharacter().alteredState = AlteredState.sleep;
     },
     
-    SunEffect: (thisTeam, thatTeam) => {
+    SunEffect: (thisTeam, _) => {
         
     },
     
@@ -151,7 +156,7 @@ export const CardsEffects = {
         
     },
     
-    WorldEffect: (thisTeam, thatTeam) => {
+    WorldEffect: (thisTeam, _) => {
         thisTeam.getRandomCharacter().alteredState = AlteredState.deaf;
     }
 }

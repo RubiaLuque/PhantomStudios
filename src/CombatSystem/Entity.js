@@ -17,7 +17,7 @@ export default class Entity
 
         this.image = image
         this.scene = scene
-        this.sound = scene.sound
+        //this.sound = scene.sound
         this.damageSound = damageSound
         this.alteredState = AlteredState.none;
     }
@@ -129,6 +129,11 @@ export default class Entity
         this.alive = false;
         this.on.emit('die');
     }
+
+    //Se borran los estados alterados tras un combate
+    ClearAlteredStates(){
+        this.alteredState = AlteredState.none;
+    }
 }
 
 const Type = {
@@ -138,6 +143,7 @@ const Type = {
     depression: {name:'depression', str: 'wrath'},
     physical: {name:'physical', str: 'depression'}
 }
+
 
 // const AlteredState = {
 //     None: {
