@@ -21,6 +21,8 @@ export default class Entity
         this.sound = analyser;
         this.damageSound = damageSound
         this.alteredState = AlteredState.none;
+
+        this.selectedAttack = () => {console.log('No attack selected')}
     }
 
     static TranslateEntity(container, scene) {
@@ -111,13 +113,13 @@ export default class Entity
     Attack(other, endCallback = function(){})
     {
         this.AttackTemplate(other, Type.physical)
-        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 
     MagicAttack(other, endCallback = function(){})
     {
         this.AttackTemplate(other, this.type)
-        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 
     Die()

@@ -19,7 +19,7 @@ const Type = {
     physical: {name:'physical', str: 'depression'}
 }
 
-let AttackButton, MagicButton, damageText;
+let buttons, damageText;
 
 let XcamVel = 0.05;
 let YcamVel = 0.1;
@@ -74,27 +74,30 @@ export default class CombatScene extends Phaser.Scene {
     create(){
         self = this;
 
-        team1.Create(this, 250, 100, this);
+        team1.Create(this, 100, 100, this);
         team2.Create(this, 700, 100, this);
         
-        cardTeam.DoAction(team1, team2);
-        cardEnemies.DoAction(team2, team1);
+        // cardTeam.DoAction(team1, team2);
+        // cardEnemies.DoAction(team2, team1);
 
+        buttons = [];
 
         phase = new Phaser.Events.EventEmitter();
-        AttackButton = new CustomButton(this, 400, 550, "Button", "Attack", 
+        buttons.push(new CustomButton(this, 400, 550, "Button", "Attack", 
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
             team2.entities.forEach(entity => {entity.sprite.setInteractive()})
-        }).setButtonScale(0.5, 0.25);
+        }));
+        buttons[0].setButtonScale(0.5, 0.25);
 
-        MagicButton = new CustomButton(this, 400, 450, "Button", "Magic",
+        buttons.push(new CustomButton(this, 400, 450, "Button", "Magic",
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
             team2.entities.forEach(element => {element.sprite.setInteractive()})
-        }).setButtonScale(0.5, 0.25);
+        }));
+        buttons[1].setButtonScale(0.5, 0.25);
 
-        arrow = this.add.sprite(0, 0, 'Arrow').setScale(0.2, 0.2)
+        arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
 
         let teams = [team1, team2];
         teams.forEach(team => {
@@ -104,7 +107,20 @@ export default class CombatScene extends Phaser.Scene {
                 let bounds = entity.sprite.getBounds();
                 new LifeBar(self, entity.sprite.x, entity.sprite.y - bounds.height/2, 'Button', entity);
 
-                entity.sprite.on('pointerdown', ()=>{team1.CurrentCharacter().selectedAttack(entity, ()=>{phase.emit('next')})})
+                entity.sprite.on('pointerdown', ()=>{
+                    entity.sprite.emit('pointerout');
+                    entity.sprite.emit('pointerup');
+
+                    buttons.forEach(button => {button.setActive(false)});
+
+                    team2.entities.forEach(element => {
+                        element.sprite.disableInteractive()
+                    });
+                    team1.CurrentCharacter().selectedAttack(entity, ()=>{
+                        buttons.forEach(button => {button.setActive(true)});
+                        phase.emit('next');
+                    });
+                });
 
                 entity.event.on('takeTurn', ()=>{
                     arrow.x = entity.sprite.x; arrow.y = entity.sprite.y - bounds.height/2;
@@ -124,14 +140,8 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         phase.on('endTurn', ()=>{
-            if(currentTeam == team1)
-            {
-                currentTeam = team2;
-            }
-            else 
-            {
-                currentTeam = team1;
-            }
+            currentTeam = currentTeam == team1 ? team2 : team1;
+            buttons.forEach(button => {button.setActive(currentTeam == team1)});
             phase.emit('next')
         });
 
@@ -142,11 +152,12 @@ export default class CombatScene extends Phaser.Scene {
             self.time.addEvent({ delay : 1000, callback: ()=>{self.win()} });
         });
 
+        this.add.existing(arrow);
+        arrow.setScale(0.2, 0.2)
+
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
         currentTeam = team1;
         phase.emit('next')
-
-        turnText = this.add.text(400, 500, 'Your turn', { fontSize: '50px', fill: '#FFF'});
 
         analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
         analyser.Restart();
@@ -182,9 +193,6 @@ export default class CombatScene extends Phaser.Scene {
 
         if(this.cameras.main.y > range-0.025 || this.cameras.main.y < -range+0.025) YcamVel *= -1
         this.cameras.main.y += YcamVel
-
-        turnText.x = this.cameras.main.scrollX + 450
-        turnText.y = this.cameras.main.scrollY + 400
     }
 
     //Recibe la posición en la que el texto de daño se va a mostrar y el daño que se va a mostrar

@@ -9,7 +9,7 @@ import DialogueTestScene from "./Scenes/DialogueTestScene.js";
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
  * la clase Game de Phaser, encargada de crear e iniciar el juego.
  */
-let config = {
+export let config = {
 	type: Phaser.AUTO,
 	width:  800,
 	height: 600,

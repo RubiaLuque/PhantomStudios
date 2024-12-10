@@ -1,3 +1,4 @@
+import { config } from "../game.js";
 export default class Team
 {
     constructor(entities, name)
@@ -38,7 +39,9 @@ export default class Team
             entity.sprite.scale = 0.2
             scene.add.existing(entity.sprite)
             y += 140
-            x -= 10
+            
+            if(x < config.width/2) x += 20;
+            else x-= 20;
 
             entity.Setup(game);
         })
