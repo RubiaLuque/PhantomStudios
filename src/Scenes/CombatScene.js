@@ -199,7 +199,7 @@ export default class CombatScene extends Phaser.Scene {
         arrow.setScale(0.2, 0.2)
 
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
-        currentTeam = team1;
+        currentTeam = this.ambush ? team1 : team2;
         phase.emit('next')
 
         analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
