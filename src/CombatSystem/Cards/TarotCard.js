@@ -14,6 +14,7 @@ export default class TarotCard extends Phaser.GameObjects.Sprite{
     }
 
     DoAction(team) {
+        console.log(this.funct)
         this.funct(team);
     }
 

@@ -1,6 +1,7 @@
 import RandomCardSelector from "../CombatSystem/Cards/RandomCardSelector.js"
 import { analyser } from "../SoundSystem/Index.js"
 import TarotCard from "../CombatSystem/Cards/TarotCard.js";
+import { CardsEffects } from "../CombatSystem/Cards/CardsEffects.js";
 
 export default class CardsScene extends Phaser.Scene{
     constructor(){
@@ -53,6 +54,7 @@ export default class CardsScene extends Phaser.Scene{
         this.text = this.add.text(300,520, "Press SPACE to continue.", { fill: '#FFFFFF' });
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
         let teamElection = this.randomCardSelector.RandomElection();
+        //let teamElection = {texture: 'Fool', function: CardsEffects.FoolEffect}
         let enemiesElection = this.randomCardSelector.RandomElection();
         
         //Cartas elegidas 

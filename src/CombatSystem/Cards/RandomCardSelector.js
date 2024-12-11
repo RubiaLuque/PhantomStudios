@@ -36,7 +36,6 @@ export default class RandomCardSelector {
 
     RandomElection() {
         let rand = this.vector[Math.floor(Math.random() * (this.vector.length))];
-        console.log(Type[rand]);
         return Type[rand];
     }
 

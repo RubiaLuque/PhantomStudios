@@ -7,6 +7,7 @@ export default class Team
         this.entities = entities
         this.onTeam = new Phaser.Events.EventEmitter()
         this.currentEntity = 0
+        this.extraTurns = 0
     }
 
     Preload(scene)
@@ -64,9 +65,15 @@ export default class Team
         this.selectedEntity = this.entities[this.currentEntity]
 
         if(this.currentEntity >= this.entities.length)
-        {
-            valid = false;
+            {
             this.currentEntity = 0
+
+            if(this.extraTurns > 0){
+                this.extraTurns--;
+                this.selectedEntity = this.entities[this.currentEntity];
+                this.currentEntity++;
+            }
+            else valid = false;
         }
         else
         {
