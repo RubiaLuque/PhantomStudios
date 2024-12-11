@@ -153,18 +153,17 @@ export default class CombatScene extends Phaser.Scene {
                         element.sprite.disableInteractive()
                     });
 
-                    let attackAction = ()=>{team1.CurrentCharacter().selectedAttack(entity, ()=>{
+                    let character = team1.CurrentCharacter();
+
+                    let attackAction = ()=>{character.selectedAttack(entity, ()=>{
                         buttons.forEach(button => {button.setActive(true)});
                         phase.emit('next');
-                    }, team1.CurrentCharacter());}
+                    }, character);}
 
-                    console.log('Critic', team1.CurrentCharacter().doneCritic, entity.isWeak(team1.CurrentCharacter().type));
-
-                    if(team1.CurrentCharacter().doneCritic == false && entity.isWeak(team1.CurrentCharacter().type))
+                    if(character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type))
                     {
-                        team1.CurrentCharacter().doneCritic = false;
-                        console.log('OutAttack');
-                        this.OutAttack(team1.CurrentCharacter(), attackAction);
+                        character.doneCritic = false;
+                        this.OutAttack(character, attackAction);
                     }
                     else
                     {
@@ -197,7 +196,6 @@ export default class CombatScene extends Phaser.Scene {
 
         phase.on('next', ()=>{
             let output = currentTeam.GetNextCharacter();
-            console.log(output);
             if(output.isValid) output.entity.event.emit('takeTurn');
             else phase.emit('endTurn');
         });

@@ -61,10 +61,11 @@ export default class Entity
     GetDamage(damage, type, attacker)
     {
         this.sound.Play(this.damageSound)
+
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
-
-        else this.health.quantity -= damage
+        
+        this.health.quantity -= damage
 
         if(this.health.quantity > this.maxHealth)
         {
@@ -104,13 +105,13 @@ export default class Entity
 
     AttackTemplate(other, type, attacker)
     {
-        console.log(other)
         let damage = this.damage.quantity + this.damage.bonus;
         let luck = this.luck.quantity + this.luck.bonus;
         if(Math.random() < luck/10)
         {
             damage *= 1.5
         }
+
         other.GetDamage(damage, type, attacker)
 
         let self = this
