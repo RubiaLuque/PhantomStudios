@@ -102,7 +102,6 @@ export default class Entity
 
     AttackTemplate(other, type, attacker)
     {
-        console.log(other)
         let damage = this.damage.quantity + this.damage.bonus;
         let luck = this.luck.quantity + this.luck.bonus;
         if(Math.random() < luck/10)
