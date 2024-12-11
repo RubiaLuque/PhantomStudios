@@ -87,6 +87,10 @@ export default class CombatScene extends Phaser.Scene {
         this.sr.setOrigin(0, 0);
         this.sr.setScale(3.2, 3.2);
 
+        this.rect = this.add.rectangle(0, -10, 1000, 700, 0x000000);
+        this.rect.rotation = 0.785398;
+        this.rect.setOrigin(0, 0);
+
         self = this;
 
         team1.Create(this, 100, 100, this);
@@ -202,7 +206,7 @@ export default class CombatScene extends Phaser.Scene {
         let i = 0;
         currentTeam.entities.forEach(element => {
             let value = dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000;
-            element.sprite.setScale(0.30 - value, 0.15 + value);
+            element.sprite.setScale(0.2 - value, 0.1 + value);
             i++;
         });
     }
