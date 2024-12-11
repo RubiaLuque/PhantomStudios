@@ -6,6 +6,7 @@ let id;
 let NPCFound = [], NPCTalked = [];
 let LifeButton, AttackButton, DefenseButton;
 let personaje;
+let character;
 
 export default class LevelUpScene extends Phaser.Scene
 {
@@ -45,7 +46,7 @@ export default class LevelUpScene extends Phaser.Scene
 
                 team.entities[i].sprite = this.add.sprite(100, 250, team.entities[i].name)
                 team.entities[i].sprite.scale = 0.2
-                this.add.existing(team.entities[i].sprite)
+                character = this.add.existing(team.entities[i].sprite)
                 
                 team.entities[i].xp -= (team.entities[i].level * 10)
                 team.entities[i].level++
@@ -84,6 +85,7 @@ export default class LevelUpScene extends Phaser.Scene
 
         personaje.on('siguiente', ()=>{
             i++;
+            character.destroy();
             if(i < team.GetCharacterCount()) personaje.emit('puedeMejorar');
             else personaje.emit('finMejoras');
         });

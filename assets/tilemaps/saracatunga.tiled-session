@@ -14,10 +14,10 @@
                 3
             ],
             "scale": 1,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 487.5,
-                "y": 373.5
+                "x": 483.5,
+                "y": 385.5
             }
         },
         "Prueba.tsx": {
