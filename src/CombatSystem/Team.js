@@ -45,7 +45,7 @@ export default class Team
             let position = positions[i];
 
             entity.sprite = scene.add.sprite(position.x, position.y, entity.name)
-            entity.sprite.scale = 0.2
+            entity.sprite.scale = 0.1
             entity.sprite.setOrigin(0.5, 1);
             scene.add.existing(entity.sprite)
             
