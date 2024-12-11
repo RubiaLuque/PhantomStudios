@@ -261,6 +261,7 @@ export default class CombatScene extends Phaser.Scene {
     {
         team1.entities.forEach(e =>{
             e.maxHealth -= e.health.bonus
+            if(e.maxHealth < e.health.quantity) e.health.quantity = e.maxHealth
             e.health.bonus = 0
             e.defense.bonus = 0
             e.damage.bonus = 0
