@@ -42,7 +42,7 @@ export const CardsEffects = {
     },
 
     HierophantEffect: (thisTeam, _) => {
-
+       thisTeam.GetRandomCharacter().magicalImmunity = true; 
     },
 
     LoversEffect: (thisTeam, thatTeam) => {
@@ -61,7 +61,7 @@ export const CardsEffects = {
     },
     
     ChariotEffect: (thisTeam, _) => {
-
+        thisTeam.GetRandomCharacter().physicalImmunity = true;
     },
 
     StrengthEffect: (thisTeam, _) => {
@@ -72,11 +72,12 @@ export const CardsEffects = {
 
     
     HermitEffect: (thisTeam, thatTeam) => {
+        
     },
 
 
     Wheel_of_FortuneEffect:(thisTeam, _) =>{
-        let rand = getRandomInt(2); //Da un numero aleatorio entre 0 y 1
+        let rand = Math.floor(Math.random()*2); //Da un numero aleatorio entre 0 y 1
         let fortune;
 
         if(rand == 1) fortune = 1;

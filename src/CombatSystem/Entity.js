@@ -1,5 +1,6 @@
 import { analyser } from "../SoundSystem/Index.js"
 import { AlteredState } from "./Data/AlteredState.js"
+import { Type } from "./Data/Type.js"
 
 
 export default class Entity
@@ -17,6 +18,8 @@ export default class Entity
         this.luck = {quantity: luck, bonus: 0}
         this.healing = {quantity: -30, bonus: 0, able: true}
         this.event = new Phaser.Events.EventEmitter()
+        this.magicalImmunity = false;
+        this.physicalImmunity = false;
 
         this.image = image
         this.scene = scene
@@ -26,6 +29,7 @@ export default class Entity
         this.level = level
         this.maxLevel = maxLevel;
         this.alteredState = AlteredState.none;
+        this.doneCritic = false;
 
 
         this.selectedAttack = () => {console.log('No attack selected')}
@@ -59,10 +63,16 @@ export default class Entity
     GetDamage(damage, type, attacker)
     {
         this.sound.Play(this.damageSound)
-        if(type.str == this.type.name) damage *= 2
-        else if(this.type.str == type.name) damage /= 2
+        if((this.magicalImmunity && this.type.name != "physical") || (this.physicalImmunity && this.type.name=='physical')){
+            damage *= 0;
+            this.magicalImmunity = false;
+            this.physicalImmunity = false;
+        }
+        else if(type.str == this.type.name) damage *= 2
 
-        else this.health.quantity -= damage
+        else if(this.type.str == type.name) damage /= 2
+        
+        this.health.quantity -= damage
 
         if(this.health.quantity > this.maxHealth)
         {
@@ -108,6 +118,7 @@ export default class Entity
         {
             damage *= 1.5
         }
+
         other.GetDamage(damage, type, attacker)
 
         let self = this
@@ -170,49 +181,13 @@ export default class Entity
         this.event.emit('die');
     }
 
+    isWeak(type)
+    {
+        return type.str == this.type.name
+    }
+
     //Se borran los estados alterados tras un combate
     ClearAlteredStates(){
         this.alteredState = AlteredState.none;
     }
 }
-
-const Type = {
-    horny : {name:'horny', str: 'depression'},
-    anxiety: {name:'anxiety', str: 'horny'},
-    wrath: {name:'wrath', str: 'anxiety'},
-    depression: {name:'depression', str: 'wrath'},
-    physical: {name:'physical', str: 'depression'}
-}
-
-
-// const AlteredState = {
-//     None: {
-//         enter: function(){},
-//         check: function(){return true},
-//         exit: function(){}
-//     },
-//     Sueño: { 
-//         enter: function(){},
-//         check: function(target){ target.health += 4; return false},
-//         exit: function(){}
-//     },
-//     Sordo: {
-//         enter: function(){},
-//         check: function(){return true},
-//         exit: function(){}
-//     },
-//     Miedo:{
-//         enter: function(){},
-//         check: function(target, team){ 
-//             let selected = team.GetRandomCharacterExcept(target);
-//             target.sprite.setPosition(selected.x - 100, selected.y);
-//             return true
-//         },
-//         exit: function(){}
-//     },
-//     Papeado:{
-//         enter: function(){},
-//         check: function(){return true},
-//         exit: function(){}
-//     }
-// }
