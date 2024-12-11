@@ -5,19 +5,8 @@ import Team from "../CombatSystem/Team.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
 import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
-import World1 from "./World1.js";
-import WinScene from "./WinScene.js";
-import Entity from "../CombatSystem/Entity.js";
 
 const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
-
-const Type = {
-    horny : {name:'horny', str: 'depression'},
-    anxiety: {name:'anxiety', str: 'horny'},
-    wrath: {name:'wrath', str: 'anxiety'},
-    depression: {name:'depression', str: 'wrath'},
-    physical: {name:'physical', str: 'depression'}
-}
 
 let buttons, damageText;
 
@@ -77,6 +66,7 @@ export default class CombatScene extends Phaser.Scene {
         this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
 
         this.load.spritesheet('background', 'assets/images/background_sheet_48-Frames.png', {frameWidth: 256, frameHeight: 224});
+        this.load.spritesheet('speedFX', 'assets/images/kinggod_speed_426_240.png', {frameWidth: 426, frameHeight: 216});
     }
 
     create(){
@@ -88,18 +78,26 @@ export default class CombatScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.sr = this.add.sprite(0, 0, 'background');
-        this.sr.play('bckg');
-        this.sr.setOrigin(0, 0);
-        this.sr.setScale(3.2, 3.2);
+        this.anims.create({
+            key: 'speedFX',
+            frames: this.anims.generateFrameNumbers('speedFX', {start: 0, end: 24}),
+            yoyo: true,
+            frameRate: 24,
+            repeat: -1
+        });
+
+        this.background = this.add.sprite(0, 0, 'background');
+        this.background.play('bckg');
+        this.background.setOrigin(0, 0);
+        this.background.setScale(3.2, 3.2);
 
         self = this;
 
         team1.Create(this, this.ambush);
         team2.Create(this, !this.ambush);
         
-        cardTeam.DoAction(team1, team2);
-        cardEnemies.DoAction(team2, team1);
+        // cardTeam.DoAction(team1, team2);
+        // cardEnemies.DoAction(team2, team1);
 
         buttons = [];
 
@@ -174,7 +172,7 @@ export default class CombatScene extends Phaser.Scene {
                 entity.event.on('takeTurn', ()=>{
                     entity.event.emit('target');
                     
-                    if(entity.alteredState({scene: this.scene, team: team, phase: phase, user: entity}))
+                    if(entity.CheckAlteredState({scene: this.scene, team: team, phase: phase}))
                     {
                         if(team == team2)
                         {
@@ -216,6 +214,16 @@ export default class CombatScene extends Phaser.Scene {
         this.add.existing(arrow);
         arrow.setScale(0.2, 0.2)
 
+        this.FXbackground = this.add.rectangle(0, 0, 800, 600, 0x000000);
+        this.FXbackground.setOrigin(0, 0);
+        this.FXbackground.alpha = 0.5;
+        this.FXbackground.visible = false;
+
+        this.speedFX = this.add.sprite(0, 0, 'speedFX');
+        this.speedFX.setOrigin(0, 0);
+        this.speedFX.setScale(2, 2.75);
+        this.speedFX.visible = false;
+
         outImage = this.add.image(-400, 600, 'Javi_Out');
         outImage.setScale(0.45, 0.45);
         outImage.setOrigin(0.5, 1);
@@ -224,7 +232,7 @@ export default class CombatScene extends Phaser.Scene {
         currentTeam = this.ambush ? team1 : team2;
         phase.emit('next')
 
-        analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
+        analyser.SetRandomSong(songs);
         analyser.Restart();
     }
 
@@ -300,6 +308,10 @@ export default class CombatScene extends Phaser.Scene {
         console.log(entity.name);
         outImage.setTexture(entity.name + "_Out");
 
+        this.speedFX.visible = true;
+        this.FXbackground.visible = true;
+        this.speedFX.play('speedFX');
+
         this.tweens.add({
             targets: outImage,
             props: {
@@ -319,6 +331,8 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         this.time.delayedCall(2200, ()=>{
+            this.speedFX.visible = false;
+            this.FXbackground.visible = false;
             callback();
         });
     }

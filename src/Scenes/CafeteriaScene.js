@@ -87,6 +87,8 @@ export default class CafeteriaScene extends Phaser.Scene
         
         let self = this;
         this.player.eKey.on("down", ()=>{
+            console.log(NPCFound)
+            console.log(NPCTalked)
             this.NPCs.forEach(A => {
             if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
             {
@@ -101,7 +103,9 @@ export default class CafeteriaScene extends Phaser.Scene
                 {
                     JaviButton = new CustomButton(this, 0, 600, "Button", "Javi", 
                         function(){
-                            self.player.team[0][A.upgradeStat] = self.player.team[0][A.upgradeStat] + A.upgradeAmount;
+                            console.log(self.player.team[0][A.upgradeStat])
+                            console.log(A)
+                            self.player.team[0][A.upgradeStat].quantity = (self.player.team[0][A.upgradeStat].quantity + A.upgradeAmount);
                             A.upgradeAvailable = false;
                             NPCTalked.push(A.name)
                             JaviButton.text.destroy()
@@ -117,7 +121,7 @@ export default class CafeteriaScene extends Phaser.Scene
                     );
                     FueyoButton = new CustomButton(this, 190, 600, "Button", "Fueyo", 
                         function(){
-                            self.player.team[1][A.upgradeStat] = self.player.team[1][A.upgradeStat] + A.upgradeAmount;
+                            self.player.team[1][A.upgradeStat].quantity = (self.player.team[1][A.upgradeStat].quantity + A.upgradeAmount);
                             A.upgradeAvailable = false;
                             NPCTalked.push(A.name)
                             JaviButton.text.destroy()
@@ -133,7 +137,7 @@ export default class CafeteriaScene extends Phaser.Scene
                     );
                     MikaButton = new CustomButton(this, 380, 600, "Button", "Mika", 
                         function(){
-                            self.player.team[2][A.upgradeStat] = self.player.team[2][A.upgradeStat] + A.upgradeAmount;
+                            self.player.team[2][A.upgradeStat].quantity = (self.player.team[2][A.upgradeStat].quantity + A.upgradeAmount);
                             A.upgradeAvailable = false;
                             NPCTalked.push(A.name)
                             JaviButton.text.destroy()
@@ -149,7 +153,7 @@ export default class CafeteriaScene extends Phaser.Scene
                     );
                     MuxuButton = new CustomButton(this, 570, 600, "Button", "Muxu", 
                         function(){
-                            self.player.team[3][A.upgradeStat] = self.player.team[3][A.upgradeStat] + A.upgradeAmount;
+                            self.player.team[3][A.upgradeStat].quantity = (self.player.team[3][A.upgradeStat].quantity + A.upgradeAmount);
                             A.upgradeAvailable = false;
                             NPCTalked.push(A.name)
                             JaviButton.text.destroy()
