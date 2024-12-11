@@ -11,7 +11,8 @@ export const CardsEffects = {
     //thatTeam --> equipo al que no le ha tocado la carta
 
     FoolEffect: (thisTeam, _)=> {
-        
+        thisTeam.extraTurns++;
+        console.log(thisTeam.extraTurns)
     },
 
     MagicianEffect: (thisTeam, thatTeam) => { 

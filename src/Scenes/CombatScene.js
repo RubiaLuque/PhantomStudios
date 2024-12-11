@@ -96,8 +96,8 @@ export default class CombatScene extends Phaser.Scene {
         team1.Create(this, 100, 100, this);
         team2.Create(this, 700, 100, this);
         
-        // cardTeam.DoAction(team1, team2);
-        // cardEnemies.DoAction(team2, team1);
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team2, team1);
 
         buttons = [];
 
@@ -162,6 +162,7 @@ export default class CombatScene extends Phaser.Scene {
 
         phase.on('next', ()=>{
             let output = currentTeam.GetNextCharacter();
+            console.log(output);
             if(output.isValid) output.entity.event.emit('takeTurn');
             else phase.emit('endTurn');
         });

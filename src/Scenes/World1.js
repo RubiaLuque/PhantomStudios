@@ -107,7 +107,6 @@ export default class World1 extends Phaser.Scene
             this.physics.add.collider(enemy, this.collidables)
 
             enemy.id = enemyIndex;
-            console.log(enemy.id);
             if (defeatedEnemiesIds.includes(enemy.id)) this.enemies[enemyIndex].destroy();
                 
             enemyIndex++;
@@ -132,7 +131,6 @@ export default class World1 extends Phaser.Scene
         mainMenuButton.setTextPosition(-20,-7);
         mainMenuButton.setScrollFactor(0);
         mainMenuButton.text.setScrollFactor(0);
-        console.log(this.player.team)
 
         
     }
@@ -142,8 +140,6 @@ export default class World1 extends Phaser.Scene
         this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {
-                console.log(this.player.team);
-                console.log(enemy.team)
                 this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked});
             }
