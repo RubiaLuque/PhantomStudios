@@ -37,11 +37,9 @@ export default class World1 extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
-        // if(result.healths != undefined) healths = result.healths;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
-        if (result.team != undefined) team = result.team;
-        console.log(result.healths)
+        if(result.team != undefined) team = result.team;
     }
 
     preload()

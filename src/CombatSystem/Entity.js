@@ -3,7 +3,7 @@ import { AlteredState } from "./Data/AlteredState.js"
 
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level)
+    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level, maxLevel)
     {
         this.name = name
         this.health = health
@@ -22,13 +22,14 @@ export default class Entity
         this.damageSound = damageSound
         this.xp = xp
         this.level = level
+        this.maxLevel = maxLevel;
         this.alteredState = AlteredState.none;
 
         this.selectedAttack = () => {console.log('No attack selected')}
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound, container.xp, container.level)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound, container.xp, container.level, container.maxLevel)
     }
 
     Setup()

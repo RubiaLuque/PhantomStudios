@@ -127,7 +127,8 @@ export default class CombatScene extends Phaser.Scene {
                     
                     if(entity.alteredState({scene: this.scene, team: team, phase: phase}))
                     {
-                        if(team == team2) entity.MagicAttack(team1.GetRandomCharacter(), ()=>{phase.emit('next')});
+                        
+                        if(team == team2) entity.MagicAttack(team1.GetRandomCharacter(), ()=>{phase.emit('next')}, entity);
                     }
                 });
             });
