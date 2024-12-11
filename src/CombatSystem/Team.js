@@ -34,7 +34,7 @@ export default class Team
 
     Create(scene, x, y, game)
     {
-        y += 350;
+        y += 80;
         this.entities.forEach(entity => {
             entity.sprite = scene.add.sprite(x, y, entity.name)
             entity.sprite.scale = 0.2
