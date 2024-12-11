@@ -214,7 +214,13 @@ export default class CombatScene extends Phaser.Scene {
         this.add.existing(arrow);
         arrow.setScale(0.2, 0.2)
 
-        this.speedFX = this.add.sprite(400, 300, 'speedFX');
+        this.FXbackground = this.add.rectangle(0, 0, 800, 600, 0x000000);
+        this.FXbackground.setOrigin(0, 0);
+        this.FXbackground.alpha = 0.5;
+        this.FXbackground.visible = false;
+
+        this.speedFX = this.add.sprite(0, 0, 'speedFX');
+        this.speedFX.setOrigin(0, 0);
         this.speedFX.setScale(2, 2.75);
         this.speedFX.visible = false;
 
@@ -303,6 +309,7 @@ export default class CombatScene extends Phaser.Scene {
         outImage.setTexture(entity.name + "_Out");
 
         this.speedFX.visible = true;
+        this.FXbackground.visible = true;
         this.speedFX.play('speedFX');
 
         this.tweens.add({
@@ -325,6 +332,7 @@ export default class CombatScene extends Phaser.Scene {
 
         this.time.delayedCall(2200, ()=>{
             this.speedFX.visible = false;
+            this.FXbackground.visible = false;
             callback();
         });
     }
