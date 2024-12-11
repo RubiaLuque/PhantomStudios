@@ -178,14 +178,19 @@ export default class Entity
     ApplyAlteredState(state, duration)
     {
         this.alteredState = state;
+        this.alteredState.enter({user: this});
         this.alteredStateDuration = duration;
     }
 
     CheckAlteredState(data)
     {
-        if(this.alteredStateDuration > 0) this.alteredStateDuration--;
+        if(this.alteredStateDuration > 0)
+        {
+            this.alteredStateDuration--;
+            this.alteredState.exit(data);
+        }
         else this.alteredState = AlteredState.none;
-        return this.alteredState(data);
+        return this.alteredState.check(data);
     }
 
     Die()

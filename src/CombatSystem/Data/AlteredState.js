@@ -1,25 +1,51 @@
 export const AlteredState =
 {
-    none: (_) => {return true},
-    sleep: (data)=> {
-        data.scene.time.delayedCall(1000, ()=>{
-            data.phase.emit('next')} 
-        );
-        this.Heal(15)
-        return false
+    none: {
+        enter: (data) => { data.user.sprite.setTint(0xffffff) },
+        check:(_) => {return true},
+        exit: (_) => {}
     },
-    deaf: (_)=> {return true},
-    fear: (data)=> {
+    sleep: {
+        enter: (data) => { data.user.sprite.setTint(0xffffcc) },
+        check:  (data)=> {
+            data.scene.time.delayedCall(1000, ()=>{
+                data.phase.emit('next')} 
+            );
+            data.user.Heal(15)
+            return false
+            },
+        exit: (_) => {}
+    },
+    deaf:
+    {
+        enter: (data) => { data.user.sprite.setTint(0x0000ff) },
+        check: (_)=> {return true},
+        exit: (_) => {}
+    },
+    fear: 
+    {
+        enter: (data) => { data.user.sprite.setTint(0x00ffff) },
+        check:(data)=> {
         console.log("Se caga encima")
         let target = data.team.GetRandomCharacterExcept(data.user);
         data.user.MoveTo(target, data.phase.emit('next'))
         return false
+        },
+        exit: (_) => {}
     },
-    papeado: (data)=> {
-        let target = data.team.GetRandomCharacterExcept(data.user);
-        data.user.MagicAttack(target, data.phase.emit('next'))
-        return false
+    papeado:{
+        enter: (data) => { data.user.sprite.setTint(0xffff00) },
+        check: (data) => {
+            let target = data.team.GetRandomCharacterExcept(data.user);
+            data.user.MagicAttack(target, data.phase.emit('next'))
+            return false
+        },
+        exit: (_) => {}
     },
-    //Un personaje se salta su turno y no ataca. Se usa en la carta de Lovers
-    no_attack: (_)=> {return false}
+    no_attack:
+    {
+        enter: (data) => { data.user.sprite.setTint(0xff0000) },
+        check: (_) => {return false},
+        exit: (_) => {}
+    },
 }
