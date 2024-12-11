@@ -1,10 +1,6 @@
-import CombatScene from "./CombatScene.js";
-import WinScene from "./WinScene.js";
 import player from "../Navigation/Player.js";
 import Enemy from "../Navigation/Enemy.js";
 import Cafeteria from "../Navigation/Cafeteria.js";
-import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
-import CardsScene from "./CardsScene.js";
 import CustomButton from "../UI/CustomButton.js";
 import NPC from "../Navigation/NPC.js";
 import {analyser} from "../SoundSystem/Index.js";
@@ -18,14 +14,6 @@ let mainMenuButton;
 let NPCFound = ["Andres", "Sanchez"];
 let NPCTalked = [];
 let team;
-
-const Type = {
-    horny : {name:'horny', str: 'depression'},
-    anxiety: {name:'anxiety', str: 'horny'},
-    wrath: {name:'wrath', str: 'anxiety'},
-    depression: {name:'depression', str: 'wrath'},
-    physical: {name:'physical', str:''}
-}
 
 export default class World1 extends Phaser.Scene
 {
