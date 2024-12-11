@@ -17,6 +17,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         })
         
         this.scale = 0.15;
+        this.setOrigin(0.5, 1);
         this.id = 0;
     }
 }

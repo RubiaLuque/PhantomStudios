@@ -142,10 +142,10 @@ export default class World1 extends Phaser.Scene
         this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {
-                console.log(this.player.team);
-                console.log(enemy.team)
+                let isAmbush = this.player.y > enemy.y;
+                console.log(isAmbush);
                 this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
-                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked});
+                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked, ambush: isAmbush});
             }
         });
 

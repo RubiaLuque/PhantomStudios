@@ -32,20 +32,24 @@ export default class Team
         })
     }
 
-    Create(scene, x, y, game)
+    Create(scene, ambush)
     {
-        y += 80;
+        let positions;
+
+        if(ambush) positions = [{x:150, y:200}, {x:650, y:200}, {x:150, y:450}, {x:650, y:450}]
+        else positions = [{x:350, y:250}, {x:450, y:250}, {x:350, y:350}, {x:450, y:350}]
+
+        let i = 0;
         this.entities.forEach(entity => {
-            entity.sprite = scene.add.sprite(x, y, entity.name)
+            let position = positions[i];
+
+            entity.sprite = scene.add.sprite(position.x, position.y, entity.name)
             entity.sprite.scale = 0.2
             entity.sprite.setOrigin(0.5, 1);
             scene.add.existing(entity.sprite)
-            y += 140
             
-            if(x < config.width/2) x += 20;
-            else x-= 20;
-
-            entity.Setup(game);
+            entity.Setup(scene);
+            i++;
         })
     }
 

@@ -52,6 +52,7 @@ export default class CombatScene extends Phaser.Scene {
         currentEnemyId = teams.enemyId;
         NPCFound = teams.NPCFound;
         NPCTalked = teams.NPCTalked;
+        this.ambush = teams.ambush
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
@@ -89,8 +90,8 @@ export default class CombatScene extends Phaser.Scene {
 
         self = this;
 
-        team1.Create(this, 100, 100, this);
-        team2.Create(this, 700, 100, this);
+        team1.Create(this, this.ambush);
+        team2.Create(this, !this.ambush);
         
         // cardTeam.DoAction(team1, team2);
         // cardEnemies.DoAction(team2, team1);
@@ -202,7 +203,7 @@ export default class CombatScene extends Phaser.Scene {
         let i = 0;
         currentTeam.entities.forEach(element => {
             let value = dataArray[freqPositions[i]] / 255.0 * 0.05
-            value *= 1.25;
+            value *= 1;
             element.sprite.setScale(0.1 - value, 0.1 + value);
             i++;
         });
