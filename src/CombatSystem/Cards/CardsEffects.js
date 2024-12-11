@@ -34,11 +34,11 @@ export const CardsEffects = {
     },
 
     EmperorEffect: (thisTeam, _) => {
-        thisTeam.GetRandomCharacter().alteredState = AlteredState.papeado;
+        thisTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.papeado, 3)
     },
 
     EmpressEffect: (thisTeam, _) => {
-        thisTeam.GetRandomCharacter().alteredState = AlteredState.fear;
+        thisTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.fear, 3)
     },
 
     HierophantEffect: (thisTeam, _) => {
@@ -56,7 +56,7 @@ export const CardsEffects = {
             loved.health.bonus = lover.health.quantity/2
         }
         else{
-            thatTeam.GetRandomCharacter().alteredState = AlteredState.no_attack;
+            thatTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.no_attack, 3)
         }
     },
     
@@ -157,7 +157,7 @@ export const CardsEffects = {
     },
     
     MoonEffect: (thisTeam, _) => {
-        thisTeam.GetRandomCharacter().alteredState = AlteredState.sleep;
+        thisTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.sleep, 3)
     },
     
     SunEffect: (thisTeam, _) => {
@@ -169,6 +169,6 @@ export const CardsEffects = {
     },
     
     WorldEffect: (thisTeam, _) => {
-        thisTeam.GetRandomCharacter().alteredState = AlteredState.deaf;
+        thisTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.deaf, 3)
     }
 }
