@@ -19,7 +19,7 @@ export let config = {
 		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
 
-	scene: [MainMenu, World1, CardsScene, CafeteriaScene, CombatScene, WinScene],	// Decimos a Phaser cual es nuestra escena
+	scene: [DialogueTestScene, MainMenu, World1, CardsScene, CafeteriaScene, CombatScene, WinScene],	// Decimos a Phaser cual es nuestra escena
 
 	physics: { 
 		default: 'arcade', 
