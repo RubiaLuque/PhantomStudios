@@ -8,7 +8,7 @@ export default class Entity
     {
         this.name = name
         this.health = {quantity: health, bonus: 0}
-        this.maxHealth = health.quantity
+        this.maxHealth = this.health.quantity
         this.attack = attack
         this.defense = {quantity: defense, bonus: 0}
         this.damage = {quantity: damage, bonus: 0}

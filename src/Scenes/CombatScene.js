@@ -94,8 +94,8 @@ export default class CombatScene extends Phaser.Scene {
         team1.Create(this, this.ambush);
         team2.Create(this, !this.ambush);
         
-        // cardTeam.DoAction(team1, team2);
-        // cardEnemies.DoAction(team2, team1);
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team2, team1);
 
         buttons = [];
 
