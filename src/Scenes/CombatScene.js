@@ -69,9 +69,24 @@ export default class CombatScene extends Phaser.Scene {
 
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
         this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
+
+        this.load.spritesheet('background', 'assets/images/background_sheet_48-Frames.png', {frameWidth: 256, frameHeight: 224});
     }
 
     create(){
+        this.anims.create({
+            key: 'bckg',
+            frames: this.anims.generateFrameNumbers('background', {start: 0, end: 47}),
+            yoyo: true,
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.sr = this.add.sprite(0, 0, 'background');
+        this.sr.play('bckg');
+        this.sr.setOrigin(0, 0);
+        this.sr.setScale(3.2, 3.2);
+
         self = this;
 
         team1.Create(this, 100, 100, this);

@@ -24,7 +24,7 @@ const Type = {
     anxiety: {name:'anxiety', str: 'horny'},
     wrath: {name:'wrath', str: 'anxiety'},
     depression: {name:'depression', str: 'wrath'},
-    physical: {name:'physical', str: 'depression'}
+    physical: {name:'physical', str:''}
 }
 
 export default class World1 extends Phaser.Scene
@@ -96,19 +96,6 @@ export default class World1 extends Phaser.Scene
             this.player.x = pos.x
             this.player.y = pos.y
         }
-        // if (healths != undefined)
-        // {
-        //     this.player.team.forEach(entity =>{
-        //         if(healths[entity.name] == undefined)
-        //         {
-        //             entity.health = 1;
-        //         }
-        //         else
-        //         {
-        //             entity.health = healths[entity.name]
-        //         }
-        //     })
-        // }
 
         this.physics.add.collider(this.player, this.collidables)
         
@@ -152,8 +139,6 @@ export default class World1 extends Phaser.Scene
 
     update()
     {
-        //this.player.preUpdate()
-
         this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {
