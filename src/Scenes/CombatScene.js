@@ -83,19 +83,26 @@ export default class CombatScene extends Phaser.Scene {
         buttons = [];
 
         phase = new Phaser.Events.EventEmitter();
-        buttons.push(new CustomButton(this, 400, 550, "Button", "Attack", 
+        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack", 
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
             team2.entities.forEach(entity => {entity.sprite.setInteractive()})
         }));
         buttons[0].setButtonScale(0.5, 0.25);
 
-        buttons.push(new CustomButton(this, 400, 450, "Button", "Magic",
+        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
             team2.entities.forEach(element => {element.sprite.setInteractive()})
         }));
         buttons[1].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
+        ()=>{
+            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
+            team1.entities.forEach(element => {element.sprite.setInteractive()})
+        }));
+        buttons[2].setButtonScale(0.5, 0.25);
 
         arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
 

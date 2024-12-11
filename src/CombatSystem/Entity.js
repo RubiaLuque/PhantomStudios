@@ -1,6 +1,8 @@
 import { analyser } from "../SoundSystem/Index.js"
 import { AlteredState } from "./Data/AlteredState.js"
 
+
+let healAvailable = true;
 export default class Entity
 {
     constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level, maxLevel)
@@ -24,6 +26,7 @@ export default class Entity
         this.level = level
         this.maxLevel = maxLevel;
         this.alteredState = AlteredState.none;
+
 
         this.selectedAttack = () => {console.log('No attack selected')}
     }
@@ -52,15 +55,19 @@ export default class Entity
 
     GetDamage(damage, type, attacker)
     {
-        console.log(this.damageSound)
-        this.sound.Play(this.damageSound)
-        if(type.str == this.type.name) damage *= 2
-        else if(this.type.str == type.name) damage /= 2
+        console.log(this)
+        
+        if(type.str == this.type.name) {damage *= 2; console.log('superefectivo');}
+        else if(this.type.str == type.name) {damage /= 2; console.log('poco efectivo')}
 
-        console.log(damage);
         this.health -= damage
         console.log(this.name + ' health:' + this.health)
 
+        if(this.health > this.maxHealth)
+        {
+            this.health = this.maxHealth
+        }
+        console.log(this)
         if(this.health <= 0)
         {
             attacker.xp += this.xp;
@@ -95,12 +102,32 @@ export default class Entity
 
     AttackTemplate(other, type, attacker)
     {
+        console.log(other)
         let damage = this.damage;
         if(Math.random() < this.luck/10)
         {
             damage *= 1.5
         }
         other.GetDamage(damage, type, attacker)
+
+        let self = this
+
+        this.scene.time.addEvent({ delay : 5,
+            callback: function(){
+                self.sprite.rotation += 0.1
+                if(self.sprite.rotation >= 3)
+                {
+                    self.sprite.rotation = 0
+                    self.scene.time.removeEvent(this)
+                }
+            },
+            loop: true });
+    }
+
+    HealTemplate(other, type, attacker)
+    {
+        let healing = -30;
+        other.GetDamage(healing, type, attacker)
 
         let self = this
 
@@ -125,6 +152,12 @@ export default class Entity
     MagicAttack(other, endCallback = function(){}, attacker)
     {
         this.AttackTemplate(other, this.type, attacker)
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
+    }
+
+    HealAttack(other, endCallback = function(){}, attacker)
+    {
+        if(healAvailable) {healAvailable = false; this.HealTemplate(other, this.type, attacker)}
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 
