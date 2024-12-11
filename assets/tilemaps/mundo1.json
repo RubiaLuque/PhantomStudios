@@ -799,8 +799,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":895,
-                 "y":2665
+                 "x":1219.24242424242,
+                 "y":2625.60606060606
                 }, 
                 {
                  "height":0,
@@ -836,7 +836,7 @@
  "nextobjectid":31,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.11.0",
  "tileheight":32,
  "tilesets":[
         {
