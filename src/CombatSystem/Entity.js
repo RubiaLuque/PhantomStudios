@@ -3,7 +3,7 @@ import { AlteredState } from "./Data/AlteredState.js"
 
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound)
+    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level)
     {
         this.name = name
         this.health = health
@@ -20,13 +20,15 @@ export default class Entity
         this.scene = scene
         this.sound = analyser;
         this.damageSound = damageSound
+        this.xp = xp
+        this.level = level
         this.alteredState = AlteredState.none;
 
         this.selectedAttack = () => {console.log('No attack selected')}
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound, container.xp, container.level)
     }
 
     Setup()
@@ -47,7 +49,7 @@ export default class Entity
         });
     }
 
-    GetDamage(damage, type)
+    GetDamage(damage, type, attacker)
     {
         console.log(this.damageSound)
         this.sound.Play(this.damageSound)
@@ -58,8 +60,11 @@ export default class Entity
         this.health -= damage
         console.log(this.name + ' health:' + this.health)
 
-        if(this.health <= 0) this.Die()
-
+        if(this.health <= 0)
+        {
+            attacker.xp += this.xp;
+            this.Die()
+        }
         let self = this
         let xTracker = this.sprite.x
         let goBack = false
@@ -87,14 +92,14 @@ export default class Entity
         this.event.emit('GetDamage', damage)
     }
 
-    AttackTemplate(other, type)
+    AttackTemplate(other, type, attacker)
     {
         let damage = this.damage;
         if(Math.random() < this.luck/10)
         {
             damage *= 1.5
         }
-        other.GetDamage(damage, type)
+        other.GetDamage(damage, type, attacker)
 
         let self = this
 
@@ -110,15 +115,15 @@ export default class Entity
             loop: true });
     }
 
-    Attack(other, endCallback = function(){})
+    Attack(other, endCallback = function(){}, attacker)
     {
-        this.AttackTemplate(other, Type.physical)
+        this.AttackTemplate(other, Type.physical, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 
-    MagicAttack(other, endCallback = function(){})
+    MagicAttack(other, endCallback = function(){}, attacker)
     {
-        this.AttackTemplate(other, this.type)
+        this.AttackTemplate(other, this.type, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 

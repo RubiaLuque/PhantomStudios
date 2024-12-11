@@ -29,7 +29,6 @@ export default class WinScene extends Phaser.Scene
         team = result.team;
         NPCFound = result.NPCFound;
         NPCTalked = result.NPCTalked;
-        console.log(healths)
     }
 
     create()

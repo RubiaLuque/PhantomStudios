@@ -119,7 +119,7 @@ export default class CombatScene extends Phaser.Scene {
                     team1.CurrentCharacter().selectedAttack(entity, ()=>{
                         buttons.forEach(button => {button.setActive(true)});
                         phase.emit('next');
-                    });
+                    }, team1.CurrentCharacter());
                 });
 
                 entity.event.on('takeTurn', ()=>{
@@ -213,11 +213,6 @@ export default class CombatScene extends Phaser.Scene {
     //Funcion que se ejecuta al salir de la escena
     win()
     {
-        let healths = {};
-        team1.entities.forEach(entity =>{
-            healths[entity.name] = entity.health;
-        })
-
         self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
         analyser.Stop();
     }

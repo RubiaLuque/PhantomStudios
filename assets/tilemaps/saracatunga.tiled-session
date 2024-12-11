@@ -13,11 +13,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 0.75,
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 474,
-                "y": 360.6666666666667
+                "x": 487.5,
+                "y": 373.5
             }
         },
         "Prueba.tsx": {
@@ -46,6 +46,10 @@
                 "y": -707.5757575757575
             }
         },
+        "tilemap_cafeteria.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "tilemap_prueba.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -62,15 +66,17 @@
     "openFiles": [
         "mundo1.tmx",
         "tilemap_prueba.tsx",
-        "Cafeteria.tmx"
+        "Cafeteria.tmx",
+        "tilemap_cafeteria.tsx"
     ],
     "project": "saracatunga.tiled-project",
     "recentFiles": [
-        "Prueba.tsx",
-        "mundo1.json",
         "mundo1.tmx",
         "tilemap_prueba.tsx",
-        "Cafeteria.tmx"
+        "tilemap_cafeteria.tsx",
+        "Cafeteria.tmx",
+        "Prueba.tsx",
+        "mundo1.json"
     ],
     "tileset.lastUsedFilter": "Archivos de conjuntos de patrones Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx"
