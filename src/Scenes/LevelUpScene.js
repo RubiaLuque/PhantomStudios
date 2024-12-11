@@ -85,7 +85,7 @@ export default class LevelUpScene extends Phaser.Scene
 
         personaje.on('siguiente', ()=>{
             i++;
-            character.destroy();
+            if(character != null) character.destroy();
             if(i < team.GetCharacterCount()) personaje.emit('puedeMejorar');
             else personaje.emit('finMejoras');
         });
