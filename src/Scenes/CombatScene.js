@@ -23,7 +23,7 @@ let buttons, damageText;
 
 let XcamVel = 0.05;
 let YcamVel = 0.1;
-let selectedAttack;
+let outImage;
 
 let team1, team2;
 let arrow;
@@ -68,6 +68,10 @@ export default class CombatScene extends Phaser.Scene {
 
         this.load.image("Button", "assets/images/Button.png");
         this.load.image("Arrow", "assets/images/Arrow.png");
+
+        team1.entities.forEach(entity => {
+            this.load.image(entity.name + "_Out", "assets/images/" + entity.name + "_Out.png");
+        });
 
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
         this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
@@ -146,10 +150,24 @@ export default class CombatScene extends Phaser.Scene {
                     team2.entities.forEach(element => {
                         element.sprite.disableInteractive()
                     });
-                    team1.CurrentCharacter().selectedAttack(entity, ()=>{
+
+                    let attackAction = ()=>{team1.CurrentCharacter().selectedAttack(entity, ()=>{
                         buttons.forEach(button => {button.setActive(true)});
                         phase.emit('next');
-                    }, team1.CurrentCharacter());
+                    }, team1.CurrentCharacter());}
+
+                    console.log('Critic', team1.CurrentCharacter().doneCritic, entity.isWeak(team1.CurrentCharacter().type));
+
+                    if(team1.CurrentCharacter().doneCritic == false && entity.isWeak(team1.CurrentCharacter().type))
+                    {
+                        team1.CurrentCharacter().doneCritic = false;
+                        console.log('OutAttack');
+                        this.OutAttack(team1.CurrentCharacter(), attackAction);
+                    }
+                    else
+                    {
+                        attackAction();
+                    }
                 });
 
                 entity.event.on('takeTurn', ()=>{
@@ -197,6 +215,10 @@ export default class CombatScene extends Phaser.Scene {
 
         this.add.existing(arrow);
         arrow.setScale(0.2, 0.2)
+
+        outImage = this.add.image(-400, 600, 'Javi_Out');
+        outImage.setScale(0.45, 0.45);
+        outImage.setOrigin(0.5, 1);
 
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
         currentTeam = this.ambush ? team1 : team2;
@@ -259,5 +281,34 @@ export default class CombatScene extends Phaser.Scene {
     {
         self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
         analyser.Stop();
+    }
+
+    OutAttack(entity, callback)
+    {
+        outImage.x = -400;
+        console.log(entity.name);
+        outImage.setTexture(entity.name + "_Out");
+
+        this.tweens.add({
+            targets: outImage,
+            props: {
+                x: { value: 400, duration: 500 },
+            },
+            ease: 'quart.in'
+        });
+
+        this.time.delayedCall(1000, ()=>{
+            this.tweens.add({
+                targets: outImage,
+                props: {
+                    x: { value: 1200, duration: 500 },
+                },
+                ease: 'quart.in'
+            });
+        });
+
+        this.time.delayedCall(2200, ()=>{
+            callback();
+        });
     }
 }
