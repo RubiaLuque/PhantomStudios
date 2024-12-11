@@ -164,6 +164,7 @@ export default class Entity
 
     MagicAttack(other, endCallback = function(){}, attacker)
     {
+        console.log(endCallback)
         this.AttackTemplate(other, this.type, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }

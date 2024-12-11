@@ -55,8 +55,9 @@ export default class CardsScene extends Phaser.Scene{
         this.text = this.add.text(300,520, "Press SPACE to continue.", { fill: '#FFFFFF' });
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
         //let teamElection = this.randomCardSelector.RandomElection();
-        let teamElection = {texture: 'Empress', function: CardsEffects.EmpressEffect}
-        let enemiesElection = this.randomCardSelector.RandomElection();
+        let teamElection = {texture: 'Moon', function: CardsEffects.MoonEffect}
+        //let enemiesElection = this.randomCardSelector.RandomElection();
+        let enemiesElection = {texture: 'Emperor', function: CardsEffects.EmperorEffect}
         
         //Cartas elegidas 
         this.cardTeam = new TarotCard(this, 250, 250, teamElection.texture, teamElection.function);

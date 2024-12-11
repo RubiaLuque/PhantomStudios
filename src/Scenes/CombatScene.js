@@ -96,8 +96,8 @@ export default class CombatScene extends Phaser.Scene {
         team1.Create(this, this.ambush);
         team2.Create(this, !this.ambush);
         
-        // cardTeam.DoAction(team1, team2);
-        // cardEnemies.DoAction(team2, team1);
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team2, team1);
 
         buttons = [];
 
@@ -172,7 +172,7 @@ export default class CombatScene extends Phaser.Scene {
                 entity.event.on('takeTurn', ()=>{
                     entity.event.emit('target');
                     
-                    if(entity.CheckAlteredState({scene: this.scene, team: team, phase: phase}))
+                    if(entity.CheckAlteredState({scene: this, team: team, phase: phase, user: entity}))
                     {
                         if(team == team2)
                         {

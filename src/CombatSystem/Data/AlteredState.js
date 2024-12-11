@@ -11,7 +11,7 @@ export const AlteredState =
             data.scene.time.delayedCall(1000, ()=>{
                 data.phase.emit('next')} 
             );
-            data.user.Heal(15)
+            data.user.HealAttack(data.user)
             return false
             },
         exit: (_) => {}
@@ -28,7 +28,7 @@ export const AlteredState =
         check:(data)=> {
         console.log("Se caga encima")
         let target = data.team.GetRandomCharacterExcept(data.user);
-        data.user.MoveTo(target, data.phase.emit('next'))
+        data.user.MoveTo(target, ()=>{data.phase.emit('next')})
         return false
         },
         exit: (_) => {}
@@ -37,7 +37,7 @@ export const AlteredState =
         enter: (data) => { data.user.sprite.setTint(0xffff00) },
         check: (data) => {
             let target = data.team.GetRandomCharacterExcept(data.user);
-            data.user.MagicAttack(target, data.phase.emit('next'))
+            data.user.MagicAttack(target, ()=>{data.phase.emit('next')})
             return false
         },
         exit: (_) => {}
