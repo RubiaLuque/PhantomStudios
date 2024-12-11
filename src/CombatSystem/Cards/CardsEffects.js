@@ -42,12 +42,18 @@ export const CardsEffects = {
     },
 
     HierophantEffect: (thisTeam, _) => {
-        
+       thisTeam.GetRandomCharacter().magicalImmunity = true; 
     },
 
     LoversEffect: (thisTeam, thatTeam) => {
         if(thisTeam.name == "Party"){
-            //ATAQUE ESPECIAL??
+            let lover = thisTeam.GetRandomCharacter();
+            let loved = thisTeam.GetRandomCharacterExcept(lover);
+
+            loved.defense.bonus = lover.defense.quantity/2
+            loved.damage.bonus = lover.damage.quantity/2
+            loved.luck.bonus = lover.luck.quantity/2
+            loved.health.bonus = lover.health.quantity/2
         }
         else{
             thatTeam.GetRandomCharacter().alteredState = AlteredState.no_attack;
@@ -55,7 +61,7 @@ export const CardsEffects = {
     },
     
     ChariotEffect: (thisTeam, _) => {
-
+        thisTeam.GetRandomCharacter().physicalImmunity = true;
     },
 
     StrengthEffect: (thisTeam, _) => {
@@ -66,6 +72,7 @@ export const CardsEffects = {
 
     
     HermitEffect: (thisTeam, thatTeam) => {
+        
     },
 
 
