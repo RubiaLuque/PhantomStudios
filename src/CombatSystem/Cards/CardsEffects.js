@@ -21,7 +21,7 @@ export const CardsEffects = {
             });
         }
         else{
-            thisTeam.entities.forEach(element => {
+            thatTeam.entities.forEach(element => {
                 element.healing.able = false;
             });
         }
@@ -46,7 +46,12 @@ export const CardsEffects = {
     },
 
     LoversEffect: (thisTeam, thatTeam) => {
-
+        if(thisTeam.name == "Party"){
+            //ATAQUE ESPECIAL??
+        }
+        else{
+            thatTeam.GetRandomCharacter().alteredState = AlteredState.no_attack;
+        }
     },
     
     ChariotEffect: (thisTeam, _) => {
@@ -61,12 +66,6 @@ export const CardsEffects = {
 
     
     HermitEffect: (thisTeam, thatTeam) => {
-        if(thisTeam.name == "Party"){
-            //ATAQUE ESPECIAL??
-        }
-        else{
-            thatTeam.GetRandomCharacter().alteredState = AlteredState.no_attack;
-        }
     },
 
 
