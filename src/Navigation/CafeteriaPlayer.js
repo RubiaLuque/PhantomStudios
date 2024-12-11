@@ -8,7 +8,7 @@ let canRoll = true; //No va
 export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         console.log("A")
-        super(scene, x, y, 'Main_Team')
+        super(scene, x, y, 'Mika')
 
         this.scale = 0.05;
         

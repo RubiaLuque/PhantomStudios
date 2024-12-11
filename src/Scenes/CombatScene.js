@@ -98,8 +98,8 @@ export default class CombatScene extends Phaser.Scene {
         team1.Create(this, this.ambush);
         team2.Create(this, !this.ambush);
         
-        // cardTeam.DoAction(team1, team2);
-        // cardEnemies.DoAction(team2, team1);
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team2, team1);
 
         buttons = [];
 
@@ -120,8 +120,10 @@ export default class CombatScene extends Phaser.Scene {
 
         buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
         ()=>{
+            if(team1.CurrentCharacter().healing.able){
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
             team1.entities.forEach(element => {element.sprite.setInteractive()})
+            }
         }));
         buttons[2].setButtonScale(0.5, 0.25);
 
@@ -279,6 +281,17 @@ export default class CombatScene extends Phaser.Scene {
     //Funcion que se ejecuta al salir de la escena
     win()
     {
+        team1.entities.forEach(e =>{
+            e.maxHealth -= e.health.bonus
+            if(e.maxHealth < e.health.quantity) e.health.quantity = e.maxHealth
+            e.health.bonus = 0
+            e.defense.bonus = 0
+            e.damage.bonus = 0
+            e.luck.bonus = 0
+            e.healing.bonus = 0
+            e.healing.able = true
+        })
+
         self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
         analyser.Stop();
     }
