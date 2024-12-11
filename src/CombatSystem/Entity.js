@@ -18,6 +18,8 @@ export default class Entity
         this.luck = {quantity: luck, bonus: 0}
         this.healing = {quantity: -30, bonus: 0, able: true}
         this.event = new Phaser.Events.EventEmitter()
+        this.magicalImmunity = false;
+        this.physicalImmunity = false;
 
         this.image = image
         this.scene = scene
@@ -61,8 +63,13 @@ export default class Entity
     GetDamage(damage, type, attacker)
     {
         this.sound.Play(this.damageSound)
+        if((this.magicalImmunity && this.type.name != "physical") || (this.physicalImmunity && this.type.name=='physical')){
+            damage *= 0;
+            this.magicalImmunity = false;
+            this.physicalImmunity = false;
+        }
+        else if(type.str == this.type.name) damage *= 2
 
-        if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
         
         this.health.quantity -= damage

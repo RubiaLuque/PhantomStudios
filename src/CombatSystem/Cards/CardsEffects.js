@@ -42,7 +42,7 @@ export const CardsEffects = {
     },
 
     HierophantEffect: (thisTeam, _) => {
-        
+       thisTeam.GetRandomCharacter().magicalImmunity = true; 
     },
 
     LoversEffect: (thisTeam, thatTeam) => {
@@ -55,7 +55,7 @@ export const CardsEffects = {
     },
     
     ChariotEffect: (thisTeam, _) => {
-
+        thisTeam.GetRandomCharacter().physicalImmunity = true;
     },
 
     StrengthEffect: (thisTeam, _) => {
@@ -66,6 +66,7 @@ export const CardsEffects = {
 
     
     HermitEffect: (thisTeam, thatTeam) => {
+        
     },
 
 
