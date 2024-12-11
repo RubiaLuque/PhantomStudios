@@ -161,7 +161,9 @@ export const CardsEffects = {
     },
     
     SunEffect: (thisTeam, _) => {
-        
+        thisTeam.entities.forEach(e => {
+            e.healing.bonus = 20;
+        })
     },
     
     JudgementEffect: (thisTeam, thatTeam) => {
