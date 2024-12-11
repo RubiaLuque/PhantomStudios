@@ -31,6 +31,7 @@ export default class Entity
         this.alteredState = AlteredState.none;
         this.doneCritic = false;
 
+        this.alteredStateDuration = 0;
 
         this.selectedAttack = () => {console.log('No attack selected')}
     }
@@ -171,6 +172,19 @@ export default class Entity
         this.healing.able = false; this.HealTemplate(other, this.type, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
         if(this.health.quantity > this.maxHealth) this.health.quantity = this.maxHealth
+    }
+
+    ApplyAlteredState(state, duration)
+    {
+        this.alteredState = state;
+        this.alteredStateDuration = duration;
+    }
+
+    CheckAlteredState(data)
+    {
+        if(this.alteredStateDuration > 0) this.alteredStateDuration--;
+        else this.alteredState = AlteredState.none;
+        return this.alteredState(data);
     }
 
     Die()

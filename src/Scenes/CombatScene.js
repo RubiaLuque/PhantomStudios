@@ -172,7 +172,7 @@ export default class CombatScene extends Phaser.Scene {
                 entity.event.on('takeTurn', ()=>{
                     entity.event.emit('target');
                     
-                    if(entity.alteredState({scene: this.scene, team: team, phase: phase}))
+                    if(entity.CheckAlteredState({scene: this.scene, team: team, phase: phase}))
                     {
                         if(team == team2)
                         {
