@@ -33,6 +33,10 @@ export default class World1 extends Phaser.Scene
     preload()
     {
         this.load.image("Main_Team", "assets/images/Main_Team.png");
+        this.load.image("Javi", "assets/images/Javi.png");
+        this.load.image("Fueyo", "assets/images/Fueyo.png");
+        this.load.image("Mika", "assets/images/Mika.png");
+        this.load.image("Muxu", "assets/images/Muxu.png");
         this.load.image("Cafeteria", "assets/images/Cafeteria.png");
         this.load.image("NPC", "assets/images/NPC.png");
         this.load.image("Fork", "assets/images/Fork.png");
@@ -64,7 +68,7 @@ export default class World1 extends Phaser.Scene
 
         this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
 
-        this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Main_Team'})[0] //key sirve para indicar que image carga
+        this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'Javi'})[0] //key sirve para indicar que image carga
         if (team != undefined){
             this.player.team = team;
         }

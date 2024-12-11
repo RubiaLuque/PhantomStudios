@@ -39,11 +39,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.33,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 795.4545454545456,
-                "y": -707.5757575757575
+                "x": 1295,
+                "y": 2217
             }
         },
         "tilemap_cafeteria.tsx": {

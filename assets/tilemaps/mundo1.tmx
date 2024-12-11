@@ -576,7 +576,7 @@
   <object id="25" name="Player" x="1614.46" y="2698.08">
    <point/>
   </object>
-  <object id="26" name="Enemy" x="1219.24" y="2625.61">
+  <object id="26" name="Enemy" x="895" y="2665">
    <point/>
   </object>
   <object id="29" name="Cafeteria" x="1841.58" y="2666">
