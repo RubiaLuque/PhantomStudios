@@ -37,7 +37,8 @@ export default class Entity
 
     Setup()
     {
-        this.maxHealth += this.health.bonus;
+        this.health.quantity += this.health.bonus
+        this.maxHealth += this.health.bonus
 
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
 
@@ -61,10 +62,6 @@ export default class Entity
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 
-        if(this.health.bonus > 0){
-            this.health.bonus -= damage;
-            if(this.health.bonus < 0) this.health.quantity += this.health.bonus //le quita a la vida lo que le quite al bonus
-        }
         else this.health.quantity -= damage
 
         if(this.health.quantity > this.maxHealth)
@@ -163,6 +160,7 @@ export default class Entity
     {
         this.healing.able = false; this.HealTemplate(other, this.type, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
+        if(this.health.quantity > this.maxHealth) this.health.quantity = this.maxHealth
     }
 
     Die()
