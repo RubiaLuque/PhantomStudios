@@ -54,8 +54,8 @@ export default class CardsScene extends Phaser.Scene{
         this.space = this.input.keyboard.addKey("SPACE");
         this.text = this.add.text(300,520, "Press SPACE to continue.", { fill: '#FFFFFF' });
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
-        let teamElection = this.randomCardSelector.RandomElection();
-        //let teamElection = {texture: 'Fool', function: CardsEffects.FoolEffect}
+        //let teamElection = this.randomCardSelector.RandomElection();
+        let teamElection = {texture: 'Empress', function: CardsEffects.EmpressEffect}
         let enemiesElection = this.randomCardSelector.RandomElection();
         
         //Cartas elegidas 

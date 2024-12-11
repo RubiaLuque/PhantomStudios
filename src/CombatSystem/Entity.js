@@ -20,6 +20,7 @@ export default class Entity
         this.event = new Phaser.Events.EventEmitter()
         this.magicalImmunity = false;
         this.physicalImmunity = false;
+        this.target = this
 
         this.image = image
         this.scene = scene
@@ -119,7 +120,7 @@ export default class Entity
             damage *= 1.5
         }
 
-        other.GetDamage(damage, type, attacker)
+        other.target.GetDamage(damage, type, attacker)
 
         let self = this
 
@@ -189,5 +190,10 @@ export default class Entity
     //Se borran los estados alterados tras un combate
     ClearAlteredStates(){
         this.alteredState = AlteredState.none;
+    }
+
+    MoveTo(target, endCallback = function(){}){
+        this.target = target;
+        endCallback();
     }
 }
