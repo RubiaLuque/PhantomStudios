@@ -4,6 +4,7 @@ import World1 from "./Scenes/World1.js";
 import WinScene from "./Scenes/WinScene.js";
 import CardsScene from "./Scenes/CardsScene.js";
 import CafeteriaScene from "./Scenes/CafeteriaScene.js";
+import LevelUpScene from "./Scenes/LevelUpScene.js";
 import DialogueTestScene from "./Scenes/DialogueTestScene.js";
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
@@ -19,7 +20,8 @@ export let config = {
 		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
 	},
 
-	scene: [DialogueTestScene, MainMenu, World1, CardsScene, CafeteriaScene, CombatScene, WinScene],	// Decimos a Phaser cual es nuestra escena
+
+	scene: [MainMenu, World1, CardsScene, CafeteriaScene, CombatScene, WinScene, LevelUpScene],	// Decimos a Phaser cual es nuestra escena
 
 	physics: { 
 		default: 'arcade', 

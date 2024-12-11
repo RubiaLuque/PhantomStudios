@@ -29,7 +29,6 @@ export default class WinScene extends Phaser.Scene
         team = result.team;
         NPCFound = result.NPCFound;
         NPCTalked = result.NPCTalked;
-        console.log(healths)
     }
 
     create()
@@ -72,7 +71,7 @@ export default class WinScene extends Phaser.Scene
         this.time.delayedCall(5000, function(){
             new CustomButton(self, 400, 500, 'Button', 'Exit', function(){
                 self.sound.stopAll();
-                self.scene.start('World1', {pos: pos, id: enemyId, team: team, NPCFound: NPCFound, NPCTalked: NPCTalked});
+                self.scene.start('LevelUp', {pos: pos, id: enemyId, team: team, NPCFound: NPCFound, NPCTalked: NPCTalked});
             });
         });
     }

@@ -1,9 +1,11 @@
 import { analyser } from "../SoundSystem/Index.js"
 import { AlteredState } from "./Data/AlteredState.js"
 
+
+let healAvailable = true;
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound)
+    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level, maxLevel)
     {
         this.name = name
         this.health = health
@@ -20,13 +22,17 @@ export default class Entity
         this.scene = scene
         this.sound = analyser;
         this.damageSound = damageSound
+        this.xp = xp
+        this.level = level
+        this.maxLevel = maxLevel;
         this.alteredState = AlteredState.none;
+
 
         this.selectedAttack = () => {console.log('No attack selected')}
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound, container.xp, container.level, container.maxLevel)
     }
 
     Setup()
@@ -47,19 +53,25 @@ export default class Entity
         });
     }
 
-    GetDamage(damage, type)
+    GetDamage(damage, type, attacker)
     {
-        console.log(this.damageSound)
         this.sound.Play(this.damageSound)
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 
-        console.log(damage);
         this.health -= damage
         console.log(this.name + ' health:' + this.health)
 
-        if(this.health <= 0) this.Die()
-
+        if(this.health > this.maxHealth)
+        {
+            this.health = this.maxHealth
+        }
+        console.log(this)
+        if(this.health <= 0)
+        {
+            attacker.xp += this.xp;
+            this.Die()
+        }
         let self = this
         let xTracker = this.sprite.x
         let goBack = false
@@ -87,14 +99,15 @@ export default class Entity
         this.event.emit('GetDamage', damage)
     }
 
-    AttackTemplate(other, type)
+    AttackTemplate(other, type, attacker)
     {
+        console.log(other)
         let damage = this.damage;
         if(Math.random() < this.luck/10)
         {
             damage *= 1.5
         }
-        other.GetDamage(damage, type)
+        other.GetDamage(damage, type, attacker)
 
         let self = this
 
@@ -110,15 +123,40 @@ export default class Entity
             loop: true });
     }
 
-    Attack(other, endCallback = function(){})
+    HealTemplate(other, type, attacker)
     {
-        this.AttackTemplate(other, Type.physical)
+        let healing = -30;
+        other.GetDamage(healing, type, attacker)
+
+        let self = this
+
+        this.scene.time.addEvent({ delay : 5,
+            callback: function(){
+                self.sprite.rotation += 0.1
+                if(self.sprite.rotation >= 3)
+                {
+                    self.sprite.rotation = 0
+                    self.scene.time.removeEvent(this)
+                }
+            },
+            loop: true });
+    }
+
+    Attack(other, endCallback = function(){}, attacker)
+    {
+        this.AttackTemplate(other, Type.physical, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 
-    MagicAttack(other, endCallback = function(){})
+    MagicAttack(other, endCallback = function(){}, attacker)
     {
-        this.AttackTemplate(other, this.type)
+        this.AttackTemplate(other, this.type, attacker)
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
+    }
+
+    HealAttack(other, endCallback = function(){}, attacker)
+    {
+        if(healAvailable) {healAvailable = false; this.HealTemplate(other, this.type, attacker)}
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 

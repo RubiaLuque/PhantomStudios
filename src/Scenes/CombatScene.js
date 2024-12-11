@@ -69,9 +69,24 @@ export default class CombatScene extends Phaser.Scene {
 
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
         this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
+
+        this.load.spritesheet('background', 'assets/images/background_sheet_48-Frames.png', {frameWidth: 256, frameHeight: 224});
     }
 
     create(){
+        this.anims.create({
+            key: 'bckg',
+            frames: this.anims.generateFrameNumbers('background', {start: 0, end: 47}),
+            yoyo: true,
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.sr = this.add.sprite(0, 0, 'background');
+        this.sr.play('bckg');
+        this.sr.setOrigin(0, 0);
+        this.sr.setScale(3.2, 3.2);
+
         self = this;
 
         team1.Create(this, 100, 100, this);
@@ -83,19 +98,26 @@ export default class CombatScene extends Phaser.Scene {
         buttons = [];
 
         phase = new Phaser.Events.EventEmitter();
-        buttons.push(new CustomButton(this, 400, 550, "Button", "Attack", 
+        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack", 
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
             team2.entities.forEach(entity => {entity.sprite.setInteractive()})
         }));
         buttons[0].setButtonScale(0.5, 0.25);
 
-        buttons.push(new CustomButton(this, 400, 450, "Button", "Magic",
+        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
             team2.entities.forEach(element => {element.sprite.setInteractive()})
         }));
         buttons[1].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
+        ()=>{
+            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
+            team1.entities.forEach(element => {element.sprite.setInteractive()})
+        }));
+        buttons[2].setButtonScale(0.5, 0.25);
 
         arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
 
@@ -119,7 +141,7 @@ export default class CombatScene extends Phaser.Scene {
                     team1.CurrentCharacter().selectedAttack(entity, ()=>{
                         buttons.forEach(button => {button.setActive(true)});
                         phase.emit('next');
-                    });
+                    }, team1.CurrentCharacter());
                 });
 
                 entity.event.on('takeTurn', ()=>{
@@ -127,7 +149,8 @@ export default class CombatScene extends Phaser.Scene {
                     
                     if(entity.alteredState({scene: this.scene, team: team, phase: phase}))
                     {
-                        if(team == team2) entity.MagicAttack(team1.GetRandomCharacter(), ()=>{phase.emit('next')});
+                        
+                        if(team == team2) entity.MagicAttack(team1.GetRandomCharacter(), ()=>{phase.emit('next')}, entity);
                     }
                 });
             });
@@ -213,11 +236,6 @@ export default class CombatScene extends Phaser.Scene {
     //Funcion que se ejecuta al salir de la escena
     win()
     {
-        let healths = {};
-        team1.entities.forEach(entity =>{
-            healths[entity.name] = entity.health;
-        })
-
         self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
         analyser.Stop();
     }
