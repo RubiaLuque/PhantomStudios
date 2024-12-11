@@ -12,25 +12,33 @@ export const CardsEffects = {
 
     FoolEffect: (thisTeam, _)=> {
         thisTeam.extraTurns++;
-        console.log(thisTeam.extraTurns)
     },
 
     MagicianEffect: (thisTeam, thatTeam) => { 
-        
+        if(thisTeam.name == 'Party'){
+            thisTeam.entities.forEach(element => {
+                element.healing.bonus = -10;
+            });
+        }
+        else{
+            thisTeam.entities.forEach(element => {
+                element.healing.able = false;
+            });
+        }
     },
 
     High_PriestessEffect: (thisTeam, _) => {
         thisTeam.entities.forEach(e => {
-            e.luck+=2;
+            e.luck.bonus = 2;
         });   
     },
 
     EmperorEffect: (thisTeam, _) => {
-        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.papeado;
+        thisTeam.GetRandomCharacter().alteredState = AlteredState.papeado;
     },
 
     EmpressEffect: (thisTeam, _) => {
-        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.fear;
+        thisTeam.GetRandomCharacter().alteredState = AlteredState.fear;
     },
 
     HierophantEffect: (thisTeam, _) => {
@@ -47,7 +55,7 @@ export const CardsEffects = {
 
     StrengthEffect: (thisTeam, _) => {
         thisTeam.entities.forEach(e => {
-            e.strength+=3;
+            e.damage.bonus = 3;
         });
     },
 
@@ -57,7 +65,7 @@ export const CardsEffects = {
             //ATAQUE ESPECIAL??
         }
         else{
-            thatTeam.entities.getRandomCharacter().alteredState = AlteredState.no_attack;
+            thatTeam.GetRandomCharacter().alteredState = AlteredState.no_attack;
         }
     },
 
@@ -70,11 +78,9 @@ export const CardsEffects = {
         else fortune = -1; 
 
         thisTeam.entities.forEach(e => {
-            e.strength += fortune;
-            e.luck += fortune;
-            e.attack += fortune;
-            e.defense += defense;
-
+            e.damage.bonus = fortune;
+            e.luck.bonus = fortune;
+            e.defense.bonus = defense;
         });
     },
 
@@ -84,69 +90,68 @@ export const CardsEffects = {
         //Carta obtenida por el team de la party
         if(thisTeam.name == "Party"){
             thisTeam.entities.forEach(e => {
-                e.strength += 2;
-                e.luck += 2;
-                e.attack += 2;
-                e.defense += 2;
+                e.damage.bonus = 2;
+                e.luck.bonus = 2;
+                e.defense.bonus = 2;
     
             });
         }
         //Carta obtenida por los enemigos
         else{
-            let enemy = thisTeam.getRandomCharacter();
-            let character = thatTeam.getRandomCharacter();
+            let enemy = thisTeam.GetRandomCharacter();
+            let character = thatTeam.GetRandomCharacter();
 
             enemy.health = character.health;
             enemy.luck = character.luck;
-            enemy.attack = character.attack;
+            enemy.damage = character.damage;
             enemy.defense = character.defense;
         }
     },
     
     Hanged_ManEffect: (thisTeam, _) => {
-        thisTeam.entities.getRandomCharacter().health = 1;
+        thisTeam.GetRandomCharacter().health.quantity = 1;
     },
 
     DeathEffect: (thisTeam, _) => {
-        thisTeam.entities.getRandomCharacter().Die();
+        thisTeam.GetRandomCharacter().Die();
     },
     
     TemperanceEffect: (thisTeam, _) => {
         thisTeam.entities.forEach(e => {
-            e.health+=5;
+            e.health.bonus = 5;
         });
     },
 
     DevilEffect: (thisTeam, _) => {
-        let first = thisTeam.entities.getRandomCharacter();
-        first.health +=2;
-        first.defense += 2;
-        first.attack += 2;
-        first.luck += 2;
+        let first = thisTeam.GetRandomCharacter();
+        first.health.bonus = 2;
+        first.defense.bonus = 2;
+        first.damage.bonus = 2;
+        first.luck.bonus = 2;
 
-        let second = thisTeam.entities.getRandomCharacterExcept(first);
-        second.health -=2;
-        second.defense -= 2;
-        second.attack -= 2;
-        second.luck -= 2;
+        let second = thisTeam.GetRandomCharacterExcept(first);
+        second.health.bonus = -2;
+        second.defense.bonus = -2;
+        second.damage.bonus =  -2;
+        second.luck.bonus = -2;
     },
 
     TowerEffect: (thisTeam, _) => {
         thisTeam.entities.forEach(e => {
-            e.defense += 2;
+            e.defense.bonus = 2;
         });
     },
 
     StarEffect: (thisTeam, _) => {
-        let star = thisTeam.entities.getRandomCharacter();
-        star.health +=5;
-        star.defense += 5;
-        star.attack += 5;
-        star.luck += 5;
+        let star = thisTeam.GetRandomCharacter();
+        star.health.bonus = 5;
+        star.defense.bonus = 5;
+        star.damage.bonus = 5;
+        star.luck.bonus = 5;
     },
     
     MoonEffect: (thisTeam, _) => {
-        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.sleep;
+        thisTeam.GetRandomCharacter().alteredState = AlteredState.sleep;
     },
     
     SunEffect: (thisTeam, _) => {
@@ -158,6 +163,6 @@ export const CardsEffects = {
     },
     
     WorldEffect: (thisTeam, _) => {
-        thisTeam.entities.getRandomCharacter().alteredState = AlteredState.deaf;
+        thisTeam.GetRandomCharacter().alteredState = AlteredState.deaf;
     }
 }

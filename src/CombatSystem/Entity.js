@@ -2,20 +2,20 @@ import { analyser } from "../SoundSystem/Index.js"
 import { AlteredState } from "./Data/AlteredState.js"
 
 
-let healAvailable = true;
 export default class Entity
 {
     constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level, maxLevel)
     {
         this.name = name
-        this.health = health
-        this.maxHealth = health
+        this.health = {quantity: health, bonus: 0}
+        this.maxHealth = health.quantity
         this.attack = attack
-        this.defense = defense
-        this.damage = damage
+        this.defense = {quantity: defense, bonus: 0}
+        this.damage = {quantity: damage, bonus: 0}
         this.type = type
         this.alive = true;
-        this.luck = luck
+        this.luck = {quantity: luck, bonus: 0}
+        this.healing = {quantity: -30, bonus: 0, able: true}
         this.event = new Phaser.Events.EventEmitter()
 
         this.image = image
@@ -37,6 +37,8 @@ export default class Entity
 
     Setup()
     {
+        this.maxHealth += this.health.bonus;
+
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
 
         this.sprite.on('pointerover', function(){
@@ -59,15 +61,17 @@ export default class Entity
         if(type.str == this.type.name) damage *= 2
         else if(this.type.str == type.name) damage /= 2
 
-        this.health -= damage
-        console.log(this.name + ' health:' + this.health)
-
-        if(this.health > this.maxHealth)
-        {
-            this.health = this.maxHealth
+        if(this.health.bonus > 0){
+            this.health.bonus -= damage;
+            if(this.health.bonus < 0) this.health.quantity += this.health.bonus //le quita a la vida lo que le quite al bonus
         }
-        console.log(this)
-        if(this.health <= 0)
+        else this.health.quantity -= damage
+
+        if(this.health.quantity > this.maxHealth)
+        {
+            this.health.quantity = this.maxHealth
+        }
+        if(this.health.quantity <= 0)
         {
             attacker.xp += this.xp;
             this.Die()
@@ -102,8 +106,9 @@ export default class Entity
     AttackTemplate(other, type, attacker)
     {
         console.log(other)
-        let damage = this.damage;
-        if(Math.random() < this.luck/10)
+        let damage = this.damage.quantity + this.damage.bonus;
+        let luck = this.luck.quantity + this.luck.bonus;
+        if(Math.random() < luck/10)
         {
             damage *= 1.5
         }
@@ -125,7 +130,7 @@ export default class Entity
 
     HealTemplate(other, type, attacker)
     {
-        let healing = -30;
+        let healing = this.healing.quantity + this.healing.bonus
         other.GetDamage(healing, type, attacker)
 
         let self = this
@@ -156,7 +161,7 @@ export default class Entity
 
     HealAttack(other, endCallback = function(){}, attacker)
     {
-        if(healAvailable) {healAvailable = false; this.HealTemplate(other, this.type, attacker)}
+        this.healing.able = false; this.HealTemplate(other, this.type, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
     }
 
