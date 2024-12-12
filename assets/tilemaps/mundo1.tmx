@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="77" height="96" tilewidth="32" tileheight="32" infinite="1" nextlayerid="3" nextobjectid="31">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="77" height="96" tilewidth="32" tileheight="32" infinite="1" nextlayerid="3" nextobjectid="32">
  <editorsettings>
   <export target="mundo1.json" format="json"/>
  </editorsettings>
@@ -564,7 +564,7 @@
   <object id="15" name="Enemy" x="1344" y="1224">
    <point/>
   </object>
-  <object id="22" name="Enemy" x="1736" y="489.33">
+  <object id="22" name="Jaime" x="1736" y="489.33">
    <point/>
   </object>
   <object id="23" name="Enemy" x="688" y="478.67">
@@ -573,7 +573,7 @@
   <object id="24" name="Miniboss" x="1280" y="1790">
    <point/>
   </object>
-  <object id="25" name="Player" x="1614.46" y="2698.08">
+  <object id="25" name="Player" x="1576.46" y="2678.08">
    <point/>
   </object>
   <object id="26" name="Enemy" x="895" y="2665">

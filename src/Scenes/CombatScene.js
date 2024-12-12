@@ -33,8 +33,8 @@ export default class CombatScene extends Phaser.Scene {
 
     init(teams){
         //Inicializacion de los equipos, Team 1 es el jugador y Team 2 es el enemigo
-        team1 = new Team(teams.team1, "Party")
-        team2 = new Team(teams.team2, "Enemies")
+        team1 = teams.team1
+        team2 = teams.team2
 
         //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
@@ -59,7 +59,7 @@ export default class CombatScene extends Phaser.Scene {
         this.load.image("Arrow", "assets/images/Arrow.png");
 
         team1.entities.forEach(entity => {
-            this.load.image(entity.name + "_Out", "assets/images/" + entity.name + "_Out.png");
+            this.load.image(entity.name + "_Out", "assets/images/" + entity.image + "_Out.png");
         });
 
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);

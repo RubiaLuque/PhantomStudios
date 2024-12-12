@@ -31,12 +31,12 @@ export const AlteredState =
         data.user.MoveTo(target, ()=>{data.phase.emit('next')})
         return false
         },
-        exit: (_) => {}
+        exit: (data) => {data.user.MoveTo(data.user)}
     },
     papeado:{
         enter: (data) => { data.user.sprite.setTint(0xffff00) },
         check: (data) => {
-            let target = data.team.GetRandomCharacterExcept(data.user);
+            let target = data.team.GetRandomCharacter();
             data.user.MagicAttack(target, ()=>{data.phase.emit('next')})
             return false
         },

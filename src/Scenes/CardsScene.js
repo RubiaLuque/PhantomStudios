@@ -17,6 +17,7 @@ export default class CardsScene extends Phaser.Scene{
         this.NPCFound = prevScene.NPCFound
         this.NPCTalked = prevScene.NPCTalked;
         this.ambush = prevScene.ambush;
+        this.bossId = prevScene.bossId;
     }
 
     //
@@ -54,14 +55,16 @@ export default class CardsScene extends Phaser.Scene{
         this.space = this.input.keyboard.addKey("SPACE");
         this.text = this.add.text(300,520, "Press SPACE to continue.", { fill: '#FFFFFF' });
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
-        //let teamElection = this.randomCardSelector.RandomElection();
-        let teamElection = {texture: 'Moon', function: CardsEffects.MoonEffect}
-        //let enemiesElection = this.randomCardSelector.RandomElection();
-        let enemiesElection = {texture: 'Emperor', function: CardsEffects.EmperorEffect}
+        let teamElection = this.randomCardSelector.RandomElection();
+        //let teamElection = {texture: 'Moon', function: CardsEffects.MoonEffect}
+        let enemiesElection = this.randomCardSelector.RandomElection();
+        //let enemiesElection = {texture: 'Emperor', function: CardsEffects.EmperorEffect}
         
         //Cartas elegidas 
         this.cardTeam = new TarotCard(this, 250, 250, teamElection.texture, teamElection.function);
         this.cardEnemies = new TarotCard(this, 550, 250, enemiesElection.texture, enemiesElection.function);
+
+        if(this.enemyId == this.bossId) this.cardEnemies.funct = function(){};
         //Para que no aparezcan las imagenes en el fondo al hacer la animacion de flip
         this.cardTeam.setAlpha(0, 0, 0, 0);
         this.cardEnemies.setAlpha(0, 0, 0, 0);

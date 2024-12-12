@@ -4,7 +4,7 @@ export const MainTeam =
     entities :
     [
         {
-            name: "Javi",
+            name: "JaviN",
             damage: 20,
             health: 80,
             type: Type.horny,
@@ -18,7 +18,7 @@ export const MainTeam =
         },
 
         {
-            name: "Fueyo",
+            name: "FueyoN",
             damage: 10,
             health: 120,
             type: Type.wrath,
@@ -32,7 +32,7 @@ export const MainTeam =
         },
 
         {
-            name: "Mika",
+            name: "MikaN",
             damage: 5,
             health: 200,
             type: Type.depression,
@@ -46,7 +46,7 @@ export const MainTeam =
         },
 
         {
-            name: "Muxu",
+            name: "MuxuN",
             damage: 10,
             health: 90,
             type: Type.anxiety,
@@ -104,6 +104,17 @@ export const MainTeam =
             xp: 5,
             image: "Fork",
             damageSound: "oioioi",
+        },
+        Jaime:{
+            name: 'Jaime',
+            damage: 20,
+            health: 500,
+            type: Type.depression,
+            luck: 0.75,
+            xp: 70,
+            image: 'NPC',
+            damageSound: 'oioioi'
+
         }
     }
 }

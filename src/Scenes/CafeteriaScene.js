@@ -83,7 +83,7 @@ export default class CafeteriaScene extends Phaser.Scene
             
             i++;
         })
-        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'Mika'})[0] //key sirve para indicar que image carga
+        this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'MikaN'})[0] //key sirve para indicar que image carga
         
         let self = this;
         this.player.eKey.on("down", ()=>{

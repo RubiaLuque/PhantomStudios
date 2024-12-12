@@ -1,5 +1,6 @@
 import player from "../Navigation/Player.js";
 import Enemy from "../Navigation/Enemy.js";
+import Jaime from "../Navigation/Jaime.js"
 import Cafeteria from "../Navigation/Cafeteria.js";
 import CustomButton from "../UI/CustomButton.js";
 import NPC from "../Navigation/NPC.js";
@@ -47,6 +48,7 @@ export default class World1 extends Phaser.Scene
         this.load.spritesheet("Muxu", "assets/images/Muxu_sheet.png", {frameWidth: 1499, frameHeight: 1536});
         this.load.spritesheet("Toni", "assets/images/NPC.png", {frameWidth: 286, frameHeight: 275});
         this.load.spritesheet("Narrador", "assets/images/NPC.png", {frameWidth: 286, frameHeight: 275});
+        this.load.spritesheet('Jaime', "assets/images/Jaime.png", {frameWidth: 1000, frameHeight: 1053})
         this.load.image("Cafeteria", "assets/images/Cafeteria.png");
         this.load.image("NPC", "assets/images/NPC.png");
         this.load.image("Fork", "assets/images/Fork.png");
@@ -114,6 +116,17 @@ export default class World1 extends Phaser.Scene
                     
                     enemyIndex++;
                 })
+
+                this.boss = this.tileMap.createFromObjects('entidades', {name: 'Jaime', classType: Jaime, key: 'Jaime'})[0]
+                
+                this.enemies[enemyIndex] = this.boss
+
+                this.physics.add.collider(this.boss, this.collidables)
+                this.boss.id = enemyIndex;
+                if (defeatedEnemiesIds.includes(this.boss.id)) this.enemies[enemyIndex].destroy();
+                enemyIndex++
+
+                this.bossId = this.boss.id
                 
                 console.log(this.enemies);
                 /*if(!sceneAdded)
@@ -146,9 +159,10 @@ export default class World1 extends Phaser.Scene
                 if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {
                 let ambush = this.player.y < enemy.y;
-                this.scene.start('cards', {team1: this.player.team, team2: enemy.team, 
+                this.scene.start('cards', {team1: this.player.teamClass, team2: enemy.teamClass, 
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, 
-                    enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked, ambush: ambush});
+                    enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked, ambush: ambush,
+                bossId: this.bossId});
                 }
             });
             

@@ -28,6 +28,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
        MainTeam.entities.forEach(entity =>
             this.team.push(Entity.TranslateEntity(entity, scene))
        )
+       this.teamClass = new Team(this.team, "Party")
 
         this.scene = scene
         

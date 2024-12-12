@@ -49,7 +49,7 @@ export default class WinScene extends Phaser.Scene
             self.add.existing(character);
             characterImages.push(character);
 
-            self.add.text(character.x - 20, character.y + 100, element);
+            self.add.text(character.x - 20, character.y + 200, element);
             i++;
         });
 

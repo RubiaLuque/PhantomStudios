@@ -57,7 +57,9 @@ export const CardsEffects = {
             loved.health.bonus = lover.health.quantity/2
         }
         else{
-            thatTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.no_attack, 3)
+            
+             console.log(thatTeam)
+            //thatTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.no_attack, 3)
         }
     },
     
@@ -87,7 +89,7 @@ export const CardsEffects = {
         thisTeam.entities.forEach(e => {
             e.damage.bonus = fortune;
             e.luck.bonus = fortune;
-            e.defense.bonus = defense;
+            e.defense.bonus = fortune;
         });
     },
 

@@ -745,7 +745,7 @@
                 {
                  "height":0,
                  "id":22,
-                 "name":"Enemy",
+                 "name":"Jaime",
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -787,8 +787,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1614.46,
-                 "y":2698.08
+                 "x":1576.46,
+                 "y":2678.08
                 }, 
                 {
                  "height":0,
@@ -833,10 +833,10 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":31,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.0",
+ "tiledversion":"1.10.2",
  "tileheight":32,
  "tilesets":[
         {

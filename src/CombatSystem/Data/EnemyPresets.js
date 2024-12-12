@@ -7,5 +7,8 @@ export const EnemyPresets =
         ["Skibidi", "Skibidi"],
         ["Skibidi", "Demon"],
         ["Fork", "Fork", "Fork", "Fork"]
+    ],
+    bosses:[
+        'Jaime'
     ]
 }
