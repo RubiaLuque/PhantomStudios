@@ -13,6 +13,7 @@ export default class DialogueInterpreter {
         this.background.visible = false;
 
         this.character = scene.add.sprite(100, 100, "Javi");
+        this.character.visible = false;
 
         this.nextInput = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.nextInput.on('down', ()=>{
@@ -39,12 +40,13 @@ export default class DialogueInterpreter {
             callback: ()=>{
                 if(!end)
                 {
+                    
                     if(self.scene.time.now > delay && self.next)
                     {
                         self.next = false;
                         delay = self.scene.time.now + 100;
                         this.dialogueText.text = "";
-                                
+                        
                         line = lines.shift();
 
                         characterData = line.split(":")[0].split("/");
@@ -70,6 +72,7 @@ export default class DialogueInterpreter {
                         })
                         
                         if(lines[0] == null) end = true;
+
                     }
                 }
                 else if(this.next)
