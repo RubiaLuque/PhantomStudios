@@ -6,7 +6,7 @@ import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
 import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 
-const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
+const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'Break_Out'];
 
 let buttons, damageText;
 
@@ -135,7 +135,7 @@ export default class CombatScene extends Phaser.Scene {
                 entity.event.on('GetDamage', (damage)=>{self.onDamage(entity.sprite, damage);});
 
                 let bounds = entity.sprite.getBounds();
-                new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity);
+                new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity).UpdateBar()
 
                 entity.sprite.on('pointerover', ()=>{
                     entity.event.emit('target');

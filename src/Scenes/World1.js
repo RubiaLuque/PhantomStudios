@@ -71,7 +71,7 @@ export default class World1 extends Phaser.Scene
         
         const set = this.tileMap.addTilesetImage('Aztec_Tileset', 'Tiles')
         
-        analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
+        analyser.SetRandomSong(['CYN'])
         analyser.Restart();
         
         this.collidables = this.tileMap.createLayer('Capa de patrones 1', set)
