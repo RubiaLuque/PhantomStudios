@@ -1,10 +1,11 @@
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 import Entity from "../CombatSystem/Entity.js";
 import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
+import Team from "../CombatSystem/Team.js";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        console.log("B")
+
         super(scene, x, y, 'Fork')
         this.enemyPreset = EnemyPresets.presets[Math.floor(Math.random() * EnemyPresets.presets.length)];
         
@@ -17,6 +18,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         })
         
         this.scale = 0.15;
+        this.setOrigin(0.5, 1);
         this.id = 0;
+        this.teamClass = new Team(this.team, "Enemies")
     }
 }

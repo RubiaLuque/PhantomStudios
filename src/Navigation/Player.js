@@ -9,9 +9,10 @@ let ableToJump = false;
 export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         console.log("A")
-        super(scene, x, y, 'Main_Team')
+        super(scene, x, y, 'Javi')
 
-        this.scale = 0.25;
+        this.scale = 0.05;
+        this.setOrigin(0.5, 1);
         
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -20,12 +21,14 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         this.aKey = this.scene.input.keyboard.addKey('A')
         this.dKey = this.scene.input.keyboard.addKey('D')
         this.sKey = this.scene.input.keyboard.addKey('S')
+        this.eKey = this.scene.input.keyboard.addKey('E')
         this.spaceKey = this.scene.input.keyboard.addKey('SPACE')
 
        this.team = []; 
        MainTeam.entities.forEach(entity =>
             this.team.push(Entity.TranslateEntity(entity, scene))
        )
+       this.teamClass = new Team(this.team, "Party")
 
         this.scene = scene
         
@@ -45,7 +48,6 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
 
         direction.normalize();
         this.body.setVelocityX(direction.x * vel);
-        //console.log(this.x)
     }
 
     preUpdate(){

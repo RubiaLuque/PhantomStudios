@@ -3,6 +3,9 @@ import CustomButton from "../UI/CustomButton.js";
 const characters = ['Javi', 'Mika', 'Fueyo', 'Muxu'];
 let expText;
 let pos, enemyId;
+let healths;
+let NPCFound, NPCTalked;
+let team;
 export default class WinScene extends Phaser.Scene
 {
     constructor(){
@@ -23,6 +26,9 @@ export default class WinScene extends Phaser.Scene
     {
         pos = result.pos
         enemyId = result.id;
+        team = result.team;
+        NPCFound = result.NPCFound;
+        NPCTalked = result.NPCTalked;
     }
 
     create()
@@ -43,7 +49,7 @@ export default class WinScene extends Phaser.Scene
             self.add.existing(character);
             characterImages.push(character);
 
-            self.add.text(character.x - 20, character.y + 100, element);
+            self.add.text(character.x - 20, character.y + 200, element);
             i++;
         });
 
@@ -65,7 +71,7 @@ export default class WinScene extends Phaser.Scene
         this.time.delayedCall(5000, function(){
             new CustomButton(self, 400, 500, 'Button', 'Exit', function(){
                 self.sound.stopAll();
-                self.scene.start('World1', {pos: pos, id: enemyId});
+                self.scene.start('LevelUp', {pos: pos, id: enemyId, team: team, NPCFound: NPCFound, NPCTalked: NPCTalked});
             });
         });
     }

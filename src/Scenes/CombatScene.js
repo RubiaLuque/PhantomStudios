@@ -2,37 +2,26 @@ import CustomButton from "../UI/CustomButton.js";
 import FloatingText from "../CombatSystem/FloatingText.js";
 import {analyser} from "../SoundSystem/Index.js"
 import Team from "../CombatSystem/Team.js";
-import DialogueInterpreter from "../DialogueInterpreter.js";
+import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
-import World1 from "./World1.js";
-import WinScene from "./WinScene.js";
+import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 
 const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
 
-const Type = {
-    horny : {name:'horny', str: 'depression'},
-    anxiety: {name:'anxiety', str: 'horny'},
-    wrath: {name:'wrath', str: 'anxiety'},
-    depression: {name:'depression', str: 'wrath'},
-    physical: {name:'physical', str: 'depression'}
-}
-
-let AttackButton, MagicButton, resultText, damageText;
-let nuclearBombButton;
-let selectedCharacter;
+let buttons, damageText;
 
 let XcamVel = 0.05;
 let YcamVel = 0.1;
-
-let currentCharacter = 0;
+let outImage;
 
 let team1, team2;
 let arrow;
-let onEndTurn, onPhaseChange;
 let turnText;
 let lastPlayerPosition, currentEnemyId;
-let phase, center;
+let phase;
 let currentTeam;
+let cardEnemies, cardTeam;
+let NPCFound, NPCTalked;
 
 const freqPositions = [50, 60, 70, 80];
 
@@ -44,17 +33,22 @@ export default class CombatScene extends Phaser.Scene {
 
     init(teams){
         //Inicializacion de los equipos, Team 1 es el jugador y Team 2 es el enemigo
-        team1 = new Team(teams.team1)
-        team2 = new Team(teams.team2)
+        team1 = teams.team1
+        team2 = teams.team2
 
-        //Guardamos la posicion del jugador y el id del enemigo para la siguiente escena
+        //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
         currentEnemyId = teams.enemyId;
+        NPCFound = teams.NPCFound;
+        NPCTalked = teams.NPCTalked;
+        console.log(teams)
+        this.ambush = teams.ambush
 
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
 
-        currentCharacter = 0;
+        cardTeam = teams.cardTeam;
+        cardEnemies = teams.cardEnemies;
     }
 
     preload(){
@@ -64,236 +58,208 @@ export default class CombatScene extends Phaser.Scene {
         this.load.image("Button", "assets/images/Button.png");
         this.load.image("Arrow", "assets/images/Arrow.png");
 
+        team1.entities.forEach(entity => {
+            this.load.image(entity.name + "_Out", "assets/images/" + entity.image + "_Out.png");
+        });
+
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
         this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
+
+        this.load.spritesheet('background', 'assets/images/background_sheet_48-Frames.png', {frameWidth: 256, frameHeight: 224});
+        this.load.spritesheet('speedFX', 'assets/images/kinggod_speed_426_240.png', {frameWidth: 426, frameHeight: 216});
     }
 
     create(){
+        this.anims.create({
+            key: 'bckg',
+            frames: this.anims.generateFrameNumbers('background', {start: 0, end: 47}),
+            yoyo: true,
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'speedFX',
+            frames: this.anims.generateFrameNumbers('speedFX', {start: 0, end: 24}),
+            yoyo: true,
+            frameRate: 24,
+            repeat: -1
+        });
+
+        this.background = this.add.sprite(0, 0, 'background');
+        this.background.play('bckg');
+        this.background.setOrigin(0, 0);
+        this.background.setScale(3.2, 3.2);
+
         self = this;
 
-        //Objeto centro para tener facilidad de centrar la camara
-        center = new Phaser.GameObjects.Image(this, this.WIDTH/2, this.HEIGHT/2, '');
-        this.add.existing(center);
-        center.visible = false;
+        team1.Create(this, this.ambush);
+        team2.Create(this, !this.ambush);
+        
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team2, team1);
 
-        //Creacion de los personajes para que se vean en escena
-        team1.Create(this, 250, 100, this);
-        team2.Create(this, 700, 100, this);
+        buttons = [];
 
-        //Creacion del texto que indica de quien es el turno
-        turnText = this.add.text(400, 500, 'Your turn', { fontSize: '50px', fill: '#FFF'});
-        this.add.existing(turnText);
+        phase = new Phaser.Events.EventEmitter();
+        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack", 
+        ()=>{
+            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
+            team2.entities.forEach(entity => {entity.sprite.setInteractive()})
+        }));
+        buttons[0].setButtonScale(0.5, 0.25);
 
-        //Creacion de los botones para seleccionar ataque o magia. Tambien el nuclear pero ese es para debug
-        AttackButton = new CustomButton(this, 400, 400, "Button", "Attack", 
-            function(){
-                selectedCharacter.selectedAttack = selectedCharacter.Attack;
-                team2.entities.forEach(element => {element.sprite.setInteractive()})
-                onPhaseChange.emit('combat');
+        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
+        ()=>{
+            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
+            team2.entities.forEach(element => {element.sprite.setInteractive()})
+        }));
+        buttons[1].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
+        ()=>{
+            if(team1.CurrentCharacter().healing.able){
+            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
+            team1.entities.forEach(element => {element.sprite.setInteractive()})
             }
-        );
-        AttackButton.setButtonScale(0.5, 0.25);
+        }));
+        buttons[2].setButtonScale(0.5, 0.25);
 
-        MagicButton = new CustomButton(this, 400, 500, "Button", "Magic",
-            function(){
-                selectedCharacter.selectedAttack = selectedCharacter.MagicAttack;
-                team2.entities.forEach(element => {element.sprite.setInteractive()})
-                onPhaseChange.emit('combat');
-            }
-        );
-        MagicButton.setButtonScale(0.5, 0.25);
+        arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
+        arrow.setOrigin(0.5, 1);
+        arrow.setRotation(-1.5708);
 
-        nuclearBombButton = new CustomButton(this, 600, 550, "Button", "Nuclear Bomb",
-            function(){
-                team2.entities.forEach(element => {element.GetDamage(1000, Type.physical)});
-            }
-        );
-        nuclearBombButton.setButtonScale(0.5, 0.25);
-
-        //Hacemos que los enemigos se puedan seleccionar y que el ataque seleccionado se ejecute al hacer click
-        team2.entities.forEach(element => {
-            element.sprite.on('pointerdown', function(){
-                if(element.alive)
-                {
-                    AttackButton.setActive(false)
-                    MagicButton.setActive(false)
-                    selectedCharacter.selectedAttack(element, function(){onPhaseChange.emit('next')});
-                    team2.entities.forEach(element => {element.sprite.disableInteractive()});
-
-                    element.sprite.emit('pointerup');
-                    element.sprite.emit('pointerout');
-                }
-            });
-
-            element.sprite.on('pointerover', function(){
-                        arrow.x = element.sprite.x
-                        arrow.y = element.sprite.y - 70
-            });
-        });
-
-        //Asignacion de eventos comunes en todos los personajes
-        [team1, team2].forEach(team => {
-            //Asignamos un evento cuando los personajes reciben daño para que se ejecute la funcion onDamage
+        let teams = [team1, team2];
+        teams.forEach(team => {
             team.entities.forEach(entity => {
-                    entity.on.on('GetDamage', function(damage){
-                        self.onDamage(entity.sprite, damage);
+                entity.event.on('GetDamage', (damage)=>{self.onDamage(entity.sprite, damage);});
+
+                let bounds = entity.sprite.getBounds();
+                new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity);
+
+                entity.sprite.on('pointerover', ()=>{
+                    entity.event.emit('target');
+                });
+
+                entity.sprite.on('pointerdown', ()=>{
+                    entity.sprite.emit('pointerout');
+                    entity.sprite.emit('pointerup');
+
+                    buttons.forEach(button => {button.setActive(false)});
+
+                    team2.entities.forEach(element => {
+                        element.sprite.disableInteractive()
                     });
 
-                    //Evento para cuando se selecciona un personaje ya se del equipo 1 o 2
-                    //Si es del equipo 1 los botones de ataque y magia se ponen al lado del personaje
-                    entity.on.on('select', function(){
-                        if(team == team1) self.SetButtonNextToCharacter(selectedCharacter);
-                        arrow.x = entity.sprite.x
-                        arrow.y = entity.sprite.y - 70
-                    });
+                    let character = team1.CurrentCharacter();
 
-                    //Creamos la barra de vida para cada personaje
-                    //Bounds indica el tamaño del sprite para que la barra de vida se ponga arriba del sprite
-                    //Si el personaje es del equipo 2 la barra de vida se pone a la izquierda del personaje en vez de arriba
-                    let bounds = entity.sprite.getBounds();
-                    if(team == team2) new LifeBar(self, entity.sprite.x, entity.sprite.y - bounds.height/2, 'Button', entity);
-                    else new LifeBar(self, entity.sprite.x - 100, entity.sprite.y, 'Button', entity, true);
+                    let attackAction = ()=>{character.selectedAttack(entity, ()=>{
+                        buttons.forEach(button => {button.setActive(true)});
+                        phase.emit('next');
+                    }, character);}
+
+                    if(character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type))
+                    {
+                        character.doneCritic = false;
+                        this.OutAttack(character, attackAction);
+                    }
+                    else
+                    {
+                        attackAction();
+                    }
+                });
+
+                entity.event.on('takeTurn', ()=>{
+                    entity.event.emit('target');
+                    
+                    if(entity.CheckAlteredState({scene: this, team: team, phase: phase, user: entity}))
+                    {
+                        if(team == team2)
+                        {
+                            let target = team1.GetRandomCharacter();
+                            this.time.delayedCall(1000, ()=>{
+                                target.event.emit('target');
+                                entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
+                            });
+                        }
+                    }
+                });
+
+                entity.event.on('target', ()=>{
+                    arrow.x = bounds.x;
+                    arrow.y = entity.sprite.y;
+                });
             });
         });
 
-        //Creacion de la flecha que indica el personaje seleccionado (tambien se puede usar para indicar el objetivo)
-        arrow = this.add.sprite(0, 0, 'Arrow')
-        arrow.scale = 0.2
-        this.add.existing(arrow)
-
-        //Eventos para el cambio de fase y final de turno
-        onEndTurn = new Phaser.Events.EventEmitter();
-        onPhaseChange = new Phaser.Events.EventEmitter();
-
-        //Evento que se emite cuando se selecciona el ataque o la magia
-        onPhaseChange.on('combat', function(){
-            team2.entities.forEach(element => { element.sprite.setInteractive(); });
-            phase = 'combat';
+        phase.on('next', ()=>{
+            let output = currentTeam.GetNextCharacter();
+            if(output.isValid) output.entity.event.emit('takeTurn');
+            else phase.emit('endTurn');
         });
 
-        //Evento que se emite en cuanto se ataca a un enemigo despues de seleccionar el ataque o la magia
-        //Cambiamos de personaje y si ya no hay mas personajes cambiamos de turno
-        onPhaseChange.on('next', function(){
-                currentCharacter++;
-                selectedCharacter = team1.GetCharacter(currentCharacter);
-
-                if(currentCharacter >= team1.GetCharacterCount())
-                {
-                    onEndTurn.emit('endTurn');
-                    currentCharacter = -1;
-                }
-                else
-                {
-                    AttackButton.setActive(true)
-                    MagicButton.setActive(true)
-                    selectedCharacter.on.emit('select');
-                }
+        phase.on('endTurn', ()=>{
+            currentTeam = currentTeam == team1 ? team2 : team1;
+            buttons.forEach(button => {button.setActive(currentTeam == team1)});
+            phase.emit('next')
         });
 
-        //Se emite cuando el turno del jugador termina
-        onEndTurn.on('endTurn', function(){
-            let i = 0;
-            turnText.setText('Enemy turn');
-            arrow.tint = 0xFF0000;
-            turnText.tint = 0xFF0000;
-            arrow.visible = false;
-            currentTeam = team2;
-
-            //Los delayed call son como lo time.addEvent
-            //Los usamos en este caso para retrasar la funcion que se va a ejecutar, de esa forma conseguimos
-            //que el combate se vea claro y no se ejecute todo de golpe
-            self.time.delayedCall(1000, function(){
-                self.cameras.main.startFollow(arrow, true, 0.025, 0.025, 0, 0);} 
-            );
-
-            self.time.addEvent({ delay : 1000, 
-            callback: function(){
-                arrow.visible = true;
-                if(i < team2.GetCharacterCount())
-                {
-                    let current = team2.GetCharacter(i);
-                    current.on.emit('select');
-
-                    self.time.addEvent({ delay : 500,
-                        callback: function(){
-                            let target = team1.GetRandomCharacter();
-                            current.Attack(target, function(){onPhaseChange.emit('wait')});
-                            arrow.x = target.sprite.x
-                            arrow.y = target.sprite.y - 70
-                        }, loop: false });
-
-                    i++;
-                }
-                else
-                {
-                    turnText.tint = 0xFFFFFF;
-                    arrow.tint = 0xFFFFFF;
-                    turnText.setText('Your turn');
-                    onPhaseChange.emit('next');
-                    currentTeam = team1;
-                    self.time.removeEvent(this);
-                    self.cameras.main.startFollow(center, true, 0.005, 0.005, 0, 0);
-                }
-            }, 
-            loop: true });
+        team1.onTeam.on('death', ()=>{self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});});
+        team2.onTeam.on('death', ()=>
+        {
+            self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
+            self.time.addEvent({ delay : 1000, callback: ()=>{self.win()} });
         });
 
-        //Evento que se emite cuando el equipo se queda sin personajes con vida
-        //Las comprobaciones de esto tienen lugar en la clase Team que sabe cuando una entidad del equipo muere
-        team1.onTeam.on('death', function(){
-            console.log('You lose');
-            resultText = self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
-        });
+        this.add.existing(arrow);
+        arrow.setScale(0.2, 0.2)
 
-        team2.onTeam.on('death', function(){
-            console.log('You win');
-            resultText = self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
+        this.FXbackground = this.add.rectangle(0, 0, 800, 600, 0x000000);
+        this.FXbackground.setOrigin(0, 0);
+        this.FXbackground.alpha = 0.5;
+        this.FXbackground.visible = false;
 
-            //Tras ganar retrasamos un poco la carga de la pantalla de victoria
-            self.time.addEvent({ delay : 1000, 
-                callback: function(){
-                self.unLoad();
-                self.scene.start('WinScene',
-                {pos: lastPlayerPosition, id: currentEnemyId});}, 
-                loop: false });
-        });
+        this.speedFX = this.add.sprite(0, 0, 'speedFX');
+        this.speedFX.setOrigin(0, 0);
+        this.speedFX.setScale(2, 2.75);
+        this.speedFX.visible = false;
 
-        //Establevemos valores iniciales para el combate
-        //Empieza el equipo 1 y el personaje seleccionado es el primero
-        currentTeam = team1;
-        selectedCharacter = team1.GetCharacter(0);
-        arrow.x = selectedCharacter.sprite.x
-        arrow.y = selectedCharacter.sprite.y - 70
-        this.SetButtonNextToCharacter(selectedCharacter);
+        outImage = this.add.image(-400, 600, 'Javi_Out');
+        outImage.setScale(0.45, 0.45);
+        outImage.setOrigin(0.5, 1);
 
-        //Creacion del texto de daño
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
+        currentTeam = this.ambush ? team1 : team2;
+        phase.emit('next')
 
-        //Creacion del interprete de dialogos, para que se pueda usar si es necesario
-        let dialogueBackground = this.add.rectangle(400, 500, 800, 200, 0x000000);
-        dialogueBackground.alpha = 0.5;
-        let dialogueText = this.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
-        this.interpreter = new DialogueInterpreter(dialogueText, dialogueBackground, this);
-
-        //Incializamos la musica
-        analyser.SetRandomSong(['Reach_Out', 'Going_Down', 'CYN', 'School_Days', 'Break_Out'])
+        analyser.SetRandomSong(songs);
         analyser.Restart();
     }
 
     update()
     {
-        //Obtenemos los valores de las frecuencias de la musica y las guardamos en un array
+        this.teamDance();
+
+        this.camUpdate();
+
+        damageText.update();
+    }
+
+    teamDance()
+    {
         let dataArray = analyser.GetDataArray();
 
-        //Cambiamos el tamaño de los personajes segun las frecuencias de la musica
         let i = 0;
         currentTeam.entities.forEach(element => {
-            let value = dataArray[freqPositions[i]] * dataArray[freqPositions[i]] / 300000;
-            element.sprite.setScale(0.30 - value, 0.15 + value);
+            let value = dataArray[freqPositions[i]] / 255.0 * 0.05
+            value *= 1;
+            element.sprite.setScale(0.1 - value, 0.1 + value);
             i++;
         });
+    }
 
-        //Le damos un ligero movimiento a la camara para mas dinamismo
+    camUpdate()
+    {
         let range = 5
         
         if(this.cameras.main.x > range-0.025 || this.cameras.main.x < -range+0.025) XcamVel *= -1
@@ -301,13 +267,6 @@ export default class CombatScene extends Phaser.Scene {
 
         if(this.cameras.main.y > range-0.025 || this.cameras.main.y < -range+0.025) YcamVel *= -1
         this.cameras.main.y += YcamVel
-
-        //El texto de turno se mueve con la camara
-        turnText.x = this.cameras.main.scrollX + 450
-        turnText.y = this.cameras.main.scrollY + 400
-
-        //Actualizamos el texto de daño
-        damageText.update()
     }
 
     //Recibe la posición en la que el texto de daño se va a mostrar y el daño que se va a mostrar
@@ -325,15 +284,56 @@ export default class CombatScene extends Phaser.Scene {
         return a + (b - a) * t
     }
 
-    //Funcion para poner los botones de ataque y magia al lado del personaje seleccionado
-    SetButtonNextToCharacter(character)
+    //Funcion que se ejecuta al salir de la escena
+    win()
     {
-        AttackButton.setButtonPosition(character.sprite.x + 120, character.sprite.y - 20);
-        AttackButton.setButtonRotation(-0.1);
-        MagicButton.setButtonPosition(character.sprite.x + 120, character.sprite.y + 30);
-        MagicButton.setButtonRotation(0.1);
+        team1.entities.forEach(e =>{
+            e.maxHealth -= e.health.bonus
+            if(e.maxHealth < e.health.quantity) e.health.quantity = e.maxHealth
+            e.health.bonus = 0
+            e.defense.bonus = 0
+            e.damage.bonus = 0
+            e.luck.bonus = 0
+            e.healing.bonus = 0
+            e.healing.able = true
+        })
+
+        self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
+        analyser.Stop();
     }
 
-    //Funcion que se ejecuta al salir de la escena
-    unLoad(){analyser.Stop();}
+    OutAttack(entity, callback)
+    {
+        outImage.x = -400;
+        console.log(entity.name);
+        outImage.setTexture(entity.name + "_Out");
+
+        this.speedFX.visible = true;
+        this.FXbackground.visible = true;
+        this.speedFX.play('speedFX');
+
+        this.tweens.add({
+            targets: outImage,
+            props: {
+                x: { value: 400, duration: 500 },
+            },
+            ease: 'quart.in'
+        });
+
+        this.time.delayedCall(1000, ()=>{
+            this.tweens.add({
+                targets: outImage,
+                props: {
+                    x: { value: 1200, duration: 500 },
+                },
+                ease: 'quart.in'
+            });
+        });
+
+        this.time.delayedCall(2200, ()=>{
+            this.speedFX.visible = false;
+            this.FXbackground.visible = false;
+            callback();
+        });
+    }
 }

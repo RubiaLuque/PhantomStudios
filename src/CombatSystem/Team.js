@@ -1,13 +1,18 @@
+import { config } from "../game.js";
 export default class Team
 {
-    constructor(entities)
+    constructor(entities, name)
     {
+        this.name = name;
         this.entities = entities
         this.onTeam = new Phaser.Events.EventEmitter()
+        this.currentEntity = 0
+        this.extraTurns = 0
     }
 
     Preload(scene)
     {
+        
         scene.load.image("Shit", "assets/images/Shit.png")
         let self = this;
 
@@ -16,7 +21,7 @@ export default class Team
             scene.load.image(entity.name, "assets/images/" + entity.image + ".png")
             scene.load.audio(entity.damageSound, "assets/music/" + entity.damageSound + ".wav")
 
-            entity.on.on('die', function(){
+            entity.event.on('die', function(){
                 self.entities.forEach((item, index) => {
                     if (item === entity) {
                         self.entities.splice(index, 1);
@@ -28,23 +33,54 @@ export default class Team
         })
     }
 
-    Create(scene, x, y, game)
+    Create(scene, ambush)
     {
-        this.entities.forEach(entity => {
-            entity.sprite = scene.add.sprite(x, y, entity.name)
-            entity.sprite.scale = 0.2
-            scene.add.existing(entity.sprite)
-            y += 140
-            x -= 10
+        let positions;
 
-            entity.Setup(game);
+        if(ambush) positions = [{x:150, y:200}, {x:650, y:200}, {x:150, y:450}, {x:650, y:450}]
+        else positions = [{x:350, y:250}, {x:450, y:250}, {x:350, y:350}, {x:450, y:350}]
+
+        let i = 0;
+        this.entities.forEach(entity => {
+            let position = positions[i];
+
+            entity.sprite = scene.add.sprite(position.x, position.y, entity.name)
+            entity.sprite.scale = 0.1
+            entity.sprite.setOrigin(0.5, 1);
+            scene.add.existing(entity.sprite)
+            
+            entity.Setup(scene);
+            i++;
         })
     }
 
-    GetCharacter(index)
+    CurrentCharacter()
     {
-        if(index < 0 || index >= this.entities.length) index = 0
-        return this.entities[index]
+        return this.selectedEntity
+    }
+
+    GetNextCharacter()
+    {
+        let valid = true;
+        this.selectedEntity = this.entities[this.currentEntity]
+
+        if(this.currentEntity >= this.entities.length)
+            {
+            this.currentEntity = 0
+
+            if(this.extraTurns > 0){
+                this.extraTurns--;
+                this.selectedEntity = this.entities[this.currentEntity];
+                this.currentEntity++;
+            }
+            else valid = false;
+        }
+        else
+        {
+            this.currentEntity++
+        }
+
+        return {isValid: valid, entity: this.selectedEntity}
     }
 
     GetRandomCharacter()

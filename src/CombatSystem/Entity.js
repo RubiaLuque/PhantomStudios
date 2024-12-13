@@ -1,28 +1,51 @@
+import { analyser } from "../SoundSystem/Index.js"
+import { AlteredState } from "./Data/AlteredState.js"
+import { Type } from "./Data/Type.js"
+
+
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, image, scene, damageSound)
+    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level, maxLevel)
     {
         this.name = name
-        this.health = health
-        this.maxHealth = health
-        this.damage = damage
+        this.health = {quantity: health, bonus: 0}
+        this.maxHealth = this.health.quantity
+        this.attack = attack
+        this.defense = {quantity: defense, bonus: 0}
+        this.damage = {quantity: damage, bonus: 0}
         this.type = type
         this.alive = true;
-        this.luck = luck
-        this.on = new Phaser.Events.EventEmitter()
+        this.luck = {quantity: luck, bonus: 0}
+        this.healing = {quantity: -30, bonus: 0, able: true}
+        this.event = new Phaser.Events.EventEmitter()
+        this.magicalImmunity = false;
+        this.physicalImmunity = false;
+        this.target = this
 
         this.image = image
         this.scene = scene
-        this.sound = scene.sound
+        this.sound = analyser;
         this.damageSound = damageSound
+        this.xp = xp
+        this.level = level
+        this.maxLevel = maxLevel;
+        this.alteredState = AlteredState.none;
+        this.doneCritic = false;
+
+        this.alteredStateDuration = 0;
+
+        this.selectedAttack = () => {console.log('No attack selected')}
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.image, scene, container.damageSound)
+        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound, container.xp, container.level, container.maxLevel)
     }
 
     Setup()
     {
+        this.health.quantity += this.health.bonus
+        this.maxHealth += this.health.bonus
+
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
 
         this.sprite.on('pointerover', function(){
@@ -39,19 +62,29 @@ export default class Entity
         });
     }
 
-    GetDamage(damage, type)
+    GetDamage(damage, type, attacker)
     {
-        console.log(this.damageSound)
-        this.sound.play(this.damageSound)
-        if(type.str == this.type.name) damage *= 2
+        this.sound.Play(this.damageSound)
+        if((this.magicalImmunity && this.type.name != "physical") || (this.physicalImmunity && this.type.name=='physical')){
+            damage *= 0;
+            this.magicalImmunity = false;
+            this.physicalImmunity = false;
+        }
+        else if(type.str == this.type.name) damage *= 2
+
         else if(this.type.str == type.name) damage /= 2
+        
+        this.health.quantity -= damage
 
-        console.log(damage);
-        this.health -= damage
-        console.log(this.name + ' health:' + this.health)
-
-        if(this.health <= 0) this.Die()
-
+        if(this.health.quantity > this.maxHealth)
+        {
+            this.health.quantity = this.maxHealth
+        }
+        if(this.health.quantity <= 0)
+        {
+            attacker.xp += this.xp;
+            this.Die()
+        }
         let self = this
         let xTracker = this.sprite.x
         let goBack = false
@@ -76,19 +109,19 @@ export default class Entity
             loop: true
         });
 
-        this.on.emit('GetDamage', damage)
+        this.event.emit('GetDamage', damage)
     }
 
-    AttackTemplate(other, type)
+    AttackTemplate(other, type, attacker)
     {
-        let damage = this.damage;
-        if(Math.random() < this.luck/10)
+        let damage = this.damage.quantity + this.damage.bonus;
+        let luck = this.luck.quantity + this.luck.bonus;
+        if(Math.random() < luck/10)
         {
-            console.log(this.name + ' critical hit')
             damage *= 1.5
         }
-        console.log(this)
-        other.GetDamage(damage, type)
+
+        other.target.GetDamage(damage, type, attacker)
 
         let self = this
 
@@ -104,64 +137,83 @@ export default class Entity
             loop: true });
     }
 
-    Attack(other, endCallback = function(){})
+    HealTemplate(other, type, attacker)
     {
-        this.AttackTemplate(other, Type.physical)
-        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
+        let healing = this.healing.quantity + this.healing.bonus
+        other.GetDamage(healing, type, attacker)
+
+        let self = this
+
+        this.scene.time.addEvent({ delay : 5,
+            callback: function(){
+                self.sprite.rotation += 0.1
+                if(self.sprite.rotation >= 3)
+                {
+                    self.sprite.rotation = 0
+                    self.scene.time.removeEvent(this)
+                }
+            },
+            loop: true });
     }
 
-    MagicAttack(other, endCallback = function(){})
+    Attack(other, endCallback = function(){}, attacker)
     {
-        this.AttackTemplate(other, this.type)
-        this.scene.time.addEvent({ delay : 1000, callback: function(){endCallback()}, loop: false });
+        this.AttackTemplate(other, Type.physical, attacker)
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
+    }
+
+    MagicAttack(other, endCallback = function(){}, attacker)
+    {
+        console.log(endCallback)
+        this.AttackTemplate(other, this.type, attacker)
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
+    }
+
+    HealAttack(other, endCallback = function(){}, attacker)
+    {
+        this.healing.able = false; this.HealTemplate(other, this.type, attacker)
+        this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
+        if(this.health.quantity > this.maxHealth) this.health.quantity = this.maxHealth
+    }
+
+    ApplyAlteredState(state, duration)
+    {
+        this.alteredState = state;
+        this.alteredState.enter({user: this});
+        this.alteredStateDuration = duration;
+    }
+
+    CheckAlteredState(data)
+    {
+        if(this.alteredStateDuration > 0)
+        {
+            this.alteredStateDuration--;
+            this.alteredState.exit(data);
+        }
+        else this.alteredState = AlteredState.none;
+        return this.alteredState.check(data);
     }
 
     Die()
     {
-        console.log(this.name + ' died')
         this.sprite.setTexture('Shit')
         this.sprite.scale = 1;
         this.alive = false;
-        this.on.emit('die');
+        this.event.emit('die');
+    }
+
+    isWeak(type)
+    {
+        return type.str == this.type.name
+    }
+
+    //Se borran los estados alterados tras un combate
+    ClearAlteredStates(){
+        this.alteredState = AlteredState.none;
+    }
+
+    MoveTo(target, endCallback = function(){}){
+        this.target = target;
+        endCallback();
     }
 }
-
-const Type = {
-    horny : {name:'horny', str: 'depression'},
-    anxiety: {name:'anxiety', str: 'horny'},
-    wrath: {name:'wrath', str: 'anxiety'},
-    depression: {name:'depression', str: 'wrath'},
-    physical: {name:'physical', str: 'depression'}
-}
-
-// const AlteredState = {
-//     None: {
-//         enter: function(){},
-//         check: function(){return true},
-//         exit: function(){}
-//     },
-//     Sueño: { 
-//         enter: function(){},
-//         check: function(target){ target.health += 4; return false},
-//         exit: function(){}
-//     },
-//     Sordo: {
-//         enter: function(){},
-//         check: function(){return true},
-//         exit: function(){}
-//     },
-//     Miedo:{
-//         enter: function(){},
-//         check: function(target, team){ 
-//             let selected = team.GetRandomCharacterExcept(target);
-//             target.sprite.setPosition(selected.x - 100, selected.y);
-//             return true
-//         },
-//         exit: function(){}
-//     },
-//     Papeado:{
-//         enter: function(){},
-//         check: function(){return true},
-//         exit: function(){}
-//     }
-// }

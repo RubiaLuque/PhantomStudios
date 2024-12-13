@@ -1,6 +1,6 @@
 body {
   background-color: rgb(48, 48, 48);
-  cursor: url(media/pointer2.png), auto;
+  cursor: url(../assets/images/pointer2.png), auto;
 }
 
 .navBar {

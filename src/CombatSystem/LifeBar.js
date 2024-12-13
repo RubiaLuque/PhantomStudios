@@ -10,13 +10,16 @@ export default class LifeBar extends Phaser.GameObjects.Sprite
         scene.add.text(x-20, y-5, this.entity.name);
 
         let UpdateBar = this.UpdateBar.bind(this);
-        this.entity.on.on('GetDamage', UpdateBar);
+        this.entity.event.on('GetDamage', UpdateBar);
         UpdateBar();
     }
 
     UpdateBar()
     {
-        if(this.entity.health <= 0) this.destroy();
-        else this.setScale((this.entity.health / this.entity.maxHealth) * 0.3, 0.1);
+        let health = this.entity.health.quantity + this.entity.health.bonus
+
+        if(health <= 0) this.destroy();
+        else this.setScale((health / this.entity.maxHealth) * 0.3, 0.1);
+        console.log(health, " ", this.entity.maxHealth)
     }
 }

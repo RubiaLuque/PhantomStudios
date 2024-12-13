@@ -1,45 +1,62 @@
+import { Type } from "./Type.js"
 export const MainTeam =
 {
     entities :
     [
         {
-            name: "Javi",
+            name: "JaviN",
             damage: 20,
             health: 80,
-            type: {horny: {name:"horny", str: "depression"}},
+            type: Type.horny,
+            defense: 10,
+            xp: 0,
+            level: 1,
+            maxLevel: 5,
             luck: 0.5,
             image: "Javi",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         {
-            name: "Fueyo",
+            name: "FueyoN",
             damage: 10,
             health: 120,
-            type: {wrath: {name:"wrath", str: "anxiety"}},
+            type: Type.wrath,
+            defense: 10,
+            xp: 0,
+            level: 1,
+            maxLevel: 5,
             luck: 0.5,
             image: "Fueyo",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         {
-            name: "Mika",
+            name: "MikaN",
             damage: 5,
             health: 200,
-            type: {depresion: {name:"depresion", str: "wrath"}},
+            type: Type.depression,
+            defense: 10,
+            xp: 0,
+            level: 1,
+            maxLevel: 5,
             luck: 0.5,
             image: "Mika",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         {
-            name: "Muxu",
+            name: "MuxuN",
             damage: 10,
             health: 90,
-            type: {anxiety: {name:"anxiety", str: "horny"}},
+            type: Type.anxiety,
+            defense: 10,
+            xp: 0,
+            level: 1,
+            maxLevel: 5,
             luck: 0.75,
             image: "Muxu",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         }
     ],
 
@@ -49,40 +66,55 @@ export const MainTeam =
             name: "Uroboros",
             damage: 30,
             health: 70,
-            type: {horny: {name:"horny", str: "depression"}},
+            type: Type.horny,
             luck: 0.5,
+            xp: 15,
             image: "Uroboros",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         Demon: {
             name: "Demon",
             damage: 20,
             health: 90,
-            type: {wrath: {name:"wrath", str: "anxiety"}},
+            type: Type.wrath,
             luck: 0.5,
+            xp: 15,
             image: "Demon",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         Skibidi: {
             name: "Skibidi",
             damage: 10,
             health: 50,
-            type: {depresion: {name:"depresion", str: "wrath"}},
+            type: Type.depression,
             luck: 0.5,
+            xp: 10,
             image: "Skibidi",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
         },
 
         Fork: {
             name: "Fork",
             damage: 5,
             health: 30,
-            type: {anxiety: {name:"anxiety", str: "horny"}},
+            type: Type.anxiety,
             luck: 0.5,
+            xp: 5,
             image: "Fork",
-            damageSound: "oioioi"
+            damageSound: "oioioi",
+        },
+        Jaime:{
+            name: 'Jaime',
+            damage: 20,
+            health: 500,
+            type: Type.depression,
+            luck: 0.75,
+            xp: 70,
+            image: 'NPC',
+            damageSound: 'oioioi'
+
         }
     }
 }
