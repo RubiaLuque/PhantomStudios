@@ -13,6 +13,5 @@ export default class Jaime extends Enemy {
         this.team = []; 
         this.team.push(Entity.TranslateEntity(MainTeam.enemies[this.enemyPreset], scene));
         this.teamClass = new Team(this.team, "Boss")
-        this.scale = 0.3;
     }
 }
