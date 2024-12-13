@@ -23,6 +23,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         this.sKey = this.scene.input.keyboard.addKey('S')
         this.eKey = this.scene.input.keyboard.addKey('E')
         this.spaceKey = this.scene.input.keyboard.addKey('SPACE')
+        this.canMove = true;
 
        this.team = []; 
        MainTeam.entities.forEach(entity =>
@@ -35,7 +36,8 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
     }
 
     Move(){
-        
+        if(this.canMove == false) return;
+
         if (this.body.deltaY() > 0 && this.body.onFloor()) ableToJump = true
 
         let direction = new Phaser.Math.Vector2(0, 0);

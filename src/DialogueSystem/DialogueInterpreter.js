@@ -10,13 +10,19 @@ export default class DialogueInterpreter {
         let posX = scene.player.x
         let posY = scene.player.y
 
-        this.background = scene.add.rectangle(posX, posY + config.height/3, 800, 200, 0x000000);
+        this.background = new Phaser.GameObjects.Rectangle(scene, posX, posY + config.height/2.35, 800, 200, 0x000000);
         this.background.alpha = 0.5;
-        this.dialogueText = scene.add.text(this.background.x - this.background.getBounds().width/2, this.background.y, '', { fontSize: '32px', fill: '#FFF', align: 'center'});
-        this.background.visible = false;
 
-        this.character = scene.add.sprite(100, 100, "Javi");
+        this.character = scene.add.sprite(this.background.x, this.background.y, "Javi");
+        this.character.setOrigin(0.5, 1)
+        this.character.setPosition(this.background.x, posY + config.height/2)
+        this.character.setScale(0.4, 0.4)
         this.character.visible = false;
+
+        scene.add.existing(this.background);
+
+        this.dialogueText = scene.add.text(this.background.x - this.background.getBounds().width/2, this.background.y, '', { fontSize: '32px', fill: '#FFF'});
+        this.background.visible = false;
 
         this.nextInput = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.nextInput.on('down', ()=>{
@@ -27,6 +33,8 @@ export default class DialogueInterpreter {
     }
 
     SetDialogue(dialogue, endCallback = function(){}){
+        this.scene.player.canMove = false;
+
         let lines = dialogue.split("@");
         this.background.visible = true;
         this.character.visible = true;
@@ -43,6 +51,12 @@ export default class DialogueInterpreter {
             callback: ()=>{
                 if(!end)
                 {
+                    let posX = this.scene.player.x
+                    let posY = this.scene.player.y
+                    this.background.setPosition(posX, posY + config.height / 3)
+                    this.dialogueText.setPosition(this.background.x - this.background.getBounds().width/2, this.background.y)
+                    this.character.setPosition(this.background.x, posY + config.height/2)
+
                     if(self.scene.time.now > delay && self.next)
                     {
                         self.next = false;
@@ -63,7 +77,7 @@ export default class DialogueInterpreter {
                             {
                                 let dataArray = self.analyser.GetDataArray();
                                 let value = dataArray[20] * dataArray[20] / 200000;
-                                self.character.setScale(1 - value, 1 + value);
+                                // self.character.setScale(0.3 - value, 0.3 + value);
 
                                 if(newText.length > 0)
                                     {
@@ -83,6 +97,8 @@ export default class DialogueInterpreter {
                     this.character.visible = false;
                     this.dialogueText.text = "";
                     this.scene.time.removeEvent(this);
+
+                    this.scene.player.canMove = true;
                     endCallback();
                 }
             },
