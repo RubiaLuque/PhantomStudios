@@ -171,7 +171,7 @@ export default class Entity
 
     HealAttack(other, endCallback = function(){}, attacker)
     {
-        this.healing.able = false; this.HealTemplate(other, this.type, attacker)
+        this.healing.able--; this.HealTemplate(other, this.type, attacker)
         this.scene.time.addEvent({ delay : 1000, callback: ()=>{endCallback()}, loop: false });
         if(this.health.quantity > this.maxHealth) this.health.quantity = this.maxHealth
     }

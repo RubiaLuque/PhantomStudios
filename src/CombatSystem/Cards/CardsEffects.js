@@ -75,7 +75,12 @@ export const CardsEffects = {
 
     
     HermitEffect: (thisTeam, thatTeam) => {
-        
+        if (thisTeam.name == "Party") {
+            thisTeam.GetRandomCharacter().healing.able = 2;
+        }
+        else {
+            thatTeam.GetRandomCharacter().healing.able = false;
+        }
     },
 
 
@@ -170,7 +175,14 @@ export const CardsEffects = {
     },
     
     JudgementEffect: (thisTeam, thatTeam) => {
-        
+        if (thisTeam.name != "Party") {
+            if (thatTeam.entities.length < thisTeam.entities.length) {
+                let charactersMuted = thisTeam.entities.length - thatTeam.entities.length
+                for (let i = 0; i < charactersMuted; ++i){
+                    thisTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.no_attack, 3);
+                }
+            }
+        }
     },
     
     WorldEffect: (thisTeam, _) => {
