@@ -8,9 +8,6 @@ import {analyser} from "../SoundSystem/Index.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 //import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
 
-const dialogueR = await fetch('/assets/dialogue/dialogue.json')
-const dialogue = await dialogueR.json();
-
 let team1, team2;
 let pos = {x: 0, y: 0};
 let sceneAdded = false;
@@ -63,6 +60,7 @@ export default class World1 extends Phaser.Scene
         this.load.tilemapTiledJSON("World1", "assets/tilemaps/mundo1.json")
         this.load.tilemapTiledJSON('TestTileMap', 'assets/tilemaps/Testing.json');
         this.load.image('button', 'assets/images/Button.png');
+        this.load.json("dialogue", "assets/images/dialogue.json")
     }
 
     create()
@@ -152,10 +150,11 @@ export default class World1 extends Phaser.Scene
             mainMenuButton.text.setScrollFactor(0);
             
             this.interpreter = new DialogueInterpreter(this)
+            const data = this.cache.json.get("dialogue");
 
             if(this.dial)
             {
-                this.interpreter.SetDialogue(dialogue['intro-3'])
+                this.interpreter.SetDialogue(data['intro-3'])
                 console.log("intro-3")
             }
         }
