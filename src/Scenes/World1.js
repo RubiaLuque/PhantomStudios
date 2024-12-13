@@ -6,7 +6,10 @@ import CustomButton from "../UI/CustomButton.js";
 import NPC from "../Navigation/NPC.js";
 import {analyser} from "../SoundSystem/Index.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
-import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
+//import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
+
+const dialogueR = await fetch('/assets/dialogue/dialogue.json')
+const dialogue = await dialogueR.json();
 
 let team1, team2;
 let pos = {x: 0, y: 0};

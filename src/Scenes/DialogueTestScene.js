@@ -1,5 +1,8 @@
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
-import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
+//import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
+
+const dialogueR = await fetch('/assets/dialogue/dialogue.json')
+const dialogue = await dialogueR.json();
 
 export default class DialogueTestScene extends Phaser.Scene{
     constructor(){
