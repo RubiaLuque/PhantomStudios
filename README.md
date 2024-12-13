@@ -17,16 +17,18 @@ Nos podeis encontrar en Twitter (o X) como @Phantom_Stud1os.
 Además, si pulsas el siguiente [enlace](https://rubialuque.github.io/PhantomStudios/) podrás visitar nuestra página web oficial.
 <br>
 
-## Capturas del juego (Hito 2)
+## Capturas del juego (Hito 3)
 
 Menú principal del juego:
 ![imagen](https://github.com/user-attachments/assets/0907f187-bd45-42fd-bf39-5230192da396) 
 <br><br>
 Combate:
-![imagen](https://github.com/user-attachments/assets/7c31ab24-a941-4231-b611-c538261879ca)
+![WhatsApp Image 2024-12-13 at 12 00 00](https://github.com/user-attachments/assets/e616b9d9-b298-4e56-9887-c5444c539ed2)
 <br><br>
+
 Fragmento primer nivel:
-![imagen](https://github.com/user-attachments/assets/3241f87c-601d-45f7-aead-0a5d07759601)
+![WhatsApp Image 2024-12-13 at 12 00 31](https://github.com/user-attachments/assets/a9119e3e-7fe2-4248-a8c1-0166fabccf3b)
+
 
 
 
