@@ -11,7 +11,6 @@ import dialogue from "/assets/dialogue/dialogue.json" with {type: 'json'};
 let team1, team2;
 let pos = {x: 0, y: 0};
 let sceneAdded = false;
-let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
 let NPCFound = ["Andres", "Sanchez"];
@@ -78,6 +77,7 @@ export default class World1 extends Phaser.Scene
         this.collidables.setCollision([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]);
         
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
+        this.spawnPos = this.cafeteria.pos;
         
         this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
         
@@ -160,7 +160,7 @@ export default class World1 extends Phaser.Scene
             {
                 let ambush = this.player.y < enemy.y;
                 this.scene.start('cards', {team1: this.player.teamClass, team2: enemy.teamClass, 
-                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, 
+                    lastPlayerPosition: {x: this.player.x, y: this.player.y}, spawnPos: this.spawnPos,
                     enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked, ambush: ambush,
                 bossId: this.bossId});
                 }

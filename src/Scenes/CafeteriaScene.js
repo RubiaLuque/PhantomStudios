@@ -7,9 +7,10 @@ import Entity from "../CombatSystem/Entity.js";
 
 
 let pos = {x: 0, y: 0};
-let healths;
+let team;
 let NPCFound = []
 let NPCTalked = []
+let defeatedEnemiesIds = []
 let JaviButton, FueyoButton, MikaButton, MuxuButton;
 export default class CafeteriaScene extends Phaser.Scene
 {
@@ -21,7 +22,7 @@ export default class CafeteriaScene extends Phaser.Scene
     {
         if(result.pos != undefined) pos = result.pos;
         if(result.id != undefined) defeatedEnemiesIds.push(result.id);
-        if(result.healths != undefined) healths = result.healths;
+        if(result.team != undefined) team = result.team;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
     }

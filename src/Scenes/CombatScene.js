@@ -17,7 +17,7 @@ let outImage;
 let team1, team2;
 let arrow;
 let turnText;
-let lastPlayerPosition, currentEnemyId;
+let lastPlayerPosition, currentEnemyId, spawnPos;
 let phase;
 let currentTeam;
 let cardEnemies, cardTeam;
@@ -38,6 +38,7 @@ export default class CombatScene extends Phaser.Scene {
 
         //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
+        spawnPos = teams.spawnPos;
         currentEnemyId = teams.enemyId;
         NPCFound = teams.NPCFound;
         NPCTalked = teams.NPCTalked;
@@ -194,6 +195,7 @@ export default class CombatScene extends Phaser.Scene {
 
         phase.on('next', ()=>{
             let output = currentTeam.GetNextCharacter();
+            console.log(output)
             if(output.isValid) output.entity.event.emit('takeTurn');
             else phase.emit('endTurn');
         });
@@ -204,7 +206,11 @@ export default class CombatScene extends Phaser.Scene {
             phase.emit('next')
         });
 
-        team1.onTeam.on('death', ()=>{self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});});
+        team1.onTeam.on('death', ()=>
+        {
+            self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
+            self.time.addEvent({ delay : 1000, callback: ()=>{self.Lose()} });
+        });
         team2.onTeam.on('death', ()=>
         {
             self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
@@ -301,7 +307,22 @@ export default class CombatScene extends Phaser.Scene {
         self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
         analyser.Stop();
     }
+    Lose()
+    {
+        team1.entities.forEach(e =>{
+            e.maxHealth -= e.health.bonus
+            if(e.maxHealth < e.health.quantity) e.health.quantity = e.maxHealth
+            e.health.bonus = 0
+            e.defense.bonus = 0
+            e.damage.bonus = 0
+            e.luck.bonus = 0
+            e.healing.bonus = 0
+            e.healing.able = true
+        })
 
+        self.scene.start('CafeteriaScene', {pos: spawnPos, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
+        analyser.Stop();
+    }
     OutAttack(entity, callback)
     {
         outImage.x = -400;

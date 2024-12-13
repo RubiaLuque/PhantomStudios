@@ -9,7 +9,7 @@ let ableToJump = false;
 export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         console.log("A")
-        super(scene, x, y, 'Javi')
+        super(scene, x, y, 'JaviN')
 
         this.scale = 0.05;
         this.setOrigin(0.5, 1);
