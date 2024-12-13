@@ -1,15 +1,18 @@
 import { DialogueCharacterData } from "./DialogueCharacterData.js";
 import { analyser } from "../SoundSystem/Index.js";
+import {config} from "../game.js"
 export default class DialogueInterpreter {
     names = [ "Javi", "Fueyo", "Mika", "Muxu" ];
 
     constructor(scene){
         this.scene = scene;
-        
-        this.background = scene.add.rectangle(400, 500, 800, 200, 0x000000);
-        this.background.alpha = 0.5;
-        this.dialogueText = scene.add.text(400, 500, '', { fontSize: '32px', fill: '#FFF'});
 
+        let posX = scene.player.x
+        let posY = scene.player.y
+
+        this.background = scene.add.rectangle(posX, posY + config.height/3, 800, 200, 0x000000);
+        this.background.alpha = 0.5;
+        this.dialogueText = scene.add.text(this.background.x - this.background.getBounds().width/2, this.background.y, '', { fontSize: '32px', fill: '#FFF', align: 'center'});
         this.background.visible = false;
 
         this.character = scene.add.sprite(100, 100, "Javi");
@@ -40,7 +43,6 @@ export default class DialogueInterpreter {
             callback: ()=>{
                 if(!end)
                 {
-                    
                     if(self.scene.time.now > delay && self.next)
                     {
                         self.next = false;

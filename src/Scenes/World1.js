@@ -150,7 +150,11 @@ export default class World1 extends Phaser.Scene
             
             this.interpreter = new DialogueInterpreter(this)
 
-            if(this.dial) this.interpreter.SetDialogue(dialogue['intro-3'])
+            if(this.dial)
+            {
+                this.interpreter.SetDialogue(dialogue['intro-3'])
+                console.log("intro-3")
+            }
         }
         
         update()
