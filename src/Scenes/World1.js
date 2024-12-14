@@ -60,7 +60,7 @@ export default class World1 extends Phaser.Scene
         this.load.tilemapTiledJSON("World1", "assets/tilemaps/mundo1.json")
         this.load.tilemapTiledJSON('TestTileMap', 'assets/tilemaps/Testing.json');
         this.load.image('button', 'assets/images/Button.png');
-        this.load.json("dialogue", "assets/images/dialogue.json")
+        this.load.json("dialogue", "assets/dialogue/dialogue.json")
     }
 
     create()
@@ -155,7 +155,6 @@ export default class World1 extends Phaser.Scene
             if(this.dial)
             {
                 this.interpreter.SetDialogue(data['intro-3'])
-                console.log("intro-3")
             }
         }
         
