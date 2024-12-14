@@ -67,11 +67,11 @@ export default class CardsScene extends Phaser.Scene{
         //Cartas elegidas 
         this.cardTeam = new TarotCard(this, 250, 250, teamElection.texture, teamElection.function);
         this.cardEnemies = new TarotCard(this, 550, 250, enemiesElection.texture, enemiesElection.function);
+        this.interpreter = new DialogueInterpreter(this)
 
         if(this.enemyId == this.bossId) {
             this.cardEnemies.funct = function(){};
             this.cardEnemies.texture = 'Back';
-            this.interpreter = new DialogueInterpreter(this)
             const data = this.cache.json.get("dialogue");
             this.interpreter.SetDialogue(data['Jaime-1'])
         }
