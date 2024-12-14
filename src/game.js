@@ -27,7 +27,7 @@ export let config = {
 		default: 'arcade', 
 		arcade: { 
 			gravity: { y: 1500 }, 
-			debug: true
+			debug: false
 		},
 		checkCollision: {
 			up: true,
