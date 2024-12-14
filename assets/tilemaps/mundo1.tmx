@@ -573,7 +573,7 @@
   <object id="24" name="Miniboss" x="1280" y="1790">
    <point/>
   </object>
-  <object id="25" name="Player" x="1426.46" y="498.08">
+  <object id="25" name="Player" x="1496.46" y="2658.08">
    <point/>
   </object>
   <object id="26" name="Enemy" x="895" y="2665">
