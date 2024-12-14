@@ -13,8 +13,8 @@ export default class TarotCard extends Phaser.GameObjects.Sprite{
         this.scene.add.existing(this);
     }
 
-    DoAction(team) {
-        this.funct(team);
+    DoAction(team1, team2) {
+        this.funct(team1, team2);
     }
 
     SetCardPosition(x, y) {

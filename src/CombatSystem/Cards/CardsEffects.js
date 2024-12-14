@@ -59,7 +59,7 @@ export const CardsEffects = {
         else{
             
              console.log(thatTeam)
-            //thatTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.no_attack, 3)
+            thatTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.no_attack, 3)
         }
     },
     

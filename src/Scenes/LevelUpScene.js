@@ -21,6 +21,7 @@ export default class LevelUpScene extends Phaser.Scene
         if(result.id != undefined) id = result.id;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
+        this.cafeteriaEnter = result.cafeteriaEnter
     }
 
     preload()
@@ -92,7 +93,7 @@ export default class LevelUpScene extends Phaser.Scene
 
         personaje.on('finMejoras', ()=>{
             console.log(team)
-            this.scene.start('World1', {pos: pos, id: id, team: team, NPCFound: NPCFound, NPCTalked: NPCTalked});
+            this.scene.start('World1', {pos: pos, id: id, team: team, NPCFound: NPCFound, NPCTalked: NPCTalked, cafeteriaEnter: this.cafeteriaEnter});
         })
 
         personaje.emit('puedeMejorar')

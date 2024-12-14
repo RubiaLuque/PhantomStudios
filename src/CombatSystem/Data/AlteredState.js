@@ -29,9 +29,10 @@ export const AlteredState =
         console.log("Se caga encima")
         let target = data.team.GetRandomCharacterExcept(data.user);
         data.user.MoveTo(target, ()=>{data.phase.emit('next')})
+        if(data.user.alteredStateDuration == 0) data.user.MoveTo(data.user, ()=>{data.phase.emit('next')})
         return false
         },
-        exit: (data) => {data.user.MoveTo(data.user)}
+        exit: (_) => {}
     },
     papeado:{
         enter: (data) => { data.user.sprite.setTint(0xffff00) },
@@ -45,7 +46,9 @@ export const AlteredState =
     no_attack:
     {
         enter: (data) => { data.user.sprite.setTint(0xff0000) },
-        check: (_) => {return false},
+        check: (_) => {
+            data.phase.emit('next');
+            return false},
         exit: (_) => {}
     },
 }

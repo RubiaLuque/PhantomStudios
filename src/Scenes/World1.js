@@ -33,6 +33,8 @@ export default class World1 extends Phaser.Scene
         if(result.team != undefined) team = result.team;
         if(result.dial != undefined) this.dial = result.dial;
         else this.dial = false;
+        if(result.cafeteriaEnter != undefined) this.cafeteriaEnter = result.cafeteriaEnter
+        else this.cafeteriaEnter = false
     }
 
     preload()
@@ -65,7 +67,7 @@ export default class World1 extends Phaser.Scene
 
     create()
     {
-        
+        this.bossDial = true
         this.tileMap = this.make.tilemap({
             key: "World1"
         })
@@ -89,11 +91,12 @@ export default class World1 extends Phaser.Scene
         this.player.eKey.on("down", ()=>{
             if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
                 {
-                    this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound })
+                    this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound, cafeteriaEnter: this.cafeteriaEnter })
                 }
                 if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.Toni.getBounds()))
                     {
                         NPCFound.push(this.Toni.name)
+                        this.interpreter.SetDialogue(data['Toni-1'])
                         this.Toni.destroy()
                     }
                 })
@@ -150,11 +153,17 @@ export default class World1 extends Phaser.Scene
             mainMenuButton.text.setScrollFactor(0);
             
             this.interpreter = new DialogueInterpreter(this)
-            const data = this.cache.json.get("dialogue");
+            this.data = this.cache.json.get("dialogue");
 
             if(this.dial)
             {
-                this.interpreter.SetDialogue(data['intro-3'])
+                this.interpreter.SetDialogue(this.data['intro-3'])
+            }
+            else if(defeatedEnemiesIds[defeatedEnemiesIds.length - 1] == this.bossId)
+            {
+                this.interpreter.SetDialogue(this.data['Jaime-2'], () => {
+                    this.scene.start('main_menu')
+                })
             }
         }
         
@@ -167,8 +176,8 @@ export default class World1 extends Phaser.Scene
                 this.scene.start('cards', {team1: this.player.teamClass, team2: enemy.teamClass, 
                     lastPlayerPosition: {x: this.player.x, y: this.player.y}, 
                     enemyId: enemy.id, NPCFound: NPCFound, NPCTalked: NPCTalked, ambush: ambush,
-                bossId: this.bossId});
-                }
+                    bossId: this.bossId, cafeteriaEnter: this.cafeteriaEnter})}
+
             });
             
         }

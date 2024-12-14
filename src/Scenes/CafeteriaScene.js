@@ -4,6 +4,7 @@ import NPC from "../Navigation/NPC.js";
 import { NPCEffects } from "../CombatSystem/Data/NPCEffects.js";
 import CustomButton from "../UI/CustomButton.js";
 import Entity from "../CombatSystem/Entity.js";
+import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 
 
 let pos = {x: 0, y: 0};
@@ -24,6 +25,7 @@ export default class CafeteriaScene extends Phaser.Scene
         if(result.healths != undefined) healths = result.healths;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
+        if(result.cafeteriaEnter != undefined) this.cafeteriaEnter = result.cafeteriaEnter
     }
 
     preload(){
@@ -37,6 +39,7 @@ export default class CafeteriaScene extends Phaser.Scene
         this.load.image("Toni", "assets/images/NPC.png")
         this.load.image("Mozos", "assets/images/NPC.png")
         this.load.image("Poletti", "assets/images/NPC.png")
+        this.load.json("dialogue", "assets/dialogue/dialogue.json");
     }
 
     create()
@@ -64,7 +67,7 @@ export default class CafeteriaScene extends Phaser.Scene
                     NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
                     NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
                     NPC.image = NPCEffects.NPCs[i].image;
-
+                    
                     NPC.upgradeAvailable = true;
                     NPCTalked.forEach(B =>{
                         if(NPC.name == B)
@@ -84,14 +87,16 @@ export default class CafeteriaScene extends Phaser.Scene
             i++;
         })
         this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'MikaN'})[0] //key sirve para indicar que image carga
+        let dialogueInterpreter = new DialogueInterpreter(this)
+        const data = this.cache.json.get("dialogue");
         
         let self = this;
         this.player.eKey.on("down", ()=>{
             console.log(NPCFound)
             console.log(NPCTalked)
             this.NPCs.forEach(A => {
-            if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
-            {
+                if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
+                    {
                 if(A.name == "Andres" || A.name == "Sanchez")
                 {
                     this.player.team.forEach(character =>{
@@ -99,8 +104,9 @@ export default class CafeteriaScene extends Phaser.Scene
                         console.log("Equipo curado, tremendo bocadillo")
                     })
                 }
-                else
+                else if (A.name == 'Toni')
                 {
+                    dialogueInterpreter.SetDialogue(data['Toni-2'], () =>{
                     JaviButton = new CustomButton(this, 0, 600, "Button", "Javi", 
                         function(){
                             console.log(self.player.team[0][A.upgradeStat])
@@ -171,6 +177,7 @@ export default class CafeteriaScene extends Phaser.Scene
                     FueyoButton.setButtonScale(0.5, 0.25);
                     MikaButton.setButtonScale(0.5, 0.25);
                     MuxuButton.setButtonScale(0.5, 0.25);
+                })
                 }
             }
         });
@@ -180,13 +187,18 @@ export default class CafeteriaScene extends Phaser.Scene
         this.physics.add.collider(this.player, this.door)
         this.physics.add.collider(this.player, this.NPCs)
         this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+
+        if(!this.cafeteriaEnter){
+                dialogueInterpreter.SetDialogue(data['Cafeteria']);
+                this.cafeteriaEnter = true;
+        }
     }
 
     update()
     {
         if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.door.getBounds()))
         {
-            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, team: this.player.team, NPCFound: NPCFound, NPCTalked: NPCTalked})
+            this.scene.start('World1', {pos: {x: pos.x, y: pos.y}, team: this.player.team, NPCFound: NPCFound, NPCTalked: NPCTalked, cafeteriaEnter: this.cafeteriaEnter})
         }
     }
 }

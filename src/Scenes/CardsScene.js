@@ -2,6 +2,7 @@ import RandomCardSelector from "../CombatSystem/Cards/RandomCardSelector.js"
 import { analyser } from "../SoundSystem/Index.js"
 import TarotCard from "../CombatSystem/Cards/TarotCard.js";
 import { CardsEffects } from "../CombatSystem/Cards/CardsEffects.js";
+import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 
 export default class CardsScene extends Phaser.Scene{
     constructor(){
@@ -18,6 +19,7 @@ export default class CardsScene extends Phaser.Scene{
         this.NPCTalked = prevScene.NPCTalked;
         this.ambush = prevScene.ambush;
         this.bossId = prevScene.bossId;
+        this.cafeteriaEnter = prevScene.cafeteriaEnter
     }
 
     //
@@ -46,25 +48,33 @@ export default class CardsScene extends Phaser.Scene{
         this.load.image("Strength", "assets/images/cards/Strength.jpg");
         this.load.image("Hierophant", "assets/images/cards/Hierophant.jpg");
         this.load.image("High_Priestess", "assets/images/cards/High_Priestess.jpg");
+        this.load.json("dialogue", 'assets/dialogue/dialogue.json')
     }
 
     //Crear los objetos de la escena + lo que ocurre en el primer frame
     create() { 
         
         this.randomCardSelector = new RandomCardSelector();
-        this.space = this.input.keyboard.addKey("SPACE");
-        this.text = this.add.text(300,520, "Press SPACE to continue.", { fill: '#FFFFFF' });
+        this.enter = this.input.keyboard.addKey("ENTER");
+        this.text = this.add.text(300,520, "Press ENTER to continue.", { fill: '#FFFFFF' });
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
         let teamElection = this.randomCardSelector.RandomElection();
         //let teamElection = {texture: 'Moon', function: CardsEffects.MoonEffect}
         let enemiesElection = this.randomCardSelector.RandomElection();
-        //let enemiesElection = {texture: 'Emperor', function: CardsEffects.EmperorEffect}
+        //let enemiesElection = {texture: 'Lovers', function: CardsEffects.LoversEffect}
         
+        this.player = {x: 400, y: 300}
         //Cartas elegidas 
         this.cardTeam = new TarotCard(this, 250, 250, teamElection.texture, teamElection.function);
         this.cardEnemies = new TarotCard(this, 550, 250, enemiesElection.texture, enemiesElection.function);
 
-        if(this.enemyId == this.bossId) this.cardEnemies.funct = function(){};
+        if(this.enemyId == this.bossId) {
+            this.cardEnemies.funct = function(){};
+            this.cardEnemies.texture = 'Back';
+            this.interpreter = new DialogueInterpreter(this)
+            const data = this.cache.json.get("dialogue");
+            this.interpreter.SetDialogue(data['Jaime-1'])
+        }
         //Para que no aparezcan las imagenes en el fondo al hacer la animacion de flip
         this.cardTeam.setAlpha(0, 0, 0, 0);
         this.cardEnemies.setAlpha(0, 0, 0, 0);
@@ -84,13 +94,17 @@ export default class CardsScene extends Phaser.Scene{
 
     //Frames posteriores de la escena
     update() {
-        let isDownSpace = this.space.isDown;
+        let isDownEnter = this.enter.isDown;
 
-        if (isDownSpace) {
+        if (isDownEnter) {
             this.scene.start('combat', {team1: this.team1, team2: this.team2, 
                 lastPlayerPosition: this.lastPlayerPosition, enemyId: this.enemyId,
-                cardTeam: this.cardTeam, cardEnemies: this.cardEnemies, NPCFound: this.NPCFound, NPCTalked: this.NPCTalked, ambush: this.ambush});
+                cardTeam: this.cardTeam, cardEnemies: this.cardEnemies, NPCFound: this.NPCFound, NPCTalked: this.NPCTalked, ambush: this.ambush, cafeteriaEnter: this.cafeteriaEnter});
         }
+
+        this.children.bringToTop(this.interpreter.background)
+        this.children.bringToTop(this.interpreter.character)
+        this.children.bringToTop(this.interpreter.dialogueText)
     }
 
     DoCardAnimation() {

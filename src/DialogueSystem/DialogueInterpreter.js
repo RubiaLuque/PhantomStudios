@@ -13,7 +13,7 @@ export default class DialogueInterpreter {
         this.background = new Phaser.GameObjects.Rectangle(scene, posX, posY + config.height/2.35, 800, 200, 0x000000);
         this.background.alpha = 0.5;
 
-        this.character = scene.add.sprite(this.background.x, this.background.y, "Fueyo");
+        this.character = scene.add.sprite(this.background.x, this.background.y, "");
         this.character.setOrigin(0.5, 1)
         this.character.setPosition(this.background.x, posY + config.height/2)
         this.character.setScale(0.4, 0.4)
@@ -41,6 +41,7 @@ export default class DialogueInterpreter {
         let line = lines.shift()
         let characterData = line.split(":")[0].split("/");
         let currentCharacter = DialogueCharacterData[characterData[0]];
+        this.character.setTexture(characterData[0], currentCharacter[characterData[1]]);
         this.dialogueText.text = line.split(':')[1];
         let self = this;
         let delay = 0;

@@ -4,9 +4,12 @@ export const DialogueCharacterData = {
         horny: 1,
         happy: 2,
         sad: 3,
+        angry: 3
     },
     Mika:{
         default: 0,
+        questioning: 1,
+        sad: 1,
         angry: 1,
         happy: 2
     },
@@ -19,6 +22,8 @@ export const DialogueCharacterData = {
     Muxu:{
         default: 0,
         questioning: 1,
+        angry: 1,
+        sad: 1,
         happy: 2
     },
     JaviR: {
@@ -26,11 +31,13 @@ export const DialogueCharacterData = {
         horny: 1,
         happy: 2,
         sad: 3,
+        angry: 3
     },
     MikaR:{
         default: 0,
         angry: 1,
-        happy: 2
+        happy: 2,
+        questioning: 0
     },
     FueyoR:{
         default: 0,
@@ -41,12 +48,19 @@ export const DialogueCharacterData = {
     MuxuR:{
         default: 0,
         questioning: 1,
+        sad: 1,
         happy: 2
     },
     Narrador:{
         default: 0
     },
     Toni:{
+        default: 0
+    },
+    Sanchez:{
+        default: 0
+    },
+    Jaime:{
         default: 0
     }
 };

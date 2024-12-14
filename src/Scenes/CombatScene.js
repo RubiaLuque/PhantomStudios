@@ -35,7 +35,7 @@ export default class CombatScene extends Phaser.Scene {
         //Inicializacion de los equipos, Team 1 es el jugador y Team 2 es el enemigo
         team1 = teams.team1
         team2 = teams.team2
-
+        console.log(team2)
         //Guardamos la posicion del jugador, el id del enemigo y los NPCs encontrados para la siguiente escena
         lastPlayerPosition = teams.lastPlayerPosition;
         currentEnemyId = teams.enemyId;
@@ -49,6 +49,8 @@ export default class CombatScene extends Phaser.Scene {
 
         cardTeam = teams.cardTeam;
         cardEnemies = teams.cardEnemies;
+
+        this.cafeteriaEnter = teams.cafeteriaEnter
     }
 
     preload(){
@@ -96,6 +98,7 @@ export default class CombatScene extends Phaser.Scene {
         team1.Create(this, this.ambush);
         team2.Create(this, !this.ambush);
         
+        console.log(team1, team2)
         cardTeam.DoAction(team1, team2);
         cardEnemies.DoAction(team2, team1);
 
@@ -298,7 +301,7 @@ export default class CombatScene extends Phaser.Scene {
             e.healing.able = true
         })
 
-        self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked});
+        self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked, cafeteriaEnter: this.cafeteriaEnter});
         analyser.Stop();
     }
 
