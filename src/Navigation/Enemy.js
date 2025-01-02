@@ -1,6 +1,6 @@
 import { EnemyPresets } from "../CombatSystem/Data/EnemyPresets.js";
 import Entity from "../CombatSystem/Entity.js";
-import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
+import { EntityData } from "../CombatSystem/Data/EntityData.js";
 import Team from "../CombatSystem/Team.js";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -14,7 +14,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         this.team = []; 
         this.enemyPreset.forEach(enemy => {
-            this.team.push(Entity.TranslateEntity(MainTeam.enemies[enemy], scene)); //Puede estar mal (scene)
+            this.team.push(Entity.TranslateEntity(EntityData.enemies[enemy], scene)); //Puede estar mal (scene)
         })
         
         this.scale = 0.15;

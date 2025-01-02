@@ -11,10 +11,10 @@ Todos los sprites, además, siguen una paleta de colores oscuros/negros mezclado
 para darle contraste, sobretodo **amarillos**.
 
 Muchos de los **archivos de sonido** pertenecen a otros videojuegos, como **Persona3** y **NieR:Automata** (principalmente la
-música). Los archivos de **efectos de sonido no musicales** fueron creados por Javier Valseca. La mayoría de estos archivos son **placeholders**
+música). Por esa razón están bajo derechos de autor correspondientes a cada una de las empresas que los producen (En este caso Atlus y Platinum Games). Recordamos que el proyecto es sin ánimo de lucro y mera experiencia para un trabajo unmiversitario. Los archivos de **efectos de sonido no musicales** fueron creados por Javier Valseca. La mayoría de estos archivos son **placeholders**
 hasta que hagamos los nuestros propios.
 
-En la web, el **logo del grupo** fue hecho por Muxu, y las **cartas del tarot** las obtuvo de internet.
+En la web, el **logo del grupo** fue hecho por Muxu, y las **cartas del tarot** las obtuvo de internet, por lo que están bajo derecho de autor.
 
 Todos los archivos creados por nuestro grupo son de licencia propietaria: si otras personas quieren usar nuestros archivos
 deberán darnos crédito referenciandonos como creadores.

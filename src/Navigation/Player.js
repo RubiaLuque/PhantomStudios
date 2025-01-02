@@ -1,5 +1,5 @@
 import Entity from "../CombatSystem/Entity.js";
-import { MainTeam } from "../CombatSystem/Data/MainTeam.js";
+import { EntityData } from "../CombatSystem/Data/EntityData.js";
 import Team from "../CombatSystem/Team.js";
 
 let vel = 200;
@@ -26,7 +26,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         this.canMove = true;
 
        this.team = []; 
-       MainTeam.entities.forEach(entity =>
+       EntityData.entities.forEach(entity =>
             this.team.push(Entity.TranslateEntity(entity, scene))
        )
        this.teamClass = new Team(this.team, "Party")

@@ -1,5 +1,5 @@
 import { Type } from "./Type.js"
-export const MainTeam =
+export const EntityData =
 {
     entities :
     [

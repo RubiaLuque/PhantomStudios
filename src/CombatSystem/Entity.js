@@ -5,30 +5,30 @@ import { Type } from "./Data/Type.js"
 
 export default class Entity
 {
-    constructor(name, damage, health, type, luck, defense, attack, image, scene, damageSound, xp, level, maxLevel)
+    constructor(container, scene)
     {
-        this.name = name
-        this.health = {quantity: health, bonus: 0}
+        this.name = container.name
+        this.health = {quantity: container.health, bonus: 0}
         this.maxHealth = this.health.quantity
-        this.attack = attack
-        this.defense = {quantity: defense, bonus: 0}
-        this.damage = {quantity: damage, bonus: 0}
-        this.type = type
+        this.attack = container.attack
+        this.defense = {quantity: container.defense, bonus: 0}
+        this.damage = {quantity: container.damage, bonus: 0}
+        this.type = container.type
         this.alive = true;
-        this.luck = {quantity: luck, bonus: 0}
+        this.luck = {quantity: container.luck, bonus: 0}
         this.healing = {quantity: -30, bonus: 0, able: true}
         this.event = new Phaser.Events.EventEmitter()
         this.magicalImmunity = false;
         this.physicalImmunity = false;
         this.target = this
 
-        this.image = image
+        this.image = container.image
         this.scene = scene
         this.sound = analyser;
-        this.damageSound = damageSound
-        this.xp = xp
-        this.level = level
-        this.maxLevel = maxLevel;
+        this.damageSound = container.damageSound
+        this.xp = container.xp
+        this.level = container.level
+        this.maxLevel = container.maxLevel;
         this.alteredState = AlteredState.none;
         this.doneCritic = false;
 
@@ -38,7 +38,7 @@ export default class Entity
     }
 
     static TranslateEntity(container, scene) {
-        return new Entity(container.name, container.damage, container.health, container.type, container.luck, container.defense, container.attack, container.image, scene, container.damageSound, container.xp, container.level, container.maxLevel)
+        return new Entity(container, scene) //Podriamos ahorrarnos este método ahora que he cambiado el constructor pero me da toda la pereza del mundo cambiarlo
     }
 
     Setup()

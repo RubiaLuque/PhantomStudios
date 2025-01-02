@@ -27,7 +27,7 @@ export const CardsEffects = {
         }
     },
 
-    High_PriestessEffect: (thisTeam, _) => {
+    HighPriestessEffect: (thisTeam, _) => {
         thisTeam.entities.forEach(e => {
             e.luck.bonus = 2;
         });   
@@ -84,7 +84,7 @@ export const CardsEffects = {
     },
 
 
-    Wheel_of_FortuneEffect:(thisTeam, _) =>{
+    WheelOfFortuneEffect:(thisTeam, _) =>{
         let rand = Math.floor(Math.random()*2); //Da un numero aleatorio entre 0 y 1
         let fortune;
 
@@ -122,7 +122,7 @@ export const CardsEffects = {
         }
     },
     
-    Hanged_ManEffect: (thisTeam, _) => {
+    HangedManEffect: (thisTeam, _) => {
         thisTeam.GetRandomCharacter().health.quantity = 1;
     },
 
