@@ -1,4 +1,3 @@
-import Entity from "../Entity.js"
 import { AlteredState } from "../Data/AlteredState.js";
 
 export const CardsEffects = {

@@ -3,23 +3,12 @@ import CustomButton from "../UI/CustomButton.js";
 const characters = ['Javi', 'Mika', 'Fueyo', 'Muxu'];
 let expText;
 let pos, enemyId;
-let healths;
 let NPCFound, NPCTalked;
 let team;
 export default class WinScene extends Phaser.Scene
 {
     constructor(){
         super({key: "WinScene"});
-    }
-
-    preload()
-    {
-        this.load.image("Javi", "assets/images/Javi.png");
-        this.load.image("Mika", "assets/images/Mika.png");
-        this.load.image("Fueyo", "assets/images/Fueyo.png");
-        this.load.image("Muxu", "assets/images/Muxu.png");
-        this.load.image("Button", "assets/images/Button.png");
-        this.load.audio('win', ['assets/music/Win_Theme.mp3']);
     }
 
     init(result)

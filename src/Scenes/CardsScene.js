@@ -1,7 +1,5 @@
 import RandomCardSelector from "../CombatSystem/Cards/RandomCardSelector.js"
-import { analyser } from "../SoundSystem/Index.js"
 import TarotCard from "../CombatSystem/Cards/TarotCard.js";
-import { CardsEffects } from "../CombatSystem/Cards/CardsEffects.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 
 export default class CardsScene extends Phaser.Scene{
@@ -20,35 +18,6 @@ export default class CardsScene extends Phaser.Scene{
         this.ambush = prevScene.ambush;
         this.bossId = prevScene.bossId;
         this.cafeteriaEnter = prevScene.cafeteriaEnter
-    }
-
-    //
-    preload() {
-        //Cartas tarot
-        this.load.image("Back", "assets/images/cards/Back_3.jpg");
-        this.load.image("Fool", "assets/images/cards/Fool.jpg");
-        this.load.image("Magician", "assets/images/cards/Magician.jpg");
-        this.load.image("Empress", "assets/images/cards/Empress.jpg");
-        this.load.image("Devil", "assets/images/cards/Devil.jpg");
-        this.load.image("Chariot", "assets/images/cards/Chariot.jpg");
-        this.load.image("Hanged_Man", "assets/images/cards/Hanged_Man.jpg");
-        this.load.image("Hermit", "assets/images/cards/Hermit.jpg");
-        this.load.image("Sun", "assets/images/cards/Sun.jpg");
-        this.load.image("Temperance", "assets/images/cards/Temperance.jpg");
-        this.load.image("Tower", "assets/images/cards/Tower.jpg");
-        this.load.image("Lovers", "assets/images/cards/Lovers.jpg");
-        this.load.image("Emperor", "assets/images/cards/Emperor.jpg");
-        this.load.image("Death", "assets/images/cards/Death.jpg");
-        this.load.image("Star", "assets/images/cards/Star.jpg");
-        this.load.image("Moon", "assets/images/cards/Moon.jpg");
-        this.load.image("Judgement", "assets/images/cards/Judgement.jpg");
-        this.load.image("World", "assets/images/cards/World.jpg");
-        this.load.image("Justice", "assets/images/cards/Justice.jpg");
-        this.load.image("Fortune", "assets/images/cards/Wheel_of_Fortune.jpg");
-        this.load.image("Strength", "assets/images/cards/Strength.jpg");
-        this.load.image("Hierophant", "assets/images/cards/Hierophant.jpg");
-        this.load.image("High_Priestess", "assets/images/cards/High_Priestess.jpg");
-        this.load.json("dialogue", 'assets/dialogue/dialogue.json')
     }
 
     //Crear los objetos de la escena + lo que ocurre en el primer frame

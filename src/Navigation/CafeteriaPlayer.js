@@ -1,6 +1,5 @@
 import Entity from "../CombatSystem/Entity.js";
 import { EntityData } from "../CombatSystem/Data/EntityData.js";
-import Team from "../CombatSystem/Team.js";
 
 let vel = 200;
 let canRoll = true; //No va

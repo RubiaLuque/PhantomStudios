@@ -1,5 +1,4 @@
 import CustomButton from "../UI/CustomButton.js";
-import MusicAnalyser from "../SoundSystem/MusicAnalyser.js";
 import { analyser } from "../SoundSystem/Index.js";
 
 let StartButton, ContinueButton;
@@ -26,7 +25,7 @@ export default class MainMenu extends Phaser.Scene {
         StartButton = new CustomButton(this, 400, 400, 'Button', 'MISSION START!!', 
             ()=>{
                 analyser.Stop();
-                this.scene.start('World1', { pos: undefined, dial: true });
+                this.scene.start('LoadScene');
             }
         );
         StartButton.setButtonScale(1, 0.5);

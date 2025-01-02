@@ -1,4 +1,3 @@
-import { config } from "../game.js";
 export default class Team
 {
     constructor(entities, name)

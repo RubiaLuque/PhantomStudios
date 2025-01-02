@@ -1,5 +1,4 @@
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
-//import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
 
 export default class DialogueTestScene extends Phaser.Scene{
     constructor(){

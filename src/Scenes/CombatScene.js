@@ -1,10 +1,7 @@
 import CustomButton from "../UI/CustomButton.js";
 import FloatingText from "../CombatSystem/FloatingText.js";
 import {analyser} from "../SoundSystem/Index.js"
-import Team from "../CombatSystem/Team.js";
-import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 import LifeBar from "../CombatSystem/LifeBar.js";
-import { AlteredState } from "../CombatSystem/Data/AlteredState.js";
 
 const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
 
@@ -16,7 +13,6 @@ let outImage;
 
 let team1, team2;
 let arrow;
-let turnText;
 let lastPlayerPosition, currentEnemyId;
 let phase;
 let currentTeam;
@@ -57,18 +53,9 @@ export default class CombatScene extends Phaser.Scene {
         team1.Preload(this);
         team2.Preload(this);
 
-        this.load.image("Button", "assets/images/Button.png");
-        this.load.image("Arrow", "assets/images/Arrow.png");
-
         team1.entities.forEach(entity => {
-            this.load.image(entity.name + "_Out", "assets/images/" + entity.image + "_Out.png");
+            this.load.image(entity.name + "_Out", "assets/images/" + entity.image + "_Out.png"); //Esto es dependiente de team 1 asi que hay que cargarlo aqui
         });
-
-        this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
-        this.load.audio('oioioi', [ 'assets/music/oioioi.wav' ]);
-
-        this.load.spritesheet('background', 'assets/images/background_sheet_48-Frames.png', {frameWidth: 256, frameHeight: 224});
-        this.load.spritesheet('speedFX', 'assets/images/kinggod_speed_426_240.png', {frameWidth: 426, frameHeight: 216});
     }
 
     create(){

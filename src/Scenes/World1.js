@@ -6,12 +6,8 @@ import CustomButton from "../UI/CustomButton.js";
 import NPC from "../Navigation/NPC.js";
 import {analyser} from "../SoundSystem/Index.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
-//import dialogue from '/assets/dialogue/dialogue.json' with {type: 'json'};
 
-let team1, team2;
 let pos = {x: 0, y: 0};
-let sceneAdded = false;
-let healths;
 let defeatedEnemiesIds = [];
 let mainMenuButton;
 let NPCFound = ["Andres", "Sanchez"];
@@ -35,34 +31,6 @@ export default class World1 extends Phaser.Scene
         else this.dial = false;
         if(result.cafeteriaEnter != undefined) this.cafeteriaEnter = result.cafeteriaEnter
         else this.cafeteriaEnter = false
-    }
-
-    preload()
-    {
-        this.load.image("Main_Team", "assets/images/Main_Team.png");
-        this.load.image("JaviN", "assets/images/Javi.png");
-        this.load.image("MikaN", "assets/images/Mika.png");
-        this.load.image("FueyoN", "assets/images/Fueyo.png");
-        this.load.image("MuxuN", "assets/images/Muxu.png");
-        this.load.spritesheet("Javi", "assets/images/Javi_sheet.png", {frameWidth: 1242, frameHeight: 1536});
-        this.load.spritesheet("Fueyo", "assets/images/Fueyo_sheet.png", {frameWidth: 1030, frameHeight: 1536});
-        this.load.spritesheet("Mika", "assets/images/Mika_sheet.png", {frameWidth: 1242, frameHeight: 1536});
-        this.load.spritesheet("Muxu", "assets/images/Muxu_sheet.png", {frameWidth: 1499, frameHeight: 1536});
-        this.load.spritesheet("Toni", "assets/images/NPC.png", {frameWidth: 286, frameHeight: 275});
-        this.load.spritesheet("Narrador", "assets/images/NPC.png", {frameWidth: 286, frameHeight: 275});
-        this.load.spritesheet('Jaime', "assets/images/Jaime.png", {frameWidth: 1000, frameHeight: 1053})
-        this.load.image("Cafeteria", "assets/images/Cafeteria.png");
-        this.load.image("NPC", "assets/images/NPC.png");
-        this.load.image("Fork", "assets/images/Fork.png");
-        this.load.image("Demon", "assets/images/Demon.png");
-        this.load.image("Uroboros", "assets/images/Uroboros.png");
-        this.load.image("Skibidi", "assets/images/Skibidi.png");
-        this.load.image('TestTileset', 'assets/images/SpritesPrueba.png');
-        this.load.image("Tiles", "assets/tilemaps/inca_back.png")
-        this.load.tilemapTiledJSON("World1", "assets/tilemaps/mundo1.json")
-        this.load.tilemapTiledJSON('TestTileMap', 'assets/tilemaps/Testing.json');
-        this.load.image('button', 'assets/images/Button.png');
-        this.load.json("dialogue", "assets/dialogue/dialogue.json")
     }
 
     create()
@@ -133,12 +101,6 @@ export default class World1 extends Phaser.Scene
                 this.bossId = this.boss.id
                 
                 console.log(this.enemies);
-                /*if(!sceneAdded)
-                {
-                this.scene.add('combat', CombatScene)
-                this.scene.add('WinScene', WinScene);
-                sceneAdded = true;
-                }*/
                this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
 

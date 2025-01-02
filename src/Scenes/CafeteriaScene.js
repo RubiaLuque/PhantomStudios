@@ -3,7 +3,6 @@ import playerCafeteria from "../Navigation/CafeteriaPlayer.js";
 import NPC from "../Navigation/NPC.js";
 import { NPCEffects } from "../CombatSystem/Data/NPCEffects.js";
 import CustomButton from "../UI/CustomButton.js";
-import Entity from "../CombatSystem/Entity.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
 
 
@@ -29,17 +28,6 @@ export default class CafeteriaScene extends Phaser.Scene
     }
 
     preload(){
-        this.load.image("Main_Team", "assets/images/Main_Team.png");
-        this.load.image("Door", "assets/images/CafetePuerta.png");
-        this.load.image("NPC", "assets/images/NPC.png");
-        this.load.image("TileCaf", "assets/tilemaps/tilemap_cafeteria.png")
-        this.load.tilemapTiledJSON("Cafeteria", "assets/tilemaps/Cafeteria.json")
-        this.load.image("Andres", "assets/images/NPC.png")
-        this.load.image("Sanchez", "assets/images/NPC.png")
-        this.load.image("Toni", "assets/images/NPC.png")
-        this.load.image("Mozos", "assets/images/NPC.png")
-        this.load.image("Poletti", "assets/images/NPC.png")
-        this.load.json("dialogue", "assets/dialogue/dialogue.json");
     }
 
     create()

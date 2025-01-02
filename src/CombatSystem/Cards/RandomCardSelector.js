@@ -1,4 +1,3 @@
-import TarotCard from "./TarotCard.js";
 import { CardsEffects } from "./CardsEffects.js"; //Fichero con funciones genericas
 
 const Type = {
