@@ -46,7 +46,7 @@ export const AlteredState =
     no_attack:
     {
         enter: (data) => { data.user.sprite.setTint(0xff0000) },
-        check: (_) => {
+        check: (data) => {
             data.phase.emit('next');
             return false},
         exit: (_) => {}
