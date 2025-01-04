@@ -102,6 +102,7 @@ export default class CombatScene extends Phaser.Scene {
         buttons.push(new CustomButton(this, 400, 450, "Button", "Attack", 
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
+            team1.entities.forEach(element=> {element.sprite.disableInteractive()})
             team2.entities.forEach(entity => {entity.sprite.setInteractive()})
             this.selectedButton.visible = true
             this.selectedButton.setPosition(400, 450);
@@ -112,6 +113,7 @@ export default class CombatScene extends Phaser.Scene {
         buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
+            team1.entities.forEach(element=> {element.sprite.disableInteractive()})
             team2.entities.forEach(element => {element.sprite.setInteractive()})
             this.selectedButton.visible = true;
             this.selectedButton.setPosition(400, 500);
@@ -123,6 +125,7 @@ export default class CombatScene extends Phaser.Scene {
         ()=>{
             if(team1.CurrentCharacter().healing.able){
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
+            team2.entities.forEach(element=> {element.sprite.disableInteractive()})
             team1.entities.forEach(element => {element.sprite.setInteractive()})
             this.selectedButton.visible = true
             this.selectedButton.setPosition(400, 550);
@@ -160,6 +163,9 @@ export default class CombatScene extends Phaser.Scene {
                     this.selectedButton.visible = false;
 
                     team2.entities.forEach(element => {
+                        element.sprite.disableInteractive()
+                    });
+                    team1.entities.forEach(element => {
                         element.sprite.disableInteractive()
                     });
 
