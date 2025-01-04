@@ -1,28 +1,29 @@
 import { CardsEffects } from "./CardsEffects.js"; //Fichero con funciones genericas
+import { cardsInfo } from "./CardsInfo.js";
 
 const Type = {
-    Fool: { function: CardsEffects.FoolEffect, texture: "Fool" },
-    Magician: { function: CardsEffects.MagicianEffect, texture: "Magician" },
-    High_Priestess: { function: CardsEffects.HighPriestessEffect, texture: "High_Priestess" },
-    Empress: { function: CardsEffects.EmpressEffect, texture: "Empress" },
-    Emperor: { function: CardsEffects.EmperorEffect, texture: "Emperor" },
-    Hierophant: { function: CardsEffects.HierophantEffect, texture: "Hierophant" },
-    Lovers: { function: CardsEffects.LoversEffect, texture: "Lovers" },
-    Chariot: { function: CardsEffects.ChariotEffect, texture: "Chariot" },
-    Strength: { function: CardsEffects.StrengthEffect, texture: "Strength" },
-    Hermit: { function: CardsEffects.HermitEffect, texture: "Hermit" },
-    Wheel_of_Fortune: { function: CardsEffects.WheelOfFortuneEffect, texture: "Wheel_of_Fortune" },
-    Justice: { function: CardsEffects.JusticeEffect, texture: "Justice" },
-    Hanged_Man: { function: CardsEffects.HangedManEffect, texture: "Hanged_Man" },
-    Death: { function: CardsEffects.DeathEffect, texture: "Death" },
-    Temperance: { function: CardsEffects.TemperanceEffect, texture: "Temperance" },
-    Devil: { function: CardsEffects.DevilEffect, texture: "Devil" },
-    Tower: { function: CardsEffects.TowerEffect, texture: "Tower" },
-    Star: { function: CardsEffects.StarEffect, texture: "Star" },
-    Moon: { function: CardsEffects.MoonEffect, texture: "Moon" },
-    Sun: { function: CardsEffects.SunEffect, texture: "Sun" },
-    Judgement: { function: CardsEffects.JudgementEffect, texture: "Judgement" },
-    World: { function: CardsEffects.WorldEffect, texture: "World" }
+    Fool: { function: CardsEffects.FoolEffect, texture: "Fool", info: cardsInfo.FoolInfo },
+    Magician: { function: CardsEffects.MagicianEffect, texture: "Magician", info: cardsInfo.MagicianInfoInfo },
+    High_Priestess: { function: CardsEffects.HighPriestessEffect, texture: "High_Priestess", info: cardsInfo.HighPriestessInfo },
+    Empress: { function: CardsEffects.EmpressEffect, texture: "Empress", info: cardsInfo.EmpressInfo },
+    Emperor: { function: CardsEffects.EmperorEffect, texture: "Emperor", info: cardsInfo.EmperorInfo },
+    Hierophant: { function: CardsEffects.HierophantEffect, texture: "Hierophant", info: cardsInfo.HierophantInfo },
+    Lovers: { function: CardsEffects.LoversEffect, texture: "Lovers", info: cardsInfo.LoversInfo },
+    Chariot: { function: CardsEffects.ChariotEffect, texture: "Chariot", info: cardsInfo.ChariotInfo },
+    Strength: { function: CardsEffects.StrengthEffect, texture: "Strength", info: cardsInfo.StrengthInfo },
+    Hermit: { function: CardsEffects.HermitEffect, texture: "Hermit", info: cardsInfo.HermitInfo },
+    Wheel_of_Fortune: { function: CardsEffects.WheelOfFortuneEffect, texture: "Wheel_of_Fortune", info: cardsInfo.WheelOfFortuneInfo },
+    Justice: { function: CardsEffects.JusticeEffect, texture: "Justice", info: cardsInfo.JusticeInfo },
+    Hanged_Man: { function: CardsEffects.HangedManEffect, texture: "Hanged_Man", info: cardsInfo.HangedManInfo },
+    Death: { function: CardsEffects.DeathEffect, texture: "Death", info: cardsInfo.DeathInfo },
+    Temperance: { function: CardsEffects.TemperanceEffect, texture: "Temperance", info: cardsInfo.TemperanceInfo },
+    Devil: { function: CardsEffects.DevilEffect, texture: "Devil", info: cardsInfo.DevilInfo },
+    Tower: { function: CardsEffects.TowerEffect, texture: "Tower", info: cardsInfo.TowerInfo },
+    Star: { function: CardsEffects.StarEffect, texture: "Star", info: cardsInfo.StarInfo },
+    Moon: { function: CardsEffects.MoonEffect, texture: "Moon", info: cardsInfo.MoonInfo },
+    Sun: { function: CardsEffects.SunEffect, texture: "Sun", info: cardsInfo.SunInfo },
+    Judgement: { function: CardsEffects.JudgementEffect, texture: "Judgement", info: cardsInfo.JudgementInfo },
+    World: { function: CardsEffects.WorldEffect, texture: "World", info: cardsInfo.WorldInfo }
 }
 
 //Esta clase elige una carta al azar y le asocia su efecto

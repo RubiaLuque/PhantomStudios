@@ -37,7 +37,6 @@ export const CardsEffects = {
     },
 
     EmpressEffect: (thisTeam, _) => {
-        console.log('cacacacacaca')
         thisTeam.GetRandomCharacter().ApplyAlteredState(AlteredState.fear, 3)
     },
 

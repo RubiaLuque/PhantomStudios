@@ -25,7 +25,10 @@ export default class CardsScene extends Phaser.Scene{
         
         this.randomCardSelector = new RandomCardSelector();
         this.enter = this.input.keyboard.addKey("ENTER");
-        this.text = this.add.text(300,520, "Press ENTER to continue.", { fill: '#FFFFFF' });
+        this.add.text(500,510, "Enemigos", { fill: '#FFFFFF' });
+        this.add.text(200,510, "Jugadores", { fill: '#FFFFFF' });
+        this.add.text(200,570, "CLICK para ver los efectos de las cartas", { fill: '#FFFFFF' });
+        this.text = this.add.text(250,550, "INTRO para empezar el combate", { fill: '#FFFFFF' });
         //Recibe el tipo Type de la carta de cada equipo de manera aleatoria
         let teamElection = this.randomCardSelector.RandomElection();
         //let teamElection = {texture: 'Moon', function: CardsEffects.MoonEffect}
@@ -34,28 +37,19 @@ export default class CardsScene extends Phaser.Scene{
         
         this.player = {x: 400, y: 300}
         //Cartas elegidas 
-        this.cardTeam = new TarotCard(this, 250, 250, teamElection.texture, teamElection.function);
-        this.cardEnemies = new TarotCard(this, 550, 250, enemiesElection.texture, enemiesElection.function);
+        this.cardTeam = new TarotCard(this, 250, 250, 'Back', teamElection.texture, teamElection.function, teamElection.info);
+        this.cardEnemies = new TarotCard(this, 550, 250, 'Back', enemiesElection.texture, enemiesElection.function, enemiesElection.info);
         this.interpreter = new DialogueInterpreter(this)
 
         if(this.enemyId == this.bossId) {
             this.cardEnemies.funct = function(){};
-            this.cardEnemies.texture = 'Back';
+            this.cardEnemies.card = 'Back';
             const data = this.cache.json.get("dialogue");
             this.interpreter.SetDialogue(data['Jaime-1'])
         }
-        //Para que no aparezcan las imagenes en el fondo al hacer la animacion de flip
-        this.cardTeam.setAlpha(0, 0, 0, 0);
-        this.cardEnemies.setAlpha(0, 0, 0, 0);
-
-        //Texturas de la parte de atras de las cartas
-        this.backTeam = this.add.image(250, 250, "Back");
-        this.backEnenmies = this.add.image(550, 250, "Back");
         
         this.cardTeam.SetCardScale(0.7, 0.7);
         this.cardEnemies.SetCardScale(0.7, 0.7);
-        this.backTeam.setScale(0.7, 0.7);
-        this.backEnenmies.setScale(0.7, 0.7);
         
         //Animacion de las cartas rotando
         this.DoCardAnimation();
@@ -78,19 +72,19 @@ export default class CardsScene extends Phaser.Scene{
 
     DoCardAnimation() {
         this.tweens.add({
-            targets: this.backTeam,
+            targets: this.cardTeam,
             props: {
                 scaleX: { value: 0, duration: 1000, yoyo: true },
-                texture: { value: this.cardTeam.texture, duration: 0, delay: 1000 }
+                texture: { value: this.cardTeam.card, duration: 0, delay: 1000 }
             },
             ease: 'quart.in'
         });
 
         this.tweens.add({
-            targets: this.backEnenmies,
+            targets: this.cardEnemies,
             props: {
                 scaleX: { value: 0, duration: 1000, yoyo: true },
-                texture: { value: this.cardEnemies.texture, duration: 0, delay: 1000 }
+                texture: { value: this.cardEnemies.card, duration: 0, delay: 1000 }
             },
             ease: 'quart.in',
         });
