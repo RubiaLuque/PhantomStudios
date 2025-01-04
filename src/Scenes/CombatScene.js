@@ -89,6 +89,13 @@ export default class CombatScene extends Phaser.Scene {
         cardTeam.DoAction(team1, team2);
         cardEnemies.DoAction(team2, team1);
 
+        this.selectedButton = new Phaser.GameObjects.Rectangle(this, 0, 0, 180, 50, 0xffffff);
+        this.selectedButton.visible = false
+        this.add.existing(this.selectedButton)
+
+        this.buttonText = this.add.text(180, 0, "Selecciona una opción", { fontSize: '30px', color: '#fff'});
+        if(!this.ambush) this.buttonText.visible = false
+
         buttons = [];
 
         phase = new Phaser.Events.EventEmitter();
@@ -96,6 +103,9 @@ export default class CombatScene extends Phaser.Scene {
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
             team2.entities.forEach(entity => {entity.sprite.setInteractive()})
+            this.selectedButton.visible = true
+            this.selectedButton.setPosition(400, 450);
+            this.buttonText.text = "Elige un enemigo al que\n          atacar"
         }));
         buttons[0].setButtonScale(0.5, 0.25);
 
@@ -103,6 +113,9 @@ export default class CombatScene extends Phaser.Scene {
         ()=>{
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
             team2.entities.forEach(element => {element.sprite.setInteractive()})
+            this.selectedButton.visible = true;
+            this.selectedButton.setPosition(400, 500);
+            this.buttonText.text = "Elige un enemigo al que\nhacerle daño de " + team1.CurrentCharacter().type.name
         }));
         buttons[1].setButtonScale(0.5, 0.25);
 
@@ -111,6 +124,13 @@ export default class CombatScene extends Phaser.Scene {
             if(team1.CurrentCharacter().healing.able){
             team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
             team1.entities.forEach(element => {element.sprite.setInteractive()})
+            this.selectedButton.visible = true
+            this.selectedButton.setPosition(400, 550);
+            this.buttonText.text = "Elige un aliado al que\n     curar"
+            }
+            else{
+                this.buttonText.text = "A " + team1.CurrentCharacter().image + " no le quedan\n          curaciones"
+                this.selectedButton.visible = false;
             }
         }));
         buttons[2].setButtonScale(0.5, 0.25);
@@ -136,6 +156,8 @@ export default class CombatScene extends Phaser.Scene {
                     entity.sprite.emit('pointerup');
 
                     buttons.forEach(button => {button.setActive(false)});
+                    this.buttonText.visible = false;
+                    this.selectedButton.visible = false;
 
                     team2.entities.forEach(element => {
                         element.sprite.disableInteractive()
@@ -145,6 +167,8 @@ export default class CombatScene extends Phaser.Scene {
 
                     let attackAction = ()=>{character.selectedAttack(entity, ()=>{
                         buttons.forEach(button => {button.setActive(true)});
+                        this.buttonText.visible = true;
+                        this.buttonText.text = "Selecciona una opción"
                         phase.emit('next');
                     }, character);}
 
@@ -191,6 +215,8 @@ export default class CombatScene extends Phaser.Scene {
         phase.on('endTurn', ()=>{
             currentTeam = currentTeam == team1 ? team2 : team1;
             buttons.forEach(button => {button.setActive(currentTeam == team1)});
+            this.buttonText.text = "Selecciona una opción"
+            this.buttonText.visible = (currentTeam == team1);
             phase.emit('next')
         });
 

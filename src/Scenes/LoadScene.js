@@ -61,7 +61,7 @@ export default class LoadScene extends Phaser.Scene {
         this.load.image("Judgement", "assets/images/cards/Judgement.jpg");
         this.load.image("World", "assets/images/cards/World.jpg");
         this.load.image("Justice", "assets/images/cards/Justice.jpg");
-        this.load.image("Fortune", "assets/images/cards/Wheel_of_Fortune.jpg");
+        this.load.image("Wheel_of_Fortune", "assets/images/cards/Wheel_of_Fortune.jpg");
         this.load.image("Strength", "assets/images/cards/Strength.jpg");
         this.load.image("Hierophant", "assets/images/cards/Hierophant.jpg");
         this.load.image("High_Priestess", "assets/images/cards/High_Priestess.jpg");
