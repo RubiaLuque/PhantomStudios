@@ -121,6 +121,7 @@ export default class Entity
             damage *= 1.5
         }
 
+        if(other.target == undefined) other.target = other;
         other.target.GetDamage(damage, type, attacker)
 
         let self = this
