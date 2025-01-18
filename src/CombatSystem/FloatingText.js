@@ -9,6 +9,7 @@ export default class FloatingText extends Phaser.GameObjects.Text
         this.setDepth(2);
         this.setScale(0.5);
         this.alpha = 0;
+        this.setFont('bold 60px Arial')
         this.setStroke('#FFF', 4)
     }
 
