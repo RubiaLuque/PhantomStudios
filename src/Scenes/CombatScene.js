@@ -24,9 +24,9 @@ const freqPositions = [50, 60, 70, 80];
 /*Escena de Phaser*/
 export default class CombatScene extends Phaser.Scene {
     constructor(){
-        super({key: 'combat'});
+        super({ key: 'combat' });
     }
-
+    
     init(teams){
         //Inicializacion de los equipos, Team 1 es el jugador y Team 2 es el enemigo
         team1 = teams.team1
@@ -39,25 +39,25 @@ export default class CombatScene extends Phaser.Scene {
         NPCTalked = teams.NPCTalked;
         console.log(teams)
         this.ambush = teams.ambush
-
+        
         this.WIDTH = this.game.config.width;
         this.HEIGHT = this.game.config.height;
-
+        
         cardTeam = teams.cardTeam;
         cardEnemies = teams.cardEnemies;
-
+        
         this.cafeteriaEnter = teams.cafeteriaEnter
     }
-
+    
     preload(){
         team1.Preload(this);
         team2.Preload(this);
-
+        
         team1.entities.forEach(entity => {
             this.load.image(entity.name + "_Out", "assets/images/" + entity.image + "_Out.png"); //Esto es dependiente de team 1 asi que hay que cargarlo aqui
         });
     }
-
+    
     create(){
         this.anims.create({
             key: 'bckg',
@@ -67,6 +67,8 @@ export default class CombatScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.kKey = this.input.keyboard.addKey('K'); //DEBUG: tecla k mata a todo el grupo de personajes, se pierde
+        
         this.anims.create({
             key: 'speedFX',
             frames: this.anims.generateFrameNumbers('speedFX', {start: 0, end: 24}),
@@ -196,11 +198,16 @@ export default class CombatScene extends Phaser.Scene {
                     {
                         if(team == team2)
                         {
-                            let target = team1.GetRandomCharacter();
-                            this.time.delayedCall(1000, ()=>{
-                                target.event.emit('target');
-                                entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
-                            });
+                            if (!team1.isTeamDead()) {
+                                let target = team1.GetRandomCharacter();
+                                this.time.delayedCall(1000, ()=>{
+                                    target.event.emit('target');
+                                    entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
+                                });   
+                            }
+                            else {
+                                //TODO pantalla de muerte
+                            }
                         }
                     }
                 });
@@ -260,6 +267,13 @@ export default class CombatScene extends Phaser.Scene {
 
     update()
     {
+        //DEBUG para matar a todos los personajes
+        if (this.kKey.isDown) {
+            team1.entities.forEach(e => {
+                e.Die();
+            })    
+        }
+
         this.teamDance();
 
         this.camUpdate();

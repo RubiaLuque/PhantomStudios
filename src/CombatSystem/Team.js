@@ -97,4 +97,14 @@ export default class Team
     {
         return this.entities.length
     }
+
+    isTeamDead() {
+        //false: el equipo no esta muerto entero
+        //true: todo el equipo ha muerto
+        this.entities.forEach( e => {
+            if (e.alive) return false;
+        })
+
+        return true;
+    }
 }
