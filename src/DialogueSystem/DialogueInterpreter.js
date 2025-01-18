@@ -23,10 +23,15 @@ export default class DialogueInterpreter {
 
         this.dialogueText = scene.add.text(this.background.x - this.background.getBounds().width/2, this.background.y, '', { fontSize: '32px', fill: '#FFF'});
         this.background.visible = false;
+        this.spaceAble = true;
 
         this.nextInput = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.nextInput.on('down', ()=>{
-            this.next = true;
+            if(this.spaceAble){
+                this.next = true;
+                this.spaceAble = false;
+            }
+                
         });
 
         this.analyser = analyser;
@@ -72,6 +77,7 @@ export default class DialogueInterpreter {
                         self.character.setTexture(characterData[0], currentCharacter[characterData[1]]);
 
                         let newText = line.split(":")[1].split("");
+                        let once = true;
                         self.scene.time.addEvent({
                             delay: 10,
                             callback: ()=>
@@ -79,10 +85,12 @@ export default class DialogueInterpreter {
                                 let dataArray = self.analyser.GetDataArray();
                                 let value = dataArray[20] * dataArray[20] / 200000;
                                 // self.character.setScale(0.3 - value, 0.3 + value);
-
-                                if(newText.length > 0)
-                                    {
-                                        self.dialogueText.text += newText.shift();
+                                if(newText.length > 0){
+                                    self.dialogueText.text += newText.shift();
+                                }
+                                else if (once){
+                                    once = false;
+                                    this.spaceAble = true;
                                 }
                             },
                             loop: true
