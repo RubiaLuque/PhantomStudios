@@ -3,12 +3,15 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Cafeteria.tmx",
+    "activeFile": "mundo1.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "Aztec_Tileset.tsx": {
+            "scaleInDock": 1
+        },
         "Cafeteria.tmx": {
             "expandedObjectLayers": [
                 3
@@ -39,11 +42,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.5,
+            "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1295,
-                "y": 2217
+                "x": 1428.7878787878788,
+                "y": 819.6969696969696
             }
         },
         "tilemap_cafeteria.tsx": {
@@ -65,16 +68,15 @@
     "map.width": 32,
     "openFiles": [
         "mundo1.tmx",
-        "tilemap_prueba.tsx",
         "Cafeteria.tmx",
         "tilemap_cafeteria.tsx"
     ],
     "project": "saracatunga.tiled-project",
     "recentFiles": [
-        "mundo1.tmx",
-        "tilemap_prueba.tsx",
         "tilemap_cafeteria.tsx",
         "Cafeteria.tmx",
+        "mundo1.tmx",
+        "tilemap_prueba.tsx",
         "Prueba.tsx",
         "mundo1.json"
     ],
