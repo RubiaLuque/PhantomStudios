@@ -3,8 +3,12 @@ export default class LoadScene extends Phaser.Scene {
         super({key:"LoadScene"})
     }
 
-    init(){
+    init(player){
         this.add.text(180, 250, 'Loading...', {fontSize: 80});
+        this.pos = player.pos;
+        if(player.dial != undefined) this.dial = player.dial
+        else this.dial = true;
+        if(player.defeatedEnemiesIds != undefined) this.defeatedEnemiesIds = player.defeatedEnemiesIds
     }
     
     preload(){
@@ -88,9 +92,9 @@ export default class LoadScene extends Phaser.Scene {
         this.load.on('fileprogress', function (file) {
             console.log("fileprogressEvent", file.src);
         });
-        this.load.on('complete', function (f) {
+        this.load.on('complete', (f) => {
             console.log("filecompleteEvent", 'complete');
-            this.scene.scene.start("World1", { pos: undefined, dial: true })
+            this.scene.start("World1", {pos: this.pos, dial: this.dial, defeatedEnemiesIds: this.defeatedEnemiesIds})
         });
     }
 

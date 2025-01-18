@@ -14,7 +14,7 @@ export default class DemoWinScene extends Phaser.Scene{
             //Por ahora no hace nada
             this.MenuButton = new CustomButton(this, 400, 175, 'Button', 'Return', 
                 ()=>{
-                    this.scene.start('main_menu')
+                    this.scene.start('main_menu',{pos: {x: 0, y: 0}, defeatedEnemiesIds: []})
                 }
             );
             this.MenuButton.setButtonScale(1,0.5);

@@ -8,8 +8,11 @@ export default class MainMenu extends Phaser.Scene {
         super({key: 'main_menu'});
     }
 
-    init(){
-
+    init(player){
+        this.pos = player.pos
+        if(player.dial != undefined) this.dial = player.dial
+        else this.dial = true;
+        if(player.defeatedEnemiesIds != undefined) this.defeatedEnemiesIds = player.defeatedEnemiesIds
     }
 
     preload(){
@@ -20,24 +23,15 @@ export default class MainMenu extends Phaser.Scene {
     create(){
         banner = new Phaser.GameObjects.Image(this, 405, 140, 'Banner');
         this.add.existing(banner);
-        //Boton comienzo de partida
-        StartButton = new CustomButton(this, 400, 400, 'Button', 'MISSION START!!', 
+        //Boton pa jugar
+        StartButton = new CustomButton(this, 400, 425, 'Button', 'MISSION START!!', 
             ()=>{
                 analyser.Stop();
-                this.scene.start('LoadScene');
+                this.scene.start('LoadScene', {pos: this.pos, dial: this.dial, defeatedEnemiesIds: this.defeatedEnemiesIds});
             }
         );
         StartButton.setButtonScale(1, 0.5);
         StartButton.setTextPosition(-90, -10); //Se setea el texto del boton relativo a este
-
-        //Por ahora no hace nada
-        ContinueButton = new CustomButton(this, 400, 500, 'Button', '(Continue)', 
-            ()=>{
-                
-            }
-        );
-        ContinueButton.setButtonScale(1,0.5);
-        ContinueButton.setTextPosition(-60,-10); //Se setea el texto del boton relativo a este
 
         analyser.SetSong('CityRuins_MainMenu');
         analyser.Restart();

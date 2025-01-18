@@ -31,6 +31,7 @@ export default class World1 extends Phaser.Scene
         else this.dial = false;
         if(result.cafeteriaEnter != undefined) this.cafeteriaEnter = result.cafeteriaEnter
         else this.cafeteriaEnter = false
+        if(result.defeatedEnemiesIds != undefined) defeatedEnemiesIds = result.defeatedEnemiesIds
     }
 
     create()
@@ -106,7 +107,7 @@ export default class World1 extends Phaser.Scene
 
                mainMenuButton = new CustomButton(this, 50, 25, 'button', 'Return', 
                 () =>{
-                    this.scene.start("main_menu");
+                    this.scene.start("main_menu", {dial: false});
                 }
             );
             mainMenuButton.setButtonScale(0.25,0.25);
