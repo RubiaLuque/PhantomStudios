@@ -124,7 +124,7 @@ export default class World1 extends Phaser.Scene
             else if(defeatedEnemiesIds[defeatedEnemiesIds.length - 1] == this.bossId)
             {
                 this.interpreter.SetDialogue(this.data['Jaime-2'], () => {
-                    this.scene.start('demoEndScene')
+                    this.scene.start('demoWinScene')
                 })
             }
         }

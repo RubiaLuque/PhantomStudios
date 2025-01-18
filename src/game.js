@@ -6,7 +6,7 @@ import CardsScene from "./Scenes/CardsScene.js";
 import CafeteriaScene from "./Scenes/CafeteriaScene.js";
 import LevelUpScene from "./Scenes/LevelUpScene.js";
 import LoadScene from "./Scenes/LoadScene.js";
-import DemoEndScene from "./Scenes/DemoEndScene.js";
+import DemoWinScene from "./Scenes/DemoWinScene.js";
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
  * la clase Game de Phaser, encargada de crear e iniciar el juego.
@@ -22,7 +22,7 @@ export let config = {
 	},
 
 
-	scene: [MainMenu, LoadScene, World1, CardsScene, CafeteriaScene, CombatScene, WinScene, LevelUpScene, DemoEndScene],	// Decimos a Phaser cual es nuestra escena
+	scene: [MainMenu, LoadScene, World1, CardsScene, CafeteriaScene, CombatScene, WinScene, LevelUpScene, DemoWinScene],	// Decimos a Phaser cual es nuestra escena
 
 	physics: { 
 		default: 'arcade', 

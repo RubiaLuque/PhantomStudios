@@ -75,6 +75,8 @@ export default class LoadScene extends Phaser.Scene {
         this.load.spritesheet('speedFX', 'assets/images/kinggod_speed_426_240.png', {frameWidth: 426, frameHeight: 216});
         //WinScene
         this.load.audio('win', ['assets/music/Win_Theme.mp3']);
+        //DemoWinScene
+        this.load.image('Pascal', 'assets/images/Pascal.png')
         
         // eventos de carga que nos interesan
         this.load.on('progress', function (value) {
