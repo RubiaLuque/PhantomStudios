@@ -78,6 +78,9 @@ export default class LoadScene extends Phaser.Scene {
         //DemoWinScene
         this.load.image('Pascal', 'assets/images/Pascal.png')
         
+        //GameOverScene
+        this.load.audio('game_over_theme', ['assets/music/Game_Over_theme.mp3']);
+        
         // eventos de carga que nos interesan
         this.load.on('progress', function (value) {
             console.log("progressEvent", value);

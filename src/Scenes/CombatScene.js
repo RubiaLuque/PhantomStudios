@@ -206,9 +206,6 @@ export default class CombatScene extends Phaser.Scene {
                                     entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
                                 });   
                             }
-                            else {
-                                //TODO pantalla de muerte
-                            }
                         }
                     }
                 });
@@ -234,7 +231,10 @@ export default class CombatScene extends Phaser.Scene {
             phase.emit('next')
         });
 
-        team1.onTeam.on('death', ()=>{self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});});
+        team1.onTeam.on('death', () => {
+            analyser.Stop();
+            this.scene.start('game_over');
+        });
         team2.onTeam.on('death', ()=>
         {
             self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});

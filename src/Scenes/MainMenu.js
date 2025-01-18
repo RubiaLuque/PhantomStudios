@@ -6,7 +6,6 @@ let banner;
 export default class MainMenu extends Phaser.Scene {
     constructor(){
         super({key: 'main_menu'});
-        //this.analyser = new MusicAnalyser(['CityRuins_MainMenu']);
     }
 
     init(){
