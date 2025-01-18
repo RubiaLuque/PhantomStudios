@@ -58,7 +58,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(){
-        if(this.body.velocity.y > 10) this.setVelocity(this.body.velocity.x, 10);
+        if(this.body.velocity.y > 5) this.setVelocity(this.body.velocity.x, 5);
     }
 
     Roll()
