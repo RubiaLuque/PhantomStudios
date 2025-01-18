@@ -3,7 +3,7 @@ export default class Cafeteria extends Phaser.Physics.Arcade.Sprite{
         console.log("C")
         super(scene, x, y, texture)
 
-        this.scale = 0.35;
+        this.scale = 0.7;
 
         scene.add.existing(this);
     }
