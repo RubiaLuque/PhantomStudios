@@ -132,6 +132,8 @@ export default class World1 extends Phaser.Scene
         
         update()
         {
+            if(this.player.body.velocity.y > 500) this.player.setVelocityY(500);
+
             this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {

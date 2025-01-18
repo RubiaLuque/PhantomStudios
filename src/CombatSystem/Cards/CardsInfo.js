@@ -1,16 +1,16 @@
 export const cardsInfo = {
     FoolInfo: 'Cualquier equipo:\nturno extra.',
-    MagicianInfo: 'Jugadores:\nbonus de curación\na todo el \nequipo.\nEnemigos:\ndeshabilita la\ncuración de\ntodo tu equipo.',
+    MagicianInfo: 'Jugadores:\nbonus de curación\na todo el \nequipo.\n\nEnemigos:\ndeshabilita la\ncuración de\ntodo tu equipo.',
     HighPriestessInfo: 'Cualquier equipo:\nbonus de suerte\na todo el equipo.',
     EmpressInfo: 'Cualquier equipo:\nun miembro del\nequipo tiene miedo.',
     EmperorInfo: 'Cualquier equipo:\nun miembro del\nequipo está papeado.',
     HierophantInfo: 'Cualquier equipo:\nun miembro del\nequipo es inmune\na ataques mágicos.',
-    LoversInfo:'Jugadores:\nun miembro del\nequipo aumenta\ntodos sus stats\ntanto cómo la\nmitad de los\nstats de otro\nmiembro del equipo\nEnemigos:\ndeshabilita la\naccion de un\nmiembro de tu\nequipo.',
+    LoversInfo:'Jugadores:\nun miembro del\nequipo aumenta\ntodos sus stats\ntanto cómo la\nmitad de los\nstats de otro\nmiembro del equipo\n\nEnemigos:\ndeshabilita la\naccion de un\nmiembro de tu\nequipo.',
     ChariotInfo: 'Cualquier equipo:\nun miembro del\nequipo es inmune\na ataques físicos.',
     StrengthInfo: 'Cualquier equipo:\nbonus de ataque\na todo el\nequipo.',
-    HermitInfo: 'Jugadores:\n+1 curación a\nun miembro de tu\nequipo\nEnemigos:\n-1 curación a\nun miembro de tu\nequipo.',
+    HermitInfo: 'Jugadores:\n+1 curación a\nun miembro de tu\nequipo\n\nEnemigos:\n-1 curación a\nun miembro de tu\nequipo.',
     WheelOfFortuneInfo: 'Cualquier equipo:\nbonus o debuff\n(sorpresa) de\ntodos los stats\nde todos los\nmiembros del equipo.',
-    JusticeInfo: 'Jugadores:\nbonus de todos\nlos stats a\ntodos los miembros\ndel equipo\nEnemigos:\nun miembro del\nequipo enemigo\nconsigue las stats\nde un miembro\nde tu equipo.',
+    JusticeInfo: 'Jugadores:\nbonus de todos\nlos stats a\ntodos los miembros\ndel equipo\n\nEnemigos:\nun miembro del\nequipo enemigo\nconsigue las stats\nde un miembro\nde tu equipo.',
     HangedManInfo: 'Cualquier equipo:\nun miembro del\nequipo se queda\na 1 punto\nde vida.',
     DeathInfo: 'Cualquier equipo:\nun miembro del\nequipo muere.',
     TemperanceInfo: 'Cualquier equipo:\nbonus de vida\na todo el\nequipo.',
@@ -19,6 +19,6 @@ export const cardsInfo = {
     StarInfo: 'Cualquier equipo:\nbonus de todos\nlos stats a\nun miembro del\nequipo.',
     MoonInfo: 'Cualquier equipo:\nun miembro del\nequipo se duerme',
     SunInfo: 'Cualquier equipo:\ndebuff de curación\na todo el\nequipo',
-    JudgementInfo: 'Jugadores:\nnada\nEnemigos:\ndeshabilita la\nacción de miembros\nde tu equipo\nhasta que haya\ntantos miembros de\ntu equipo que\npueden tomar una\nacción como\nmiembros del equipo\nenemigo.',
+    JudgementInfo: 'Jugadores:\nnada\n\nEnemigos:\ndeshabilita la\nacción de miembros\nde tu equipo\nhasta que haya\ntantos miembros de\ntu equipo que\npueden tomar una\nacción como\nmiembros del equipo\nenemigo.',
     WorldInfo: 'Cualquier equipo:\nun miembro del\nequipo se ensordece.'
 }
