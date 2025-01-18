@@ -64,7 +64,7 @@ export default class World1 extends Phaser.Scene
                 if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.Toni.getBounds()))
                     {
                         NPCFound.push(this.Toni.name)
-                        this.interpreter.SetDialogue(data['Toni-1'])
+                        this.interpreter.SetDialogue(this.data['Toni-1'])
                         this.Toni.destroy()
                     }
                 })
