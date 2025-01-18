@@ -68,6 +68,7 @@ export default class CombatScene extends Phaser.Scene {
         });
 
         this.kKey = this.input.keyboard.addKey('K'); //DEBUG: tecla k mata a todo el grupo de personajes, se pierde
+        this.lKey = this.input.keyboard.addKey('L'); //DEBUG: tecla l mata a todo el grupo de enemigos, se gana
         
         this.anims.create({
             key: 'speedFX',
@@ -270,6 +271,12 @@ export default class CombatScene extends Phaser.Scene {
         //DEBUG para matar a todos los personajes
         if (this.kKey.isDown) {
             team1.entities.forEach(e => {
+                e.Die();
+            })    
+        }
+
+        if (this.lKey.isDown) {
+            team2.entities.forEach(e => {
                 e.Die();
             })    
         }
