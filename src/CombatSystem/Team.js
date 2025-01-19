@@ -102,9 +102,11 @@ export default class Team
         //false: el equipo no esta muerto entero
         //true: todo el equipo ha muerto
         this.entities.forEach( e => {
+            console.log(e.alive)
             if (e.alive) return false;
+            else return true;
         })
 
-        return true;
+        
     }
 }

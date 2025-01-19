@@ -1,6 +1,6 @@
 import FloatingText from "../CombatSystem/FloatingText.js";
 import CustomButton from "../UI/CustomButton.js";
-const characters = ['Javi', 'Mika', 'Fueyo', 'Muxu'];
+const characters = ['Javi', 'Fueyo', 'Mika', 'Muxu'];
 let expText;
 let pos, enemyId;
 let NPCFound, NPCTalked;
@@ -50,7 +50,8 @@ export default class WinScene extends Phaser.Scene
             callback: function()
             {
                 let element = characterImages[j];
-                expText.setText('Exp: +' + Math.floor(Math.random() * 100));
+                expText.setText('Exp: +' + team.entities[j].xpThisTurn);
+                team.entities[j].xpThisTurn = 0;
                 let bounds = element.getBounds();
                 expText.setPosition(bounds.centerX, bounds.centerY);
                 j++;

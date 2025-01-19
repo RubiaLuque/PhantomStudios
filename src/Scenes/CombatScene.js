@@ -197,10 +197,14 @@ export default class CombatScene extends Phaser.Scene {
                     
                     if(entity.CheckAlteredState({scene: this, team: team, phase: phase, user: entity}))
                     {
+                        console.log("if1")
                         if(team == team2)
                         {
+                            console.log("if2")
                             if (!team1.isTeamDead()) {
+                                console.log("if3")
                                 let target = team1.GetRandomCharacter();
+                                console.log(target)
                                 this.time.delayedCall(1000, ()=>{
                                     target.event.emit('target');
                                     entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
@@ -340,7 +344,7 @@ export default class CombatScene extends Phaser.Scene {
             e.healing.bonus = 0
             e.healing.able = true
         })
-
+        console.log(team1);
         self.scene.start('WinScene', {pos: lastPlayerPosition, id: currentEnemyId, team: team1, NPCFound: NPCFound, NPCTalked: NPCTalked, cafeteriaEnter: this.cafeteriaEnter});
         analyser.Stop();
     }

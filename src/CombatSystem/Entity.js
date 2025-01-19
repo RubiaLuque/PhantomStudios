@@ -27,6 +27,7 @@ export default class Entity
         this.sound = analyser;
         this.damageSound = container.damageSound
         this.xp = container.xp
+        this.xpThisTurn = 0;
         this.level = container.level
         this.maxLevel = container.maxLevel;
         this.alteredState = AlteredState.none;
@@ -83,6 +84,7 @@ export default class Entity
         if(this.health.quantity <= 0)
         {
             attacker.xp += this.xp;
+            attacker.xpThisTurn += this.xp;
             this.Die()
         }
         let self = this
