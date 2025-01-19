@@ -44,8 +44,8 @@ export default class Entity
 
     Setup()
     {
-        this.health.quantity += this.health.bonus
-        this.maxHealth += this.health.bonus
+        this.health.quantity = this.health.quantity + this.health.bonus
+        this.maxHealth = this.maxHealth + this.health.bonus
 
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
 

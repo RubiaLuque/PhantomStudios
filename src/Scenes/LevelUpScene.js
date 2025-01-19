@@ -1,5 +1,6 @@
 import CustomButton from "../UI/CustomButton.js";
 
+let levelText, upgradeText;
 let team;
 let pos;
 let id;
@@ -51,10 +52,13 @@ export default class LevelUpScene extends Phaser.Scene
                 
                 team.entities[i].xp -= (team.entities[i].level * 10)
                 team.entities[i].level++
+                levelText = this.add.text(0, 0,     "¡Has subido al nivel "+team.entities[i].level+"!", { fontSize: '50px', fill: '#ffffff' });
+                upgradeText = this.add.text(0, 400, "Selecciona una\nestadística\nque mejorar", { fontSize: '40px', fill: '#ffffff' });
+
                 LifeButton = new CustomButton(this, 600, 100, "Button", "Vida", 
                     function(){
-                        team.entities[i].maxHealth += 10;
-                        team.entities[i].health += 10;
+                        team.entities[i].maxHealth = team.entities[i].maxHealth + 10;
+                        team.entities[i].health.quantity = team.entities[i].health.quantity + 10;
                         console.log(team.entities[i])
                         AttackButton.destroy()
                         DefenseButton.destroy()
@@ -64,7 +68,7 @@ export default class LevelUpScene extends Phaser.Scene
                 );
                 AttackButton = new CustomButton(this, 600, 300, "Button", "Ataque", 
                     function(){
-                        team.entities[i].damage += 5;
+                        team.entities[i].damage.quantity = team.entities[i].damage.quantity + 5;
                         console.log(team.entities[i])
                         LifeButton.destroy()
                         DefenseButton.destroy()
@@ -74,7 +78,7 @@ export default class LevelUpScene extends Phaser.Scene
                 );
                 DefenseButton = new CustomButton(this, 600, 500, "Button", "Defensa", 
                     function(){
-                        team.entities[i].defense += 5;
+                        team.entities[i].defense.quantity = team.entities[i].defense.quantity + 5;
                         console.log(team.entities[i])
                         LifeButton.destroy()
                         AttackButton.destroy()

@@ -55,7 +55,7 @@ export default class World1 extends Phaser.Scene
         
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'JaviN'})[0] //key sirve para indicar que image carga
         if (team != undefined){
-            this.player.team = team;
+            this.player.teamClass.entities = team.entities;
         }
         this.player.eKey.on("down", ()=>{
             if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.cafeteria.getBounds()))
@@ -137,6 +137,7 @@ export default class World1 extends Phaser.Scene
             this.enemies.forEach(enemy => {
             if(!defeatedEnemiesIds.includes(enemy.id) && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), enemy.getBounds()))
             {
+                console.log(this.player)
                 let ambush = this.player.y < enemy.y;
                 analyser.Stop();
                 this.scene.start('cards', {team1: this.player.teamClass, team2: enemy.teamClass, 
