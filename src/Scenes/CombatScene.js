@@ -71,26 +71,9 @@ export default class CombatScene extends Phaser.Scene {
     }
 
     create(){
-        this.anims.create({
-            key: 'bckg',
-            frames: this.anims.generateFrameNumbers('background', {start: 0, end: 47}),
-            yoyo: true,
-            frameRate: 10,
-            repeat: -1
-        });
+        this.CreateAnimations();
 
-        this.anims.create({
-            key: 'speedFX',
-            frames: this.anims.generateFrameNumbers('speedFX', {start: 0, end: 24}),
-            yoyo: true,
-            frameRate: 24,
-            repeat: -1
-        });
-
-        this.background = this.add.sprite(0, 0, 'background');
-        this.background.play('bckg');
-        this.background.setOrigin(0, 0);
-        this.background.setScale(3.2, 3.2);
+        this.CreateBackground();
 
         self = this;
 
@@ -100,126 +83,28 @@ export default class CombatScene extends Phaser.Scene {
         cardTeam.DoAction(team1, team2);
         cardEnemies.DoAction(team2, team1);
 
-        buttons = [];
-
         phase = new Phaser.Events.EventEmitter();
-        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack", 
-        ()=>{
-            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
-            team2.entities.forEach(entity => {entity.sprite.setInteractive()})
-        }));
-        buttons[0].setButtonScale(0.5, 0.25);
 
-        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
-        ()=>{
-            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
-            team2.entities.forEach(element => {element.sprite.setInteractive()})
-        }));
-        buttons[1].setButtonScale(0.5, 0.25);
+        this.CreateButtons();
 
-        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
-        ()=>{
-            if(team1.CurrentCharacter().healing.able){
-            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
-            team1.entities.forEach(element => {element.sprite.setInteractive()})
-            }
-        }));
-        buttons[2].setButtonScale(0.5, 0.25);
+        this.initializeArrow();
 
-        arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
-        arrow.setOrigin(0.5, 1);
-        arrow.setRotation(-1.5708);
+        this.initializeTeams();
 
-        let teams = [team1, team2];
-        teams.forEach(team => {
-            team.entities.forEach(entity => {
-                entity.event.on('GetDamage', (damage)=>{self.onDamage(entity.sprite, damage);});
+        this.initializeTurnPhases();
 
-                let bounds = entity.sprite.getBounds();
-                new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity).UpdateBar()
-
-                entity.sprite.on('pointerover', ()=>{
-                    entity.event.emit('target');
-                });
-
-                entity.sprite.on('pointerdown', ()=>{
-                    entity.sprite.emit('pointerout');
-                    entity.sprite.emit('pointerup');
-
-                    buttons.forEach(button => {button.setActive(false)});
-
-                    team2.entities.forEach(element => {
-                        element.sprite.disableInteractive()
-                    });
-
-                    let character = team1.CurrentCharacter();
-
-                    let attackAction = ()=>{character.selectedAttack(entity, ()=>{
-                        buttons.forEach(button => {button.setActive(true)});
-                        phase.emit('next');
-                    }, character);}
-
-                    if(character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type))
-                    {
-                        character.doneCritic = false;
-                        this.OutAttack(character, attackAction);
-                    }
-                    else
-                    {
-                        attackAction();
-                    }
-                });
-
-                entity.event.on('takeTurn', ()=>{
-                    entity.event.emit('target');
-                    
-                    if(entity.CheckAlteredState({scene: this, team: team, phase: phase, user: entity}))
-                    {
-                        if(team == team2)
-                        {
-                            let target = team1.GetRandomCharacter();
-                            this.time.delayedCall(1000, ()=>{
-                                target.event.emit('target');
-                                entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
-                            });
-                        }
-                    }
-                });
-
-                entity.event.on('target', ()=>{
-                    arrow.x = bounds.x;
-                    arrow.y = entity.sprite.y;
-                });
-            });
-        });
-
-        phase.on('next', ()=>{
-            let output = currentTeam.GetNextCharacter();
-            console.log(output)
-            if(output.isValid) output.entity.event.emit('takeTurn');
-            else phase.emit('endTurn');
-        });
-
-        phase.on('endTurn', ()=>{
-            currentTeam = currentTeam == team1 ? team2 : team1;
-            buttons.forEach(button => {button.setActive(currentTeam == team1)});
-            phase.emit('next')
-        });
-
-        team1.onTeam.on('death', ()=>
-        {
-            self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF'});
-            self.time.addEvent({ delay : 1000, callback: ()=>{self.Lose()} });
-        });
-        team2.onTeam.on('death', ()=>
-        {
-            self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
-            self.time.addEvent({ delay : 1000, callback: ()=>{self.win()} });
-        });
+        this.setupTeamDeathEvents();
 
         this.add.existing(arrow);
         arrow.setScale(0.2, 0.2)
 
+        this.initializeVisualEffects();
+
+        analyser.SetRandomSong(songs);
+        analyser.Restart();
+    }
+
+    initializeVisualEffects() {
         this.FXbackground = this.add.rectangle(0, 0, 800, 600, 0x000000);
         this.FXbackground.setOrigin(0, 0);
         this.FXbackground.alpha = 0.5;
@@ -234,12 +119,157 @@ export default class CombatScene extends Phaser.Scene {
         outImage.setScale(0.45, 0.45);
         outImage.setOrigin(0.5, 1);
 
-        damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
+        damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00' });
         currentTeam = this.ambush ? team1 : team2;
-        phase.emit('next')
+        phase.emit('next');
+    }
 
-        analyser.SetRandomSong(songs);
-        analyser.Restart();
+    initializeTurnPhases() {
+        phase.on('next', () => {
+            let output = currentTeam.GetNextCharacter();
+            console.log(output);
+            if (output.isValid) output.entity.event.emit('takeTurn');
+            else phase.emit('endTurn');
+        });
+
+        phase.on('endTurn', () => {
+            currentTeam = currentTeam == team1 ? team2 : team1;
+            buttons.forEach(button => { button.setActive(currentTeam == team1); });
+            phase.emit('next');
+        });
+    }
+
+    setupTeamDeathEvents() {
+        team1.onTeam.on('death', () => {
+            self.add.text(400, 300, 'You lose', { fontSize: '64px', fill: '#FFF' });
+            self.time.addEvent({ delay: 1000, callback: () => { self.Lose(); } });
+        });
+        team2.onTeam.on('death', () => {
+            self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF' });
+            self.time.addEvent({ delay: 1000, callback: () => { self.win(); } });
+        });
+    }
+
+    initializeTeams() {
+        let teams = [team1, team2];
+        teams.forEach(team => {
+            team.entities.forEach(entity => {
+                entity.event.on('GetDamage', (damage) => { self.onDamage(entity.sprite, damage); });
+
+                let bounds = entity.sprite.getBounds();
+                new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity).UpdateBar();
+
+                entity.sprite.on('pointerover', () => {
+                    entity.event.emit('target');
+                });
+
+                entity.sprite.on('pointerdown', () => {
+                    entity.sprite.emit('pointerout');
+                    entity.sprite.emit('pointerup');
+
+                    buttons.forEach(button => { button.setActive(false); });
+
+                    team2.entities.forEach(element => {
+                        element.sprite.disableInteractive();
+                    });
+
+                    let character = team1.CurrentCharacter();
+
+                    let attackAction = () => {
+                        character.selectedAttack(entity, () => {
+                            buttons.forEach(button => { button.setActive(true); });
+                            phase.emit('next');
+                        }, character);
+                    };
+
+                    if (character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type)) {
+                        character.doneCritic = false;
+                        this.OutAttack(character, attackAction);
+                    }
+
+                    else {
+                        attackAction();
+                    }
+                });
+
+                entity.event.on('takeTurn', () => {
+                    entity.event.emit('target');
+
+                    if (entity.CheckAlteredState({ scene: this, team: team, phase: phase, user: entity })) {
+                        if (team == team2) {
+                            let target = team1.GetRandomCharacter();
+                            this.time.delayedCall(1000, () => {
+                                target.event.emit('target');
+                                entity.MagicAttack(target, () => { phase.emit('next'); }, entity);
+                            });
+                        }
+                    }
+                });
+
+                entity.event.on('target', () => {
+                    arrow.x = bounds.x;
+                    arrow.y = entity.sprite.y;
+                });
+            });
+        });
+    }
+
+    initializeArrow() {
+        arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
+        arrow.setOrigin(0.5, 1);
+        arrow.setRotation(-1.5708);
+    }
+
+    CreateButtons() {
+        buttons = [];
+
+        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack",
+            () => {
+                team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
+                team2.entities.forEach(entity => { entity.sprite.setInteractive(); });
+            }));
+        buttons[0].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
+            () => {
+                team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
+                team2.entities.forEach(element => { element.sprite.setInteractive(); });
+            }));
+        buttons[1].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
+            () => {
+                if (team1.CurrentCharacter().healing.able) {
+                    team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
+                    team1.entities.forEach(element => { element.sprite.setInteractive(); });
+                }
+            }));
+        buttons[2].setButtonScale(0.5, 0.25);
+    }
+
+    CreateBackground() {
+        this.background = this.add.sprite(0, 0, 'background');
+        this.background.play('bckg');
+        this.background.setOrigin(0, 0);
+        this.background.setScale(3.2, 3.2);
+    }
+
+    CreateAnimations() {
+        this.anims.create({
+            key: 'bckg',
+            frames: this.anims.generateFrameNumbers('background', { start: 0, end: 47 }),
+            yoyo: true,
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'speedFX',
+            frames: this.anims.generateFrameNumbers('speedFX', { start: 0, end: 24 }),
+            yoyo: true,
+            frameRate: 24,
+            repeat: -1
+        });
     }
 
     update()
