@@ -49,16 +49,16 @@ export default class Entity
 
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
 
-        this.sprite.on('pointerover', function(){
+        this.sprite.on('pointerover', ()=>{
             this.setScale(originalScale.x * 1.1, originalScale.y * 1.1);
         });
-        this.sprite.on('pointerdown', function(){
+        this.sprite.on('pointerdown', ()=>{
             this.tint = 0xcccccc;
         });
-        this.sprite.on('pointerup', function(){
+        this.sprite.on('pointerup', ()=>{
             this.tint = 0xffffff;
         });
-        this.sprite.on('pointerout', function(){
+        this.sprite.on('pointerout', ()=>{
             this.setScale(originalScale.x, originalScale.y);
         });
     }
