@@ -29,10 +29,10 @@ export default class LoadScene extends Phaser.Scene {
         this.load.spritesheet('Jaime', "assets/images/Jaime.png", {frameWidth: 1000, frameHeight: 1053})
         this.load.image("Cafeteria", "assets/images/Cafeteria.png");
         this.load.image("NPC", "assets/images/NPC.png");
-        this.load.image("Fork", "assets/images/Fork.png");
-        this.load.image("Demon", "assets/images/Demon.png");
-        this.load.image("Uroboros", "assets/images/Uroboros.png");
-        this.load.image("Skibidi", "assets/images/Skibidi.png");
+        this.load.image("Corchea", "assets/images/corchea.png");
+        this.load.image("Corcheas", "assets/images/corcheas.png");
+        this.load.image("Semicorchea", "assets/images/dobleCorchea.png");
+        this.load.image("Redonda", "assets/images/redonda.png");
         this.load.image('TestTileset', 'assets/images/SpritesPrueba.png');
         this.load.image("Tiles", "assets/tilemaps/inca_back.png")
         this.load.tilemapTiledJSON("World1", "assets/tilemaps/mundo1.json")

@@ -2,11 +2,11 @@ export const EnemyPresets =
 {
     presets:
     [
-        ["Uroboros", "Demon"],
-        ["Fork", "Fork", "Skibidi"],
-        ["Skibidi", "Skibidi"],
-        ["Skibidi", "Demon"],
-        ["Fork", "Fork", "Fork", "Fork"]
+        ["Corchea", "Corcheas"],
+        ["Semicorchea", "Semicorchea", "Redonda"],
+        ["Redonda", "Redonda"],
+        ["Redonda", "Corcheas"],
+        ["Semicorchea", "Semicorchea", "Semicorchea", "Semicorchea"]
     ],
     bosses:[
         'Jaime'

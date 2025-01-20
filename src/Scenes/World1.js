@@ -77,7 +77,7 @@ export default class World1 extends Phaser.Scene
 
                 this.physics.add.collider(this.player, this.collidables)
                 
-                this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', classType: Enemy, key: 'Fork'}); //Buscar forma de que este sprite sea aleatorio en cada miembro
+                this.enemies = this.tileMap.createFromObjects("entidades", {name: 'Enemy', classType: Enemy, key: 'Semicorchea'}); //Buscar forma de que este sprite sea aleatorio en cada miembro
                 console.log(this.enemies)
                 let enemyIndex = 0;
                 this.enemies.forEach(enemy =>{

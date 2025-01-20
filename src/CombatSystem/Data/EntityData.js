@@ -62,47 +62,47 @@ export const EntityData =
 
     enemies:
     {
-        Uroboros: {
-            name: "Uroboros",
+        Corchea: {
+            name: "Corchea",
             damage: 30,
             health: 70,
             type: Type.horny,
             luck: 0.5,
             xp: 15,
-            image: "Uroboros",
+            image: "Corchea",
             damageSound: "oioioi",
         },
 
-        Demon: {
-            name: "Demon",
+        Corcheas: {
+            name: "Corcheas",
             damage: 20,
             health: 90,
             type: Type.wrath,
             luck: 0.5,
             xp: 15,
-            image: "Demon",
+            image: "Corcheas",
             damageSound: "oioioi",
         },
 
-        Skibidi: {
-            name: "Skibidi",
+        Semicorchea: {
+            name: "Semicorchea",
             damage: 10,
             health: 50,
             type: Type.depression,
             luck: 0.5,
             xp: 10,
-            image: "Skibidi",
+            image: "Semicorchea",
             damageSound: "oioioi",
         },
 
-        Fork: {
-            name: "Fork",
+        Redonda: {
+            name: "Redonda",
             damage: 5,
             health: 30,
             type: Type.anxiety,
             luck: 0.5,
             xp: 5,
-            image: "Fork",
+            image: "Redonda",
             damageSound: "oioioi",
         },
         Jaime:{
