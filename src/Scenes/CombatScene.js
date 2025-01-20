@@ -59,38 +59,11 @@ export default class CombatScene extends Phaser.Scene {
     }
     
     create(){
-        this.anims.create({
-            key: 'bckg',
-            frames: this.anims.generateFrameNumbers('background', {start: 0, end: 47}),
-            yoyo: true,
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.kKey = this.input.keyboard.addKey('K'); //DEBUG: tecla k mata a todo el grupo de personajes, se pierde
-        this.lKey = this.input.keyboard.addKey('L'); //DEBUG: tecla l mata a todo el grupo de enemigos, se gana
-        
-        this.anims.create({
-            key: 'speedFX',
-            frames: this.anims.generateFrameNumbers('speedFX', {start: 0, end: 24}),
-            yoyo: true,
-            frameRate: 24,
-            repeat: -1
-        });
-
-        this.background = this.add.sprite(0, 0, 'background');
-        this.background.play('bckg');
-        this.background.setOrigin(0, 0);
-        this.background.setScale(3.2, 3.2);
+        this.CreateAnimationsAndBackground();
 
         self = this;
 
-        team1.Create(this, this.ambush);
-        team2.Create(this, !this.ambush);
-        
-        console.log(team1, team2)
-        cardTeam.DoAction(team1, team2);
-        cardEnemies.DoAction(team2, team1);
+        this.SetupTeamAndCards();
 
         this.selectedButton = new Phaser.GameObjects.Rectangle(this, 0, 0, 180, 50, 0xffffff);
         this.selectedButton.visible = false
@@ -99,155 +72,115 @@ export default class CombatScene extends Phaser.Scene {
         this.buttonText = this.add.text(180, 0, "Selecciona una opción", { fontSize: '30px', color: '#fff'});
         if(!this.ambush) this.buttonText.visible = false
 
-        buttons = [];
+        this.SetupButtons();
 
-        phase = new Phaser.Events.EventEmitter();
-        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack", 
-        ()=>{
-            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
-            team1.entities.forEach(element=> {element.sprite.disableInteractive()})
-            team2.entities.forEach(entity => {entity.sprite.setInteractive()})
-            this.selectedButton.visible = true
-            this.selectedButton.setPosition(400, 450);
-            this.buttonText.text = "Elige un enemigo al que\n          atacar"
-        }));
-        buttons[0].setButtonScale(0.5, 0.25);
+        this.initializeArrow();
 
-        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
-        ()=>{
-            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
-            team1.entities.forEach(element=> {element.sprite.disableInteractive()})
-            team2.entities.forEach(element => {element.sprite.setInteractive()})
-            this.selectedButton.visible = true;
-            this.selectedButton.setPosition(400, 500);
-            this.buttonText.text = "Elige un enemigo al que\nhacerle daño de " + team1.CurrentCharacter().type.name
-        }));
-        buttons[1].setButtonScale(0.5, 0.25);
+        this.configureCombatEntities();
 
-        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
-        ()=>{
-            if(team1.CurrentCharacter().healing.able){
-            team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
-            team2.entities.forEach(element=> {element.sprite.disableInteractive()})
-            team1.entities.forEach(element => {element.sprite.setInteractive()})
-            this.selectedButton.visible = true
-            this.selectedButton.setPosition(400, 550);
-            this.buttonText.text = "Elige un aliado al que\n     curar"
-            }
-            else{
-                this.buttonText.text = "A " + team1.CurrentCharacter().image + " no le quedan\n          curaciones"
-                this.selectedButton.visible = false;
-            }
-        }));
-        buttons[2].setButtonScale(0.5, 0.25);
+        this.initializeTeamDeathEvents();
 
+        this.add.existing(arrow);
+        arrow.setScale(0.2, 0.2)
+
+        this.SetupEffects();
+
+        analyser.SetRandomSong(songs);
+        analyser.Restart();
+    }
+
+    initializeTeamDeathEvents() {
+        team1.onTeam.on('death', () => {
+            analyser.Stop();
+            this.scene.start('game_over');
+        });
+        team2.onTeam.on('death', () => {
+            self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF' });
+            self.time.addEvent({ delay: 1000, callback: () => { self.win(); } });
+        });
+    }
+
+    initializeArrow() {
         arrow = new Phaser.GameObjects.Sprite(this, 0, 0, 'Arrow');
         arrow.setOrigin(0.5, 1);
         arrow.setRotation(-1.5708);
+    }
 
+    configureCombatEntities() {
         let teams = [team1, team2];
         teams.forEach(team => {
             team.entities.forEach(entity => {
-                entity.event.on('GetDamage', (damage)=>{self.onDamage(entity.sprite, damage);});
+                let eventData = {
+                    onGetDamage: (damage) => { self.onDamage(entity.sprite, damage); },
+                    onPointerOver: () => { entity.event.emit('target'); },
+                    onTarget: () => { 
+                        arrow.x = bounds.x;
+                        arrow.y = entity.sprite.y; 
+                    },
+                    onPointerDown: () => {
+                        entity.sprite.emit('pointerout');
+                        entity.sprite.emit('pointerup');
 
+                        buttons.forEach(button => { button.setActive(false); });
+                        this.buttonText.visible = false;
+                        this.selectedButton.visible = false;
+
+                        team2.entities.forEach(element => {
+                            element.sprite.disableInteractive();
+                        });
+                        team1.entities.forEach(element => {
+                            element.sprite.disableInteractive();
+                        });
+
+                        let character = team1.CurrentCharacter();
+
+                        let attackAction = () => {
+                            character.selectedAttack(entity, () => {
+                                buttons.forEach(button => { button.setActive(true); });
+                                this.buttonText.visible = true;
+                                this.buttonText.text = "Selecciona una opción";
+                                this.nextAction();
+                            }, character);
+                        };
+
+                        if (character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type)) {
+                            character.doneCritic = false;
+                            this.OutAttack(character, attackAction);
+                        }
+                        else { attackAction(); }
+                    },
+                    onTakeTurn: () => {
+                        entity.event.emit('target');
+                        if (entity.CheckAlteredState({ scene: this, team: team, user: entity })) {
+                            console.log("if1");
+                            if (team == team2) {
+                                console.log("if2");
+                                if (!team1.isTeamDead()) {
+                                    console.log("if3");
+                                    let target = team1.GetRandomCharacter();
+                                    console.log(target);
+                                    this.time.delayedCall(1000, () => {
+                                        target.event.emit('target');
+                                        entity.MagicAttack(target, () => { this.nextAction(); }, entity);
+                                    });
+                                }
+                            }
+                        }
+                    },
+                };
+                entity.SetupEvents(eventData);
                 let bounds = entity.sprite.getBounds();
                 new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity);
 
-                entity.sprite.on('pointerover', ()=>{
-                    entity.event.emit('target');
-                });
-
-                entity.sprite.on('pointerdown', ()=>{
-                    entity.sprite.emit('pointerout');
-                    entity.sprite.emit('pointerup');
-
-                    buttons.forEach(button => {button.setActive(false)});
-                    this.buttonText.visible = false;
-                    this.selectedButton.visible = false;
-
-                    team2.entities.forEach(element => {
-                        element.sprite.disableInteractive()
-                    });
-                    team1.entities.forEach(element => {
-                        element.sprite.disableInteractive()
-                    });
-
-                    let character = team1.CurrentCharacter();
-
-                    let attackAction = ()=>{character.selectedAttack(entity, ()=>{
-                        buttons.forEach(button => {button.setActive(true)});
-                        this.buttonText.visible = true;
-                        this.buttonText.text = "Selecciona una opción"
-                        phase.emit('next');
-                    }, character);}
-
-                    if(character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type))
-                    {
-                        character.doneCritic = false;
-                        this.OutAttack(character, attackAction);
-                    }
-                    else
-                    {
-                        attackAction();
-                    }
-                });
-
-                entity.event.on('takeTurn', ()=>{
-                    entity.event.emit('target');
-                    
-                    if(entity.CheckAlteredState({scene: this, team: team, phase: phase, user: entity}))
-                    {
-                        console.log("if1")
-                        if(team == team2)
-                        {
-                            console.log("if2")
-                            if (!team1.isTeamDead()) {
-                                console.log("if3")
-                                let target = team1.GetRandomCharacter();
-                                console.log(target)
-                                this.time.delayedCall(1000, ()=>{
-                                    target.event.emit('target');
-                                    entity.MagicAttack(target, ()=>{phase.emit('next')}, entity)
-                                });   
-                            }
-                        }
-                    }
-                });
-
-                entity.event.on('target', ()=>{
+                entity.event.on('target', () => {
                     arrow.x = bounds.x;
                     arrow.y = entity.sprite.y;
                 });
             });
         });
+    }
 
-        phase.on('next', ()=>{
-            let output = currentTeam.GetNextCharacter();
-            if(output.isValid) output.entity.event.emit('takeTurn');
-            else phase.emit('endTurn');
-        });
-
-        phase.on('endTurn', ()=>{
-            currentTeam = currentTeam == team1 ? team2 : team1;
-            buttons.forEach(button => {button.setActive(currentTeam == team1)});
-            this.buttonText.text = "Selecciona una opción"
-            this.buttonText.visible = (currentTeam == team1);
-            phase.emit('next')
-        });
-
-        team1.onTeam.on('death', () => {
-            analyser.Stop();
-            this.scene.start('game_over');
-        });
-        team2.onTeam.on('death', ()=>
-        {
-            self.add.text(400, 300, 'You win', { fontSize: '64px', fill: '#FFF'});
-            self.time.addEvent({ delay : 1000, callback: ()=>{self.win()} });
-        });
-
-        this.add.existing(arrow);
-        arrow.setScale(0.2, 0.2)
-
+    SetupEffects() {
         this.FXbackground = this.add.rectangle(0, 0, 800, 600, 0x000000);
         this.FXbackground.setOrigin(0, 0);
         this.FXbackground.alpha = 0.5;
@@ -262,12 +195,101 @@ export default class CombatScene extends Phaser.Scene {
         outImage.setScale(0.45, 0.45);
         outImage.setOrigin(0.5, 1);
 
-        damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00'});
+        damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00' });
         currentTeam = this.ambush ? team1 : team2;
-        phase.emit('next')
+        this.nextAction();
+    }
 
-        analyser.SetRandomSong(songs);
-        analyser.Restart();
+    SetupButtons() {
+        buttons = [];
+
+        buttons.push(new CustomButton(this, 400, 450, "Button", "Attack",
+            () => {
+                team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().Attack;
+                team1.entities.forEach(element => { element.sprite.disableInteractive(); });
+                team2.entities.forEach(entity => { entity.sprite.setInteractive(); });
+                this.selectedButton.visible = true;
+                this.selectedButton.setPosition(400, 450);
+                this.buttonText.text = "Elige un enemigo al que\n          atacar";
+            }));
+        buttons[0].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 500, "Button", "Magic",
+            () => {
+                team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().MagicAttack;
+                team1.entities.forEach(element => { element.sprite.disableInteractive(); });
+                team2.entities.forEach(element => { element.sprite.setInteractive(); });
+                this.selectedButton.visible = true;
+                this.selectedButton.setPosition(400, 500);
+                this.buttonText.text = "Elige un enemigo al que\nhacerle daño de " + team1.CurrentCharacter().type.name;
+            }));
+        buttons[1].setButtonScale(0.5, 0.25);
+
+        buttons.push(new CustomButton(this, 400, 550, "Button", "Heal",
+            () => {
+                if (team1.CurrentCharacter().healing.able) {
+                    team1.CurrentCharacter().selectedAttack = team1.CurrentCharacter().HealAttack;
+                    team2.entities.forEach(element => { element.sprite.disableInteractive(); });
+                    team1.entities.forEach(element => { element.sprite.setInteractive(); });
+                    this.selectedButton.visible = true;
+                    this.selectedButton.setPosition(400, 550);
+                    this.buttonText.text = "Elige un aliado al que\n     curar";
+                }
+                else {
+                    this.buttonText.text = "A " + team1.CurrentCharacter().image + " no le quedan\n          curaciones";
+                    this.selectedButton.visible = false;
+                }
+            }));
+        buttons[2].setButtonScale(0.5, 0.25);
+    }
+
+    SetupTeamAndCards() {
+        team1.Create(this, this.ambush);
+        team2.Create(this, !this.ambush);
+
+        console.log(team1, team2);
+        cardTeam.DoAction(team1, team2);
+        cardEnemies.DoAction(team2, team1);
+    }
+
+    CreateAnimationsAndBackground() {
+        this.anims.create({
+            key: 'bckg',
+            frames: this.anims.generateFrameNumbers('background', { start: 0, end: 47 }),
+            yoyo: true,
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.kKey = this.input.keyboard.addKey('K'); //DEBUG: tecla k mata a todo el grupo de personajes, se pierde
+        this.lKey = this.input.keyboard.addKey('L'); //DEBUG: tecla l mata a todo el grupo de enemigos, se gana
+
+        this.anims.create({
+            key: 'speedFX',
+            frames: this.anims.generateFrameNumbers('speedFX', { start: 0, end: 24 }),
+            yoyo: true,
+            frameRate: 24,
+            repeat: -1
+        });
+
+        this.background = this.add.sprite(0, 0, 'background');
+        this.background.play('bckg');
+        this.background.setOrigin(0, 0);
+        this.background.setScale(3.2, 3.2);
+    }
+
+    endTurn() {
+        currentTeam = currentTeam == team1 ? team2 : team1;
+        buttons.forEach(button => { button.setActive(currentTeam == team1); });
+        this.buttonText.text = "Selecciona una opción";
+        this.buttonText.visible = (currentTeam == team1);
+        this.nextAction();
+    }
+
+    nextAction() {
+        let output = currentTeam.GetNextCharacter();
+        if (output.isValid) output.entity.event.emit('takeTurn');
+        else this.endTurn();
     }
 
     update()

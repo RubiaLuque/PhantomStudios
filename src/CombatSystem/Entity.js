@@ -63,6 +63,15 @@ export default class Entity
         });
     }
 
+    SetupEvents(callbacks)
+    {
+        this.event.on('GetDamage', callbacks.onGetDamage)
+        this.sprite.on('pointerover', callbacks.onPointerOver)
+        this.event.on('target', callbacks.onTarget)
+        this.sprite.on('pointerdown', callbacks.onPointerDown)
+        this.event.on('takeTurn', callbacks.onTakeTurn)
+    }
+
     GetDamage(damage, type, attacker)
     {
         this.sound.Play(this.damageSound)

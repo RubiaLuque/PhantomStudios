@@ -120,7 +120,7 @@ export default class World1 extends Phaser.Scene
 
             if(this.dial)
             {
-                this.interpreter.SetDialogue(this.data['intro-3'])
+                // this.interpreter.SetDialogue(this.data['intro-3'])
             }
             else if(defeatedEnemiesIds[defeatedEnemiesIds.length - 1] == this.bossId)
             {
