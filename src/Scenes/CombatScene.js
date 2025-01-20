@@ -83,15 +83,11 @@ export default class CombatScene extends Phaser.Scene {
         cardTeam.DoAction(team1, team2);
         cardEnemies.DoAction(team2, team1);
 
-        phase = new Phaser.Events.EventEmitter();
-
         this.CreateButtons();
 
         this.initializeArrow();
 
         this.initializeTeams();
-
-        this.initializeTurnPhases();
 
         this.setupTeamDeathEvents();
 
@@ -121,22 +117,20 @@ export default class CombatScene extends Phaser.Scene {
 
         damageText = new FloatingText(this, 0, 0, '0', { fontSize: '64px', fill: '#F00' });
         currentTeam = this.ambush ? team1 : team2;
-        phase.emit('next');
+        this.nextAction();
     }
 
-    initializeTurnPhases() {
-        phase.on('next', () => {
-            let output = currentTeam.GetNextCharacter();
-            console.log(output);
-            if (output.isValid) output.entity.event.emit('takeTurn');
-            else phase.emit('endTurn');
-        });
+    endTurn() {
+        currentTeam = currentTeam == team1 ? team2 : team1;
+        buttons.forEach(button => { button.setActive(currentTeam == team1); });
+        this.nextAction();
+    }
 
-        phase.on('endTurn', () => {
-            currentTeam = currentTeam == team1 ? team2 : team1;
-            buttons.forEach(button => { button.setActive(currentTeam == team1); });
-            phase.emit('next');
-        });
+    nextAction() {
+        let output = currentTeam.GetNextCharacter();
+        console.log(output);
+        if (output.isValid) output.entity.event.emit('takeTurn');
+        else this.endTurn();
     }
 
     setupTeamDeathEvents() {
@@ -173,7 +167,7 @@ export default class CombatScene extends Phaser.Scene {
                         let attackAction = () => {
                             character.selectedAttack(entity, () => {
                                 buttons.forEach(button => { button.setActive(true); });
-                                phase.emit('next');
+                                this.nextAction();
                             }, character);
                         };
                         if (character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type)) {
@@ -187,12 +181,12 @@ export default class CombatScene extends Phaser.Scene {
                     onTakeTurn: () => {
                         entity.event.emit('target');
     
-                        if (entity.CheckAlteredState({ scene: this, team: team, phase: phase, user: entity })) {
+                        if (entity.CheckAlteredState({ scene: this, team: team, user: entity })) {
                             if (team == team2) {
                                 let target = team1.GetRandomCharacter();
                                 this.time.delayedCall(1000, () => {
                                     target.event.emit('target');
-                                    entity.MagicAttack(target, () => { phase.emit('next'); }, entity);
+                                    entity.MagicAttack(target, () => { this.nextAction() }, entity);
                                 });
                             }
                         }
