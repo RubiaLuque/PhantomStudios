@@ -154,57 +154,55 @@ export default class CombatScene extends Phaser.Scene {
         let teams = [team1, team2];
         teams.forEach(team => {
             team.entities.forEach(entity => {
-                entity.event.on('GetDamage', (damage) => { self.onDamage(entity.sprite, damage); });
+
+                let callbacks = {
+                    onGetDamage: (damage) => { self.onDamage(entity.sprite, damage); },
+                    onPointerOver: () => { entity.event.emit('target'); },
+                    onTarget: () => { 
+                        arrow.x = bounds.x;
+                        arrow.y = entity.sprite.y; 
+                    },
+                    onPointerDown: () => {
+                        entity.sprite.emit('pointerout');
+                        entity.sprite.emit('pointerup');
+                        buttons.forEach(button => { button.setActive(false); });
+                        team2.entities.forEach(element => {
+                            element.sprite.disableInteractive();
+                        });
+                        let character = team1.CurrentCharacter();
+                        let attackAction = () => {
+                            character.selectedAttack(entity, () => {
+                                buttons.forEach(button => { button.setActive(true); });
+                                phase.emit('next');
+                            }, character);
+                        };
+                        if (character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type)) {
+                            character.doneCritic = false;
+                            this.OutAttack(character, attackAction);
+                        }
+                        else {
+                            attackAction();
+                        }
+                    },
+                    onTakeTurn: () => {
+                        entity.event.emit('target');
+    
+                        if (entity.CheckAlteredState({ scene: this, team: team, phase: phase, user: entity })) {
+                            if (team == team2) {
+                                let target = team1.GetRandomCharacter();
+                                this.time.delayedCall(1000, () => {
+                                    target.event.emit('target');
+                                    entity.MagicAttack(target, () => { phase.emit('next'); }, entity);
+                                });
+                            }
+                        }
+                    }
+                }
+
+                entity.SetupEvents(callbacks);
 
                 let bounds = entity.sprite.getBounds();
                 new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity).UpdateBar();
-
-                entity.sprite.on('pointerover', () => {
-                    entity.event.emit('target');
-                });
-
-                entity.sprite.on('pointerdown', () => {
-                    entity.sprite.emit('pointerout');
-                    entity.sprite.emit('pointerup');
-
-                    buttons.forEach(button => { button.setActive(false); });
-
-                    team2.entities.forEach(element => {
-                        element.sprite.disableInteractive();
-                    });
-
-                    let character = team1.CurrentCharacter();
-
-                    let attackAction = () => {
-                        character.selectedAttack(entity, () => {
-                            buttons.forEach(button => { button.setActive(true); });
-                            phase.emit('next');
-                        }, character);
-                    };
-
-                    if (character.doneCritic == false && character.selectedAttack == character.MagicAttack && entity.isWeak(character.type)) {
-                        character.doneCritic = false;
-                        this.OutAttack(character, attackAction);
-                    }
-
-                    else {
-                        attackAction();
-                    }
-                });
-
-                entity.event.on('takeTurn', () => {
-                    entity.event.emit('target');
-
-                    if (entity.CheckAlteredState({ scene: this, team: team, phase: phase, user: entity })) {
-                        if (team == team2) {
-                            let target = team1.GetRandomCharacter();
-                            this.time.delayedCall(1000, () => {
-                                target.event.emit('target');
-                                entity.MagicAttack(target, () => { phase.emit('next'); }, entity);
-                            });
-                        }
-                    }
-                });
 
                 entity.event.on('target', () => {
                     arrow.x = bounds.x;
