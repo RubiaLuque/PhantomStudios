@@ -71,6 +71,12 @@ export default class LoadScene extends Phaser.Scene {
         this.load.image("High_Priestess", "assets/images/cards/High_Priestess.jpg");
         this.load.json("dialogue", 'assets/dialogue/dialogue.json')
         //CombatScene
+        this.load.image('whiteCircle', "assets/images/whiteCircle.png");
+        this.load.image("Sleep", "assets/images/Sleep.png")
+        this.load.image("Fear", "assets/images/Fear.png")
+        this.load.image("No_attack", "assets/images/No_attack.png")
+        this.load.image("Papeado", "assets/images/Papeado.png")
+        this.load.image("Deaf", "assets/images/Deaf.png")
         this.load.image("Button", "assets/images/Button.png");
         this.load.image("Arrow", "assets/images/Arrow.png");
         this.load.audio('Reach_Out', [ 'assets/music/Reach_Out.mp3' ]);
