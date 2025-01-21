@@ -193,6 +193,8 @@ export default class Entity
         this.alteredState = state;
         this.alteredState.enter({user: this});
         this.alteredStateDuration = duration;
+
+        if(this.stateInfo != undefined) this.stateInfo.set(this.alteredState)
     }
 
     CheckAlteredState(data)

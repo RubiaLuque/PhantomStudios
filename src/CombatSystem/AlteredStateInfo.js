@@ -8,13 +8,15 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
         this.setScale(0.015, 0.015);
         scene.add.existing(this);
 
-        this.backPanel = scene.add.rectangle(x, y, 150, 50, 0x000000);
+        this.set(entity.alteredState);
+
+        this.backPanel = scene.add.rectangle(x, y, 150, 25, 0x000000);
         this.backPanel.alpha = 0.5;
-        this.backPanel.setOrigin(0.5, 0);
+        this.backPanel.setOrigin(0.5, 1);
         this.backPanel.visible = false;
 
         this.explanationText = scene.add.text(x, y, "", {fontSize: '12px', fill: '#FFF', align: 'center'});
-        this.explanationText.setOrigin(0.5, 0)
+        this.explanationText.setOrigin(0.5, 1)
 
         this.on('pointerover', ()=>{
             if(entity.alteredState == AlteredState.none) return;
@@ -29,5 +31,17 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
         });
 
         this.setInteractive();
+    }
+
+    set(alteredState)
+    {
+        if(alteredState == AlteredState.none)
+        {
+            this.visible = false;
+        }
+        else
+        {
+            this.visible = true;
+        }
     }
 }
