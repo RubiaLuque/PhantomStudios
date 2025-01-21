@@ -49,6 +49,19 @@ export default class Entity
 
         let originalScale = {x: this.sprite.scaleX, y: this.sprite.scaleY}
 
+        this.stateInfo = new Phaser.GameObjects.Sprite(self, this.sprite.getBounds().x, this.sprite.y + 5, 'whiteCircle');
+        this.stateInfo.setScale(0.1, 0.1);
+
+        this.stateInfo.visible = false;
+
+        this.stateInfo.on('pointerover', ()=>{
+            this.lastInfo = this.scene.buttonText.text;
+            this.scene.buttonText.text = this.alteredState.explanation;
+        });
+        this.stateInfo.on('pointerout', ()=>{
+            this.scene.buttonText.text = this.lastInfo;
+        });
+
         this.sprite.on('pointerover', ()=>{
             this.sprite.setScale(originalScale.x * 1.1, originalScale.y * 1.1);
         });
@@ -190,6 +203,17 @@ export default class Entity
 
     ApplyAlteredState(state, duration)
     {
+        if(state == AlteredState.none)
+        {
+            this.stateInfo.visible = false;
+            this.stateInfo.setInteractive(false);
+        }
+        else
+        {
+            this.stateInfo.visible = true;
+            this.stateInfo.setInteractive();
+        }
+
         this.alteredState = state;
         this.alteredState.enter({user: this});
         this.alteredStateDuration = duration;
