@@ -14,7 +14,6 @@ let outImage;
 let team1, team2;
 let arrow;
 let lastPlayerPosition, currentEnemyId;
-let phase;
 let currentTeam;
 let cardEnemies, cardTeam;
 let NPCFound, NPCTalked;
@@ -52,6 +51,8 @@ export default class CombatScene extends Phaser.Scene {
     preload(){
         team1.Preload(this);
         team2.Preload(this);
+
+        this.load.image('whiteCircle', "assets/images/whiteCircle.png");
         
         team1.entities.forEach(entity => {
             this.load.image(entity.name + "_Out", "assets/images/" + entity.image + "_Out.png"); //Esto es dependiente de team 1 asi que hay que cargarlo aqui
