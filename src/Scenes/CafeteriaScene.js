@@ -75,6 +75,9 @@ export default class CafeteriaScene extends Phaser.Scene
             i++;
         })
         this.player = this.tileMap.createFromObjects("Entidades", {name: 'Player', classType: playerCafeteria, key: 'MikaN'})[0] //key sirve para indicar que image carga
+        this.player.setSize(800,1400);
+        this.player.setOffset(30,40);
+        
         let dialogueInterpreter = new DialogueInterpreter(this)
         const data = this.cache.json.get("dialogue");
         
