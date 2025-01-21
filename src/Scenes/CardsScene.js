@@ -1,6 +1,8 @@
 import RandomCardSelector from "../CombatSystem/Cards/RandomCardSelector.js"
 import TarotCard from "../CombatSystem/Cards/TarotCard.js";
 import DialogueInterpreter from "../DialogueSystem/DialogueInterpreter.js";
+import { CardsEffects } from "../CombatSystem/Cards/CardsEffects.js";
+import { cardsInfo } from "../CombatSystem/Cards/CardsInfo.js";
 
 export default class CardsScene extends Phaser.Scene{
     constructor(){
@@ -37,7 +39,8 @@ export default class CardsScene extends Phaser.Scene{
         
         this.player = {x: 400, y: 300}
         //Cartas elegidas 
-        this.cardTeam = new TarotCard(this, 250, 250, 'Back', teamElection.texture, teamElection.function, teamElection.info);
+        //this.cardTeam = new TarotCard(this, 250, 250, 'Back', teamElection.texture, teamElection.function, teamElection.info);
+        this.cardTeam = new TarotCard(this, 250, 250, 'Back', 'Moon', CardsEffects.MoonEffect, cardsInfo.MoonInfo)
         this.cardEnemies = new TarotCard(this, 550, 250, 'Back', enemiesElection.texture, enemiesElection.function, enemiesElection.info);
         this.interpreter = new DialogueInterpreter(this)
 
