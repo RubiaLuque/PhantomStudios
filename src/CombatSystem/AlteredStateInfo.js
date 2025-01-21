@@ -42,6 +42,7 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
         else
         {
             this.visible = true;
+            this.setTexture(alteredState.icon);
         }
     }
 }
