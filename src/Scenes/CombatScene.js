@@ -2,6 +2,7 @@ import CustomButton from "../UI/CustomButton.js";
 import FloatingText from "../CombatSystem/FloatingText.js";
 import {analyser} from "../SoundSystem/Index.js"
 import LifeBar from "../CombatSystem/LifeBar.js";
+import AlteredStateInfo from "../CombatSystem/AlteredStateInfo.js";
 
 const songs = ['Reach_Out', 'School_Days', 'Going_Down', 'CYN', 'Break_Out'];
 
@@ -171,7 +172,9 @@ export default class CombatScene extends Phaser.Scene {
                 };
                 entity.SetupEvents(eventData);
                 let bounds = entity.sprite.getBounds();
-                new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity);
+                let lifeBar = new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity);
+
+                new AlteredStateInfo(self, lifeBar.getBounds().x- 8, lifeBar.y, entity);
 
                 entity.event.on('target', () => {
                     arrow.x = bounds.x;

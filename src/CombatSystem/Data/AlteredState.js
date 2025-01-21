@@ -3,7 +3,8 @@ export const AlteredState =
     none: {
         enter: (data) => { data.user.sprite.setTint(0xffffff) },
         check:(_) => {return true},
-        exit: (_) => {}
+        exit: (_) => {},
+        explanation: ""
     },
     sleep: {
         enter: (data) => { data.user.sprite.setTint(0xffffcc) },
