@@ -3,10 +3,13 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
 {
     constructor(scene, x, y, entity) {
         super(scene, x, y, 'whiteCircle')
+        
+        this.circle = scene.add.image(x, y, 'whiteCircle');
+        this.circle.setScale(0.015, 0.015);
 
         this.setOrigin(0.5, 0.5);
-        this.setScale(0.015, 0.015);
         scene.add.existing(this);
+        this.setScale(0.015, 0.015);
 
         this.set(entity.alteredState);
 
@@ -38,10 +41,12 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
         if(alteredState == AlteredState.none)
         {
             this.visible = false;
+            this.circle.visible = false;
         }
         else
         {
             this.visible = true;
+            this.circle.visible = true;
             this.setTexture(alteredState.icon);
         }
     }
