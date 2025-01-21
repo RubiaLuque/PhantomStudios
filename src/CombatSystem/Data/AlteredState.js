@@ -16,14 +16,14 @@ export const AlteredState =
             return false
             },
         exit: (_) => {},
-        explanation: "Dormido: No puede atacar, pero se cura este turno"
+        explanation: "No puede atacar\n pero se cura este turno"
     },
     deaf:
     {
         enter: (data) => { data.user.sprite.setTint(0x0000ff) },
         check: (_)=> {return true},
         exit: (_) => {},
-        explanation: "Sordo: No puede curar ni ser curado"
+        explanation: "No puede curar\nni ser curado"
     },
     fear: 
     {
@@ -36,7 +36,7 @@ export const AlteredState =
         return false
         },
         exit: (_) => {},
-        explanation: "Miedo: Se esconde detrás de un aliado y este recibe daño en su lugar"
+        explanation: "Se esconde detrás de un aliado\ny este recibe daño en su lugar"
     },
     papeado:{
         enter: (data) => { data.user.sprite.setTint(0xffff00) },
@@ -46,7 +46,7 @@ export const AlteredState =
             return false
         },
         exit: (_) => {},
-        explanation: "Papeado: Ataca a un aliado aleatorio"
+        explanation: "Ataca a un aliado\naleatorio"
     },
     no_attack:
     {
@@ -55,6 +55,6 @@ export const AlteredState =
             data.scene.nextAction();
             return false},
         exit: (_) => {},
-        explanation: "No ataca: No puede atacar"
+        explanation: "No puede\natacar"
     },
 }

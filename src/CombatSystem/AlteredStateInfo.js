@@ -1,3 +1,4 @@
+import { AlteredState } from "./Data/AlteredState.js"
 export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
 {
     constructor(scene, x, y, entity) {
@@ -12,10 +13,11 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
         this.backPanel.setOrigin(0.5, 0);
         this.backPanel.visible = false;
 
-        this.explanationText = scene.add.text(x, y, "", {fontSize: '16px', fill: '#FFF'});
+        this.explanationText = scene.add.text(x, y, "", {fontSize: '12px', fill: '#FFF', align: 'center'});
         this.explanationText.setOrigin(0.5, 0)
 
         this.on('pointerover', ()=>{
+            if(entity.alteredState == AlteredState.none) return;
             this.explanationText.visible = true;
             this.backPanel.visible = true;
             this.explanationText.text = entity.alteredState.explanation;
