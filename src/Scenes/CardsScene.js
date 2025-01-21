@@ -39,8 +39,8 @@ export default class CardsScene extends Phaser.Scene{
         
         this.player = {x: 400, y: 300}
         //Cartas elegidas 
-        //this.cardTeam = new TarotCard(this, 250, 250, 'Back', teamElection.texture, teamElection.function, teamElection.info);
-        this.cardTeam = new TarotCard(this, 250, 250, 'Back', 'Moon', CardsEffects.MoonEffect, cardsInfo.MoonInfo)
+        this.cardTeam = new TarotCard(this, 250, 250, 'Back', teamElection.texture, teamElection.function, teamElection.info);
+        //this.cardTeam = new TarotCard(this, 250, 250, 'Back', 'Moon', CardsEffects.MoonEffect, cardsInfo.MoonInfo)
         this.cardEnemies = new TarotCard(this, 550, 250, 'Back', enemiesElection.texture, enemiesElection.function, enemiesElection.info);
         this.interpreter = new DialogueInterpreter(this)
 

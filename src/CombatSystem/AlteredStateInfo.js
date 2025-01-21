@@ -5,7 +5,7 @@ export default class AlteredStateInfo extends Phaser.Physics.Arcade.Sprite
         super(scene, x, y, 'whiteCircle')
         
         this.circle = scene.add.image(x, y, 'whiteCircle');
-        this.circle.setScale(0.015, 0.015);
+        this.circle.setScale(0.035, 0.035);
 
         this.setOrigin(0.5, 0.5);
         scene.add.existing(this);

@@ -172,7 +172,7 @@ export default class CombatScene extends Phaser.Scene {
                 let bounds = entity.sprite.getBounds();
                 let lifeBar = new LifeBar(self, entity.sprite.x, entity.sprite.y + 5, 'Button', entity);
 
-                entity.stateInfo = new AlteredStateInfo(self, lifeBar.getBounds().x - 8, lifeBar.y + 5, entity);
+                entity.stateInfo = new AlteredStateInfo(self, lifeBar.getBounds().x - 10, lifeBar.y, entity);
 
                 entity.event.on('target', () => {
                     arrow.x = bounds.x;
