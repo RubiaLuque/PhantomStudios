@@ -3,7 +3,7 @@ import { cardsInfo } from "./CardsInfo.js";
 
 const Type = {
     Fool: { function: CardsEffects.FoolEffect, texture: "Fool", info: cardsInfo.FoolInfo },
-    Magician: { function: CardsEffects.MagicianEffect, texture: "Magician", info: cardsInfo.MagicianInfoInfo },
+    Magician: { function: CardsEffects.MagicianEffect, texture: "Magician", info: cardsInfo.MagicianInfo },
     High_Priestess: { function: CardsEffects.HighPriestessEffect, texture: "High_Priestess", info: cardsInfo.HighPriestessInfo },
     Empress: { function: CardsEffects.EmpressEffect, texture: "Empress", info: cardsInfo.EmpressInfo },
     Emperor: { function: CardsEffects.EmperorEffect, texture: "Emperor", info: cardsInfo.EmperorInfo },
