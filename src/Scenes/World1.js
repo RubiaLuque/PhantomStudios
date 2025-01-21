@@ -52,6 +52,11 @@ export default class World1 extends Phaser.Scene
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
         
         this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
+        NPCFound.forEach(NPC =>{
+            if(NPC == "Toni"){
+                this.Toni.destroy();
+            }
+        })
         
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'JaviN'})[0] //key sirve para indicar que image carga
         this.player.setSize(450,1300);

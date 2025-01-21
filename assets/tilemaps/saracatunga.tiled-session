@@ -19,8 +19,8 @@
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 483.5,
-                "y": 385.5
+                "x": 512.5,
+                "y": 319.5
             }
         },
         "Prueba.tsx": {
@@ -45,8 +45,8 @@
             "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1428.7878787878788,
-                "y": 819.6969696969696
+                "x": 1280.3030303030303,
+                "y": 1534.8484848484848
             }
         },
         "tilemap_cafeteria.tsx": {

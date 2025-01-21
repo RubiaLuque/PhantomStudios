@@ -87,91 +87,91 @@ export default class CafeteriaScene extends Phaser.Scene
             console.log(NPCTalked)
             this.NPCs.forEach(A => {
                 if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
-                    {
-                if(A.name == "Andres" || A.name == "Sanchez")
                 {
-                    this.player.team.forEach(character =>{
+                    if(A.name == "Andres" || A.name == "Sanchez")
+                    {
+                        this.player.team.forEach(character =>{
                         character.health = character.maxHealth
                         console.log("Equipo curado, tremendo bocadillo")
                     })
+                    }
+                    else if (A.name == 'Toni')
+                    {
+                        dialogueInterpreter.SetDialogue(data['Toni-2'], () =>{
+                        JaviButton = new CustomButton(this, 0, 600, "Button", "Javi", 
+                            function(){
+                                console.log(self.player.team[0][A.upgradeStat])
+                                console.log(A)
+                                self.player.team[0][A.upgradeStat].quantity = (self.player.team[0][A.upgradeStat].quantity + A.upgradeAmount);
+                                A.upgradeAvailable = false;
+                                NPCTalked.push(A.name)
+                                JaviButton.text.destroy()
+                                FueyoButton.text.destroy()
+                                MikaButton.text.destroy()
+                                MuxuButton.text.destroy()
+                                FueyoButton.destroy()
+                                MikaButton.destroy()
+                                MuxuButton.destroy()
+                                console.log(self.player.team)
+                                JaviButton.destroy()
+                            }
+                        );
+                        FueyoButton = new CustomButton(this, 190, 600, "Button", "Fueyo", 
+                            function(){
+                                self.player.team[1][A.upgradeStat].quantity = (self.player.team[1][A.upgradeStat].quantity + A.upgradeAmount);
+                                A.upgradeAvailable = false;
+                                NPCTalked.push(A.name)
+                                JaviButton.text.destroy()
+                                FueyoButton.text.destroy()
+                                MikaButton.text.destroy()
+                                MuxuButton.text.destroy()
+                                JaviButton.destroy()
+                                MikaButton.destroy()
+                                MuxuButton.destroy()
+                                console.log(self.player.team)
+                                FueyoButton.destroy()
+                            }
+                        );
+                        MikaButton = new CustomButton(this, 380, 600, "Button", "Mika", 
+                            function(){
+                                self.player.team[2][A.upgradeStat].quantity = (self.player.team[2][A.upgradeStat].quantity + A.upgradeAmount);
+                                A.upgradeAvailable = false;
+                                NPCTalked.push(A.name)
+                                JaviButton.text.destroy()
+                                FueyoButton.text.destroy()
+                                MikaButton.text.destroy()
+                                MuxuButton.text.destroy()
+                                JaviButton.destroy()
+                                FueyoButton.destroy()
+                                MuxuButton.destroy()
+                                console.log(self.player.team)
+                                MikaButton.destroy()
+                            }
+                        );
+                        MuxuButton = new CustomButton(this, 570, 600, "Button", "Muxu", 
+                            function(){
+                                self.player.team[3][A.upgradeStat].quantity = (self.player.team[3][A.upgradeStat].quantity + A.upgradeAmount);
+                                A.upgradeAvailable = false;
+                                NPCTalked.push(A.name)
+                                JaviButton.text.destroy()
+                                FueyoButton.text.destroy()
+                                MikaButton.text.destroy()
+                                MuxuButton.text.destroy()
+                                JaviButton.destroy()
+                                FueyoButton.destroy()
+                                MikaButton.destroy()
+                                console.log(self.player.team)
+                                MuxuButton.destroy()
+                            }
+                        );
+                        JaviButton.setButtonScale(0.5, 0.25);
+                        FueyoButton.setButtonScale(0.5, 0.25);
+                        MikaButton.setButtonScale(0.5, 0.25);
+                        MuxuButton.setButtonScale(0.5, 0.25);
+                        })
+                    }
                 }
-                else if (A.name == 'Toni')
-                {
-                    dialogueInterpreter.SetDialogue(data['Toni-2'], () =>{
-                    JaviButton = new CustomButton(this, 0, 600, "Button", "Javi", 
-                        function(){
-                            console.log(self.player.team[0][A.upgradeStat])
-                            console.log(A)
-                            self.player.team[0][A.upgradeStat].quantity = (self.player.team[0][A.upgradeStat].quantity + A.upgradeAmount);
-                            A.upgradeAvailable = false;
-                            NPCTalked.push(A.name)
-                            JaviButton.text.destroy()
-                            FueyoButton.text.destroy()
-                            MikaButton.text.destroy()
-                            MuxuButton.text.destroy()
-                            FueyoButton.destroy()
-                            MikaButton.destroy()
-                            MuxuButton.destroy()
-                            JaviButton.destroy()
-                            console.log(self.player.team)
-                        }
-                    );
-                    FueyoButton = new CustomButton(this, 190, 600, "Button", "Fueyo", 
-                        function(){
-                            self.player.team[1][A.upgradeStat].quantity = (self.player.team[1][A.upgradeStat].quantity + A.upgradeAmount);
-                            A.upgradeAvailable = false;
-                            NPCTalked.push(A.name)
-                            JaviButton.text.destroy()
-                            FueyoButton.text.destroy()
-                            MikaButton.text.destroy()
-                            MuxuButton.text.destroy()
-                            JaviButton.destroy()
-                            MikaButton.destroy()
-                            MuxuButton.destroy()
-                            FueyoButton.destroy()
-                            console.log(self.player.team)
-                        }
-                    );
-                    MikaButton = new CustomButton(this, 380, 600, "Button", "Mika", 
-                        function(){
-                            self.player.team[2][A.upgradeStat].quantity = (self.player.team[2][A.upgradeStat].quantity + A.upgradeAmount);
-                            A.upgradeAvailable = false;
-                            NPCTalked.push(A.name)
-                            JaviButton.text.destroy()
-                            FueyoButton.text.destroy()
-                            MikaButton.text.destroy()
-                            MuxuButton.text.destroy()
-                            JaviButton.destroy()
-                            FueyoButton.destroy()
-                            MuxuButton.destroy()
-                            MikaButton.destroy()
-                            console.log(self.player.team)
-                        }
-                    );
-                    MuxuButton = new CustomButton(this, 570, 600, "Button", "Muxu", 
-                        function(){
-                            self.player.team[3][A.upgradeStat].quantity = (self.player.team[3][A.upgradeStat].quantity + A.upgradeAmount);
-                            A.upgradeAvailable = false;
-                            NPCTalked.push(A.name)
-                            JaviButton.text.destroy()
-                            FueyoButton.text.destroy()
-                            MikaButton.text.destroy()
-                            MuxuButton.text.destroy()
-                            JaviButton.destroy()
-                            FueyoButton.destroy()
-                            MikaButton.destroy()
-                            MuxuButton.destroy()
-                            console.log(self.player.team)
-                        }
-                    );
-                    JaviButton.setButtonScale(0.5, 0.25);
-                    FueyoButton.setButtonScale(0.5, 0.25);
-                    MikaButton.setButtonScale(0.5, 0.25);
-                    MuxuButton.setButtonScale(0.5, 0.25);
-                })
-                }
-            }
-        });
+            });
         })
 
         this.physics.add.collider(this.player, this.collidables)
