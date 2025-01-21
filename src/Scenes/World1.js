@@ -54,6 +54,8 @@ export default class World1 extends Phaser.Scene
         this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
         
         this.player = this.tileMap.createFromObjects("entidades", {name: 'Player', classType: player, key: 'JaviN'})[0] //key sirve para indicar que image carga
+        this.player.setSize(450,1300);
+        this.player.setOffset(90,130);
         if (team != undefined){
             this.player.teamClass.entities = team.entities;
         }
