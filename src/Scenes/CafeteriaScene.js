@@ -24,7 +24,7 @@ export default class CafeteriaScene extends Phaser.Scene
         if(result.healths != undefined) healths = result.healths;
         if(result.NPCFound != undefined) NPCFound = result.NPCFound;
         if(result.NPCTalked != undefined) NPCTalked = result.NPCTalked;
-        if(result.cafeteriaEnter != undefined) this.cafeteriaEnter = result.cafeteriaEnter
+        if (result.cafeteriaEnter != undefined) this.cafeteriaEnter = result.cafeteriaEnter
     }
 
     preload(){
@@ -85,10 +85,11 @@ export default class CafeteriaScene extends Phaser.Scene
         this.player.eKey.on("down", ()=>{
             console.log(NPCFound)
             console.log(NPCTalked)
-            this.player.canMove = false;
             this.NPCs.forEach(A => {
                 if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
-                {
+                    {
+                        this.player.body.setVelocity(0, 0);
+                        this.player.canMove = false;
                     if(A.name == "Andres" || A.name == "Sanchez")
                     {
                         this.player.team.forEach(character =>{
@@ -96,8 +97,9 @@ export default class CafeteriaScene extends Phaser.Scene
                         console.log("Equipo curado, tremendo bocadillo")
                     })
                     }
-                    else if (A.name == 'Toni')
+                    else if (A.name == 'Toni' && !NPCTalked.includes(A.name))
                     {
+                        NPCTalked.push(A.name);
                         dialogueInterpreter.SetDialogue(data['Toni-2'], () =>{
                         JaviButton = new CustomButton(this, 0, 600, "Button", "Javi", 
                             function(){
