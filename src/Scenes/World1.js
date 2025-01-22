@@ -51,7 +51,7 @@ export default class World1 extends Phaser.Scene
         
         this.cafeteria = this.tileMap.createFromObjects("entidades", {name: 'Cafeteria', classType: Cafeteria, key: 'Cafeteria'})[0];
         
-        this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'NPC'})[0];
+        this.Toni = this.tileMap.createFromObjects("entidades", {name: 'Toni', classType: NPC, key: 'Toni'})[0];
         NPCFound.forEach(NPC =>{
             if(NPC == "Toni"){
                 this.Toni.destroy();
@@ -128,7 +128,7 @@ export default class World1 extends Phaser.Scene
 
             if(this.dial)
             {
-                // this.interpreter.SetDialogue(this.data['intro-3'])
+                this.interpreter.SetDialogue(this.data['intro-3'])
             }
             else if(defeatedEnemiesIds[defeatedEnemiesIds.length - 1] == this.bossId)
             {

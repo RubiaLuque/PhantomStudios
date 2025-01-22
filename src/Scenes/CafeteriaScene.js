@@ -48,10 +48,11 @@ export default class CafeteriaScene extends Phaser.Scene
         this.NPCs = this.tileMap.createFromObjects("Entidades", {name: 'NPC', classType: NPC})
         
         let i = 0;
-        this.NPCs.forEach(NPC =>{
+        this.NPCs.forEach(NPC => {
             NPC.name = NPCEffects.NPCs[i].name;
+            NPC.setTexture(NPC.name);
             NPCFound.forEach(A =>{
-                if(NPC.name == A){
+                if (NPC.name == A) {
                     NPC.upgradeStat = NPCEffects.NPCs[i].upgradeStat;
                     NPC.upgradeAmount = NPCEffects.NPCs[i].upgradeAmount;
                     NPC.image = NPCEffects.NPCs[i].image;

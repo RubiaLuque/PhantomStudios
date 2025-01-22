@@ -24,8 +24,8 @@ export default class LoadScene extends Phaser.Scene {
         this.load.spritesheet("Fueyo", "assets/images/Fueyo_sheet.png", {frameWidth: 1030, frameHeight: 1536});
         this.load.spritesheet("Mika", "assets/images/Mika_sheet.png", {frameWidth: 1242, frameHeight: 1536});
         this.load.spritesheet("Muxu", "assets/images/Muxu_sheet.png", {frameWidth: 1499, frameHeight: 1536});
-        this.load.spritesheet("Toni", "assets/images/NPC.png", {frameWidth: 286, frameHeight: 275});
-        this.load.spritesheet("Narrador", "assets/images/NPC.png", {frameWidth: 286, frameHeight: 275});
+        this.load.spritesheet("Toni", "assets/images/Toni.png", {frameWidth: 500, frameHeight: 500});
+        this.load.spritesheet("Narrador", "assets/images/GUILLERMO.png", {frameWidth: 995, frameHeight: 1500});
         this.load.spritesheet('Jaime', "assets/images/Jaime.png", {frameWidth: 1000, frameHeight: 1053})
         this.load.image("Cafeteria", "assets/images/Cafeteria.png");
         this.load.image("NPC", "assets/images/NPC.png");
@@ -43,8 +43,8 @@ export default class LoadScene extends Phaser.Scene {
         this.load.image("Door", "assets/images/CafetePuerta.png");
         this.load.image("TileCaf", "assets/tilemaps/tilemap_cafeteria.png")
         this.load.tilemapTiledJSON("Cafeteria", "assets/tilemaps/Cafeteria.json")
-        this.load.image("Andres", "assets/images/NPC.png")
-        this.load.image("Sanchez", "assets/images/NPC.png")
+        this.load.image("Andres", "assets/images/Andres.png")
+        this.load.image("Sanchez", "assets/images/Sanchez.png")
         //CardsScene
         this.load.image("Back", "assets/images/cards/Back_3.jpg");
         this.load.image("Fool", "assets/images/cards/Fool.jpg");

@@ -5,20 +5,20 @@ export const NPCEffects =
         {
             name: "Andres",
             upgradeStat: "Regenerar",
-            image: "NPC",
+            image: "Andres",
         },
 
         {
             name: "Sanchez",
             upgradeStat: "Regenerar",
-            image: "NPC",
+            image: "Sanchez",
         },
 
         {
             name: "Toni",
             upgradeStat: "luck",
             upgradeAmount: 0.25,
-            image: "NPC",
+            image: "Toni",
         },
 
         {
