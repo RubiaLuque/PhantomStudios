@@ -69,12 +69,12 @@ export default class World1 extends Phaser.Scene
                 {
                     this.scene.start('CafeteriaScene', {team: this.player.team, pos: {x: this.player.x, y: this.player.y}, NPCFound: NPCFound, cafeteriaEnter: this.cafeteriaEnter })
                 }
-                if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.Toni.getBounds()))
-                    {
+                if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.Toni.getBounds()) && !NPCFound.includes(this.Toni.name))
+                {
                         NPCFound.push(this.Toni.name)
-                        this.interpreter.SetDialogue(this.data['Toni-1'])
                         this.Toni.destroy()
-                    }
+                        this.interpreter.SetDialogue(this.data['Toni-1'])
+                }
                 })
                 
                 if (pos.x != 0 && pos.y != 0) {

@@ -8,7 +8,7 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         console.log("A")
         super(scene, x, y, 'Mika')
-
+        this.canMove = true;
         this.scale = 0.05;
         
         scene.add.existing(this);
@@ -45,8 +45,8 @@ export default class player extends Phaser.Physics.Arcade.Sprite {
         // console.log(this.x)
     }
 
-    preUpdate(){
-        this.Move()
+    preUpdate() {
+        if (this.canMove) this.Move()
         //if(this.spaceKey.isDown && canRoll){this.Roll()}
     }
 

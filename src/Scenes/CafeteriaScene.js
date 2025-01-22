@@ -85,6 +85,7 @@ export default class CafeteriaScene extends Phaser.Scene
         this.player.eKey.on("down", ()=>{
             console.log(NPCFound)
             console.log(NPCTalked)
+            this.player.canMove = false;
             this.NPCs.forEach(A => {
                 if(A.upgradeAvailable && Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), A.getBounds()))
                 {
@@ -171,7 +172,9 @@ export default class CafeteriaScene extends Phaser.Scene
                         })
                     }
                 }
+
             });
+            this.player.canMove = true;
         })
 
         this.physics.add.collider(this.player, this.collidables)
